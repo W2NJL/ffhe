@@ -1,0 +1,1 @@
+const kAppName = 'Fast Food Health-E';
