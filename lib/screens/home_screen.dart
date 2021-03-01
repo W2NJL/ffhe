@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:loading/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:vote/models/ffhe.dart';
-import 'package:vote/services/service.dart';
-import 'package:vote/state/vote.dart';
-import 'package:vote/widgets/vote.dart';
-import 'package:vote/widgets/vote_list.dart';
-import 'package:vote/state/vote.dart';
+import 'package:fast_food_health_e/models/ffhe.dart';
+import 'package:fast_food_health_e/services/service.dart';
+import 'package:fast_food_health_e/state/vote.dart';
+import 'package:fast_food_health_e/widgets/vote.dart';
+import 'package:fast_food_health_e/widgets/vote_list.dart';
+import 'package:fast_food_health_e/state/vote.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:vote/models/ffhe.dart';
-import 'package:vote/services/service.dart';
+import 'package:fast_food_health_e/models/ffhe.dart';
+import 'package:fast_food_health_e/services/service.dart';
 
 class VoteState with ChangeNotifier{
 List <Vote> _voteList = <Vote>[];

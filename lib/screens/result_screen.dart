@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:provider/provider.dart';
-import 'package:vote/models/ffhe.dart';
-import 'package:vote/services/service.dart';
-import 'package:vote/state/vote.dart';
+import 'package:fast_food_health_e/models/ffhe.dart';
+import 'package:fast_food_health_e/services/service.dart';
+import 'package:fast_food_health_e/state/vote.dart';
 
 class ResultScreen extends StatelessWidget {
   @override

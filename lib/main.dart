@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:vote/constants.dart';
-import 'package:vote/screens/home_screen.dart';
-import 'package:vote/screens/launch_screen.dart';
-import 'package:vote/screens/result_screen.dart';
+import 'package:fast_food_health_e/constants.dart';
+import 'package:fast_food_health_e/screens/home_screen.dart';
+import 'package:fast_food_health_e/screens/launch_screen.dart';
+import 'package:fast_food_health_e/screens/result_screen.dart';
+import 'package:fast_food_health_e/screens/ffhe_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:vote/state/vote.dart';
-import 'package:vote/state/authentication.dart';
-import 'package:vote/utilities.dart';
+import 'package:fast_food_health_e/state/vote.dart';
+import 'package:fast_food_health_e/state/authentication.dart';
+import 'package:fast_food_health_e/utilities.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,11 +27,17 @@ class VoteApp extends StatelessWidget {
         child:
         Consumer<AuthenticationState>(builder: (context, authState, child) {
           return MaterialApp(
+
             initialRoute: '/',
             routes: {
-              '/': (context) => Scaffold(
-                body: LaunchScreen(),
-              ),
+              '/': (context) =>
+                Scaffold(
+                    body: LaunchScreen(),
+                  ),
+
+
+
+
               '/home': (context) => Scaffold(
                 appBar: AppBar(
                   title: Text(kAppName),
@@ -37,7 +45,7 @@ class VoteApp extends StatelessWidget {
                     getActions(context, authState),
                   ],
                 ),
-                body: HomeScreen(),
+                body: FitnessAppHomeScreen(),
               ),
               '/result': (context) => Scaffold(
                 appBar: AppBar(
@@ -77,5 +85,17 @@ class VoteApp extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+class HexColor extends Color {
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF' + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
   }
 }

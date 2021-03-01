@@ -1,8 +1,8 @@
-import 'package:vote/models/ffhe.dart';
+import 'package:fast_food_health_e/models/ffhe.dart';
 import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:vote/state/vote.dart';
+import 'package:fast_food_health_e/state/vote.dart';
 import 'package:flutter/material.dart';
 
 List<Vote> getVoteList(){

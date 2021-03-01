@@ -3,7 +3,7 @@
  * https://github.com/mahmudahsan
  */
 import "package:flutter/material.dart";
-import "package:vote/services/authentication.dart";
+import "package:fast_food_health_e/services/authentication.dart";
 import '../services/constants.dart';
 
 const String kAuthError = 'error';
