@@ -3,6 +3,7 @@ import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/fitness_app/models/tabIcon_data.dart';
 import 'package:fast_food_health_e/main.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as developer;
 
 import '../../main.dart';
 import '../models/tabIcon_data.dart';
@@ -166,7 +167,9 @@ class _BottomBarViewState extends State<BottomBarView>
                           highlightColor: Colors.transparent,
                           focusColor: Colors.transparent,
                           onTap: () {
-                            widget.addClick();
+                            developer.log('log me', name: 'my.app.category');
+                            widget.changeIndex(3);
+
                           },
                           child: Icon(
                             Icons.add,
