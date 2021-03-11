@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'fintness_app_theme.dart';
 import 'my_diary/my_diary_screen.dart';
-import 'package:fast_food_health_e/widgets/newsList.dart';
+import 'package:fast_food_health_e/widgets/nutritionixList.dart';
 
 class FitnessAppHomeScreen extends StatefulWidget {
   @override
@@ -97,7 +97,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
                 }
                 setState(() {
                   tabBody =
-                      NewsList();
+                      NutritionList();
                 });
               });
             }

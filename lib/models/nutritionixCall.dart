@@ -2,33 +2,33 @@ import 'dart:convert';
 import 'package:fast_food_health_e/services/webservice.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
 
-class NewsArticle {
+class NutritionixData {
 
   final String title;
   final String descrption;
   final String urlToImage;
-  final Fields mrsFields;
+  final Fields nutritionFields;
 
-  NewsArticle({this.title, this.descrption, this.urlToImage, this.mrsFields});
+  NutritionixData({this.title, this.descrption, this.urlToImage, this.nutritionFields});
 
-  factory NewsArticle.fromJson(Map<String,dynamic> json) {
-    return NewsArticle(
+  factory NutritionixData.fromJson(Map<String,dynamic> json) {
+    return NutritionixData(
         title: json['_index'],
         descrption: json['_type'],
         urlToImage: json['_id'] ?? Constants.NEWS_PLACEHOLDER_IMAGE_ASSET_URL,
-        mrsFields: Fields.fromJson(json['fields'])
+        nutritionFields: Fields.fromJson(json['fields'])
     );
 
   }
 
-  static Resource<List<NewsArticle>> get all {
+  static Resource<List<NutritionixData>> get all {
 
     return Resource(
-        url: Constants.HEADLINE_NEWS_URL,
+        url: Constants.NUTRITIONIX_API_URL,
         parse: (response) {
           final result = json.decode(response.body);
           Iterable list = result['hits'];
-          return list.map((model) => NewsArticle.fromJson(model)).toList();
+          return list.map((model) => NutritionixData.fromJson(model)).toList();
         }
     );
 

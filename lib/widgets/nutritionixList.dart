@@ -1,13 +1,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:fast_food_health_e/models/newsArticle.dart';
+import 'package:fast_food_health_e/models/nutritionixCall.dart';
 import 'package:fast_food_health_e/services/webservice.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
 
-class NewsListState extends State<NewsList> {
+class NutritionListState extends State<NutritionList> {
 
-  List<NewsArticle> _newsArticles = List<NewsArticle>();
+  List<NutritionixData> _nutritionixData = <NutritionixData>[];
 
   @override
   void initState() {
@@ -17,9 +17,9 @@ class NewsListState extends State<NewsList> {
 
   void _populateNewsArticles() {
 
-    Webservice().load(NewsArticle.all).then((newsArticles) => {
+    Webservice().load(NutritionixData.all).then((newsArticles) => {
       setState(() => {
-        _newsArticles = newsArticles
+        _nutritionixData = newsArticles
       })
     });
 
@@ -27,8 +27,8 @@ class NewsListState extends State<NewsList> {
 
   ListTile _buildItemsForListView(BuildContext context, int index) {
     return ListTile(
-      title: Text(_newsArticles[index].mrsFields.itemName, style: TextStyle(fontSize: 18)),
-      subtitle: Text("Calories: " + _newsArticles[index].mrsFields.nfCalories.toString(), style: TextStyle(fontSize: 18)),
+      title: Text(_nutritionixData[index].nutritionFields.itemName, style: TextStyle(fontSize: 18)),
+      subtitle: Text("Calories: " + _nutritionixData[index].nutritionFields.nfCalories.toString(), style: TextStyle(fontSize: 18)),
 
     );
   }
@@ -40,15 +40,15 @@ class NewsListState extends State<NewsList> {
           title: Text('You chose Bob Evans'),
         ),
         body: ListView.builder(
-          itemCount: _newsArticles.length,
+          itemCount: _nutritionixData.length,
           itemBuilder: _buildItemsForListView,
         )
     );
   }
 }
 
-class NewsList extends StatefulWidget {
+class NutritionList extends StatefulWidget {
 
   @override
-  createState() => NewsListState();
+  createState() => NutritionListState();
 }
