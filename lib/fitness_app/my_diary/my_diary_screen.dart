@@ -6,6 +6,7 @@ import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/meals_list_view.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/water_view.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyDiaryScreen extends StatefulWidget {
   const MyDiaryScreen({Key key, this.animationController}) : super(key: key);
@@ -56,18 +57,21 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     super.initState();
   }
 
-  void addAllListData() {
+  void addAllListData () {
     const int count = 9;
 
     listViews.add(
       TitleView(
-        titleTxt: 'Low-carb diet plan',
+
+        titleTxt: _getDietPlan(),
         subTxt: 'Details',
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController,
             curve:
                 Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController,
+
+
       ),
     );
     listViews.add(
@@ -336,4 +340,14 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
       ],
     );
   }
+}
+
+void storeDietPlan(String dietPlan) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString("dietPlan", dietPlan);
+}
+
+Future <String> _getDietPlan() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  return preferences.getString("dietPlan") ?? null;
 }
