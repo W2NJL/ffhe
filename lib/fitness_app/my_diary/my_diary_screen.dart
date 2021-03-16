@@ -60,19 +60,23 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   void addAllListData () {
     const int count = 9;
 
+
+
     listViews.add(
-      TitleView(
-
-        titleTxt: _getDietPlan(),
-        subTxt: 'Details',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-
-
-      ),
+    FutureBuilder(
+    future: _getDietPlan(),
+    initialData: "Loading text..",
+    builder: (BuildContext context, AsyncSnapshot<String> text) {
+    return new TitleView(
+    titleTxt: text.data,
+    subTxt: 'Details',
+    animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+    parent: widget.animationController,
+    curve:
+    Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
+    animationController: widget.animationController,
+    );
+    }),
     );
     listViews.add(
       MediterranesnDietView(
@@ -349,5 +353,5 @@ void storeDietPlan(String dietPlan) async {
 
 Future <String> _getDietPlan() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  return preferences.getString("dietPlan") ?? null;
+  return preferences.getString("dietPlan") ?? "No plan selected";
 }

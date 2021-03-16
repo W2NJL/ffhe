@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/my_diary_screen.dart';
-
+import 'package:fast_food_health_e/screens/launch_screen.dart';
 
 class MyDietPage extends StatefulWidget {
   MyDietPage({Key key, this.title}) : super(key: key);
@@ -19,7 +19,13 @@ class _MyDietPageState extends State<MyDietPage> {
   @override
   Widget build(BuildContext context) {
   return Scaffold(
-    appBar: AppBar(title: Text('Select your Diet Plan')
+    appBar: AppBar(title: Text('Select your Diet Plan'),
+      leading: new IconButton(
+        icon: new Icon(Icons.arrow_back),
+        onPressed: () =>    Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => LaunchScreen())
+        )      ),
+
     ),
     body: Center(
       child: Padding(
@@ -57,7 +63,11 @@ class _MyDietPageState extends State<MyDietPage> {
           ),
         ),
       ),
+
     ),
   );
   }
-}
+
+
+  }
+
