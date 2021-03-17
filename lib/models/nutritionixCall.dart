@@ -21,10 +21,10 @@ class NutritionixData {
 
   }
 
-  static Resource<List<NutritionixData>> get all {
+  static Resource<List<NutritionixData>> get (String restaurant) {
 
     return Resource(
-        url: Constants.NUTRITIONIX_API_URL,
+        url: 'https://api.nutritionix.com/v1_1/search/' + restaurant + '?results=0:50&fields=item_name,brand_name,nf_calories&appId=816cee15&appKey=aab0a0a4c4224eca770bf5a2a0f4c984',
         parse: (response) {
           final result = json.decode(response.body);
           Iterable list = result['hits'];

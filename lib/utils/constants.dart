@@ -4,4 +4,10 @@ class Constants {
 
   static final String NEWS_PLACEHOLDER_IMAGE_ASSET_URL = 'assets/placeholder.png';
 
+  static const String LOW_SODIUM = "Low Sodium";
+  static const String LOW_CALORIE = "Low Calorie";
+  static const String LOW_CARB = "Low Carb";
+  static const String LOW_FAT = "Low Fat";
+  static const String LOW_CHOLESTROL = "Low Cholestrol";
+
 }

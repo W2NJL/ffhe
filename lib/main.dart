@@ -12,6 +12,7 @@ import 'package:fast_food_health_e/utilities.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fast_food_health_e/widgets/nutritionixList.dart';
 SharedPreferences preferences;
 
 
@@ -45,7 +46,9 @@ class VoteApp extends StatelessWidget {
               'DietScreen': (context) =>  Scaffold(
                 body: MyDietPage(),
               ),
-
+              'NutritionList': (context) =>  Scaffold(
+                body: NutritionList(),
+              ),
 
 
 

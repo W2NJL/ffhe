@@ -7,17 +7,32 @@ import 'package:fast_food_health_e/utils/constants.dart';
 
 class NutritionListState extends State<NutritionList> {
 
+
+  final String restaurant;
+
+
+
+
+
+  NutritionListState({this.restaurant});
+
   List<NutritionixData> _nutritionixData = <NutritionixData>[];
+
+
 
   @override
   void initState() {
     super.initState();
-    _populateNewsArticles();
+    _populateNewsArticles(restaurant);
   }
 
-  void _populateNewsArticles() {
+  void _populateNewsArticles(String restaurant) {
 
-    Webservice().load(NutritionixData.all).then((newsArticles) => {
+
+
+
+
+    Webservice().load(NutritionixData.get(restaurant)).then((newsArticles) => {
       setState(() => {
         _nutritionixData = newsArticles
       })
@@ -37,7 +52,7 @@ class NutritionListState extends State<NutritionList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('You chose Bob Evans'),
+          title: Text('You chose ' + restaurant),
         ),
         body: ListView.builder(
           itemCount: _nutritionixData.length,
@@ -48,7 +63,12 @@ class NutritionListState extends State<NutritionList> {
 }
 
 class NutritionList extends StatefulWidget {
+  final String restaurant;
+
+
+
+  NutritionList({this.restaurant});
 
   @override
-  createState() => NutritionListState();
+  createState() => NutritionListState(restaurant: restaurant);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/my_diary_screen.dart';
 import 'package:fast_food_health_e/screens/launch_screen.dart';
+import 'package:fast_food_health_e/utils/constants.dart';
 
 class MyDietPage extends StatefulWidget {
   MyDietPage({Key key, this.title}) : super(key: key);
@@ -13,14 +14,10 @@ class MyDietPage extends StatefulWidget {
 }
 
 class _MyDietPageState extends State<MyDietPage> {
-  static const String LOW_SODIUM = "Low Sodium";
-  static const String LOW_CALORIE = "Low Calorie";
-  static const String LOW_CARB = "Low Carb";
-  static const String LOW_FAT = "Low Fat";
-  static const String LOW_CHOLESTROL = "Low Cholestrol";
+
 
   String valueChoose;
-  List listItem =[LOW_SODIUM, LOW_CALORIE, LOW_CARB, LOW_FAT, LOW_CHOLESTROL,
+  List listItem =[Constants.LOW_SODIUM, Constants.LOW_CALORIE, Constants.LOW_CARB, Constants.LOW_FAT, Constants.LOW_CHOLESTROL,
   ];
 
   @override
