@@ -11,13 +11,20 @@ import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/utilities.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+SharedPreferences preferences;
+
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
+  preferences = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
   runApp(VoteApp());
 }
 class VoteApp extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

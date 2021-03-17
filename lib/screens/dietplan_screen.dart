@@ -7,13 +7,20 @@ class MyDietPage extends StatefulWidget {
 
   final String title;
 
+
   @override
   _MyDietPageState createState() => _MyDietPageState();
 }
 
 class _MyDietPageState extends State<MyDietPage> {
+  static const String LOW_SODIUM = "Low Sodium";
+  static const String LOW_CALORIE = "Low Calorie";
+  static const String LOW_CARB = "Low Carb";
+  static const String LOW_FAT = "Low Fat";
+  static const String LOW_CHOLESTROL = "Low Cholestrol";
+
   String valueChoose;
-  List listItem =["Low Sodium", "Low Calorie","Low Carb","Low Fat","Low Cholestrol","Vegetarian",
+  List listItem =[LOW_SODIUM, LOW_CALORIE, LOW_CARB, LOW_FAT, LOW_CHOLESTROL,
   ];
 
   @override

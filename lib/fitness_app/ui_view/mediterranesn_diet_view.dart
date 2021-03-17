@@ -1,18 +1,65 @@
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/main.dart';
 import 'package:flutter/material.dart';
+import 'package:fast_food_health_e/screens/dietplan_screen.dart';
 import 'dart:math' as math;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MediterranesnDietView extends StatelessWidget {
+
   final AnimationController animationController;
   final Animation animation;
 
+
+
   const MediterranesnDietView(
+
       {Key key, this.animationController, this.animation})
       : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
+    int calories;
+    int fat;
+    int sodium;
+    int protein;
+    String graphMeasure;
+    String dietPlan;
+
+
+
+
+
+
+
+        dietPlan = preferences.getString("dietPlan") ?? 'Johnny';
+
+
+
+      print(dietPlan);
+
+      switch ( dietPlan ) {
+        case "Low Carb": {
+          graphMeasure = "Carb";
+        } break;
+        case "Low Sodium": {
+          graphMeasure = "Sodium";
+        } break;
+
+        default: {
+          graphMeasure = "Kcal";
+          print(dietPlan);
+        } break;
+      }
+
+
+
+
+
+
+
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
@@ -125,7 +172,7 @@ class MediterranesnDietView extends StatelessWidget {
                                                       const EdgeInsets.only(
                                                           left: 4, bottom: 3),
                                                   child: Text(
-                                                    'Kcal',
+                                                    graphMeasure,
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily:
@@ -293,7 +340,7 @@ class MediterranesnDietView extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            'Kcal left',
+                                            graphMeasure + ' left',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily:
@@ -683,4 +730,10 @@ class CurvePainter extends CustomPainter {
     var redian = (math.pi / 180) * degree;
     return redian;
   }
+
+
+}
+Future <String> _getDietPlan() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  return preferences.getString("dietPlan") ?? "No plan selected";
 }
