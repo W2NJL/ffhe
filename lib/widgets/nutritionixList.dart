@@ -4,11 +4,17 @@ import 'package:flutter/widgets.dart';
 import 'package:fast_food_health_e/models/nutritionixCall.dart';
 import 'package:fast_food_health_e/services/webservice.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
+import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NutritionListState extends State<NutritionList> {
 
 
   final String restaurant;
+  TapGestureRecognizer _flutterTapRecognizer;
+  TapGestureRecognizer _githubTapRecognizer;
+  static const String flutterUrl = 'https://flutter.io/';
+  static const String githubUrl = 'http://www.codesnippettalk.com';
 
 
 
@@ -18,13 +24,105 @@ class NutritionListState extends State<NutritionList> {
 
   List<NutritionixData> _nutritionixData = <NutritionixData>[];
 
-
-
   @override
   void initState() {
     super.initState();
+
+
     _populateNewsArticles(restaurant);
   }
+
+
+
+
+  void _openUrl(String url) async {
+    // Close the about dialog.
+    Navigator.pop(context);
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+
+
+  static Widget _buildAboutDialog(BuildContext context, String restaurant) {
+    return new AlertDialog(
+      title: Text(restaurant),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildAboutText(),
+          _buildLogoAttribution(),
+        ],
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('Okay, got it!'),
+        ),
+      ],
+    );
+  }
+
+  static Widget _buildAboutText() {
+    return new RichText(
+      text: new TextSpan(
+        text: 'Android Popup Menu displays the menu below the anchor text if space is available otherwise above the anchor text. It disappears if you click outside the popup menu.\n\n',
+        style: const TextStyle(color: Colors.black87),
+        children: <TextSpan>[
+          const TextSpan(text: 'The app was developed with '),
+          new TextSpan(
+            text: 'Flutter',
+
+          ),
+          const TextSpan(
+            text: ' and it\'s open source; check out the source '
+                'code yourself from ',
+          ),
+          new TextSpan(
+            text: 'www.codesnippettalk.com',
+
+          ),
+          const TextSpan(text: '.'),
+        ],
+      ),
+    );
+  }
+
+  static Widget _buildLogoAttribution() {
+    return new Padding(
+      padding: const EdgeInsets.only(top: 16.0),
+      child: new Row(
+        children: <Widget>[
+          new Padding(
+            padding: const EdgeInsets.only(top: 0.0),
+            child: new Image.asset(
+              "assets/flutter.jpeg",
+              width: 32.0,
+            ),
+          ),
+          const Expanded(
+            child: const Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: const Text(
+                'Popup window is like a dialog box that gains complete focus when it appears on screen.',
+                style: const TextStyle(fontSize: 12.0),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
   void _populateNewsArticles(String restaurant) {
 
@@ -54,13 +152,83 @@ class NutritionListState extends State<NutritionList> {
         appBar: AppBar(
           title: Text('You chose ' + restaurant),
         ),
-        body: ListView.builder(
-          itemCount: _nutritionixData.length,
-          itemBuilder: _buildItemsForListView,
-        )
+        body: new ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(20.0),
+            children: List.generate(_nutritionixData.length, (index) {
+              return Center(
+
+                child: ChoiceCard(
+                    choice: _nutritionixData[index].nutritionFields.itemName, item: _nutritionixData[index].nutritionFields.itemName),
+              );
+
+            })));
+  }
+}
+
+
+
+class ChoiceCard extends StatelessWidget {
+  const ChoiceCard(
+      {Key key,
+        this.choice,
+        this.onTap,
+        @required this.item,
+        this.selected: false})
+      : super(key: key);
+
+  final String choice;
+
+  final VoidCallback onTap;
+
+  final String item;
+
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle textStyle = Theme.of(context).textTheme.display1;
+
+    if (selected)
+      textStyle = textStyle.copyWith(color: Colors.lightGreenAccent[400]);
+
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => NutritionListState._buildAboutDialog(context, choice),
+        );
+        // Perform some action
+      },
+      child: Card(
+          color: Colors.white,
+          child: Column(
+            children: [
+              new Container(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(choice, style: Theme.of(context).textTheme.title),
+                    // Text(choice.date,
+                    //     style: TextStyle(color: Colors.black.withOpacity(0.5))),
+                    // Text(choice.description),
+                  ],
+                ),
+              )
+            ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+          )),
     );
   }
 }
+
+
+
+
+
+
 
 class NutritionList extends StatefulWidget {
   final String restaurant;
