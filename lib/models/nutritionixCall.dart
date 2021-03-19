@@ -24,7 +24,7 @@ class NutritionixData {
   static Resource<List<NutritionixData>> get (String restaurant) {
 
     return Resource(
-        url: 'https://api.nutritionix.com/v1_1/search/' + restaurant + '?results=0:50&fields=item_name,brand_name,nf_calories&appId=816cee15&appKey=aab0a0a4c4224eca770bf5a2a0f4c984',
+        url: 'https://api.nutritionix.com/v1_1/search/' + restaurant + '?results=0:50&fields=item_name,brand_name,nf_calories,nf_sodium,nf_sugars,nf_cholesterol,nf_total_fat,nf_dietary_fiber&appId=816cee15&appKey=aab0a0a4c4224eca770bf5a2a0f4c984',
         parse: (response) {
           final result = json.decode(response.body);
           Iterable list = result['hits'];
@@ -40,6 +40,11 @@ class Fields {
   final String itemName;
   final String brandName;
   final int nfCalories;
+  final int nfSugars;
+  final int nfCholesterol;
+  final int nfSodium;
+
+
 
 
 
@@ -47,6 +52,11 @@ class Fields {
     this.itemName,
     this.brandName,
     this.nfCalories,
+    this.nfCholesterol,
+    this.nfSodium,
+    this.nfSugars,
+
+
   });
 
   factory Fields.fromJson(Map<String, dynamic> json){
@@ -54,6 +64,11 @@ class Fields {
         itemName: json['item_name'],
         brandName: json['brand_name'],
       nfCalories: json['nf_calories'],
+      nfCholesterol: json['nf_cholesterol'],
+      nfSodium: json['nf_sodium'],
+      nfSugars: json['nf_sugars'],
+
+
     );
   }
 

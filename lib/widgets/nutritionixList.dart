@@ -48,14 +48,14 @@ class NutritionListState extends State<NutritionList> {
 
 
 
-  static Widget _buildAboutDialog(BuildContext context, String restaurant) {
+  static Widget _buildAboutDialog(BuildContext context, NutritionixData restaurant) {
     return new AlertDialog(
-      title: Text(restaurant),
+      title: Text(restaurant.nutritionFields.itemName),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildAboutText(),
+          _buildAboutText(restaurant.nutritionFields.nfSodium),
           _buildLogoAttribution(),
         ],
       ),
@@ -71,10 +71,10 @@ class NutritionListState extends State<NutritionList> {
     );
   }
 
-  static Widget _buildAboutText() {
+  static Widget _buildAboutText(int nfSodium) {
     return new RichText(
       text: new TextSpan(
-        text: 'Android Popup Menu displays the menu below the anchor text if space is available otherwise above the anchor text. It disappears if you click outside the popup menu.\n\n',
+        text: 'Sodium: ' + nfSodium.toString() + '\n\n',
         style: const TextStyle(color: Colors.black87),
         children: <TextSpan>[
           const TextSpan(text: 'The app was developed with '),
@@ -159,7 +159,7 @@ class NutritionListState extends State<NutritionList> {
               return Center(
 
                 child: ChoiceCard(
-                    choice: _nutritionixData[index].nutritionFields.itemName, item: _nutritionixData[index].nutritionFields.itemName),
+                    choice: _nutritionixData[index].nutritionFields.itemName, nutrition: _nutritionixData[index], item: _nutritionixData[index].nutritionFields.itemName),
               );
 
             })));
@@ -172,12 +172,15 @@ class ChoiceCard extends StatelessWidget {
   const ChoiceCard(
       {Key key,
         this.choice,
+        @required this.nutrition,
         this.onTap,
         @required this.item,
         this.selected: false})
       : super(key: key);
 
   final String choice;
+
+  final NutritionixData nutrition;
 
   final VoidCallback onTap;
 
@@ -196,7 +199,7 @@ class ChoiceCard extends StatelessWidget {
       onTap: () {
         showDialog(
           context: context,
-          builder: (BuildContext context) => NutritionListState._buildAboutDialog(context, choice),
+          builder: (BuildContext context) => NutritionListState._buildAboutDialog(context, nutrition),
         );
         // Perform some action
       },
