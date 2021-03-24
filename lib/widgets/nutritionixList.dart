@@ -11,6 +11,7 @@ class NutritionListState extends State<NutritionList> {
 
 
   final String restaurant;
+  final String category;
   TapGestureRecognizer _flutterTapRecognizer;
   TapGestureRecognizer _githubTapRecognizer;
   static const String flutterUrl = 'https://flutter.io/';
@@ -20,7 +21,7 @@ class NutritionListState extends State<NutritionList> {
 
 
 
-  NutritionListState({this.restaurant});
+  NutritionListState({this.restaurant, this.category});
 
   List<NutritionixData> _nutritionixData = <NutritionixData>[];
 
@@ -28,8 +29,8 @@ class NutritionListState extends State<NutritionList> {
   void initState() {
     super.initState();
 
-
-    _populateNewsArticles(restaurant);
+    print(category);
+    _populateNutritionListings(restaurant, category);
   }
 
 
@@ -55,7 +56,7 @@ class NutritionListState extends State<NutritionList> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildAboutText(restaurant.nutritionFields.nfSodium),
+          _buildAboutText(restaurant.nutritionFields.nfSodium, restaurant.nutritionFields.nfCategory.first),
           _buildLogoAttribution(),
         ],
       ),
@@ -71,10 +72,11 @@ class NutritionListState extends State<NutritionList> {
     );
   }
 
-  static Widget _buildAboutText(int nfSodium) {
+  static Widget _buildAboutText(int nfSodium, String nfFat) {
     return new RichText(
       text: new TextSpan(
-        text: 'Sodium: ' + nfSodium.toString() + '\n\n',
+        text: 'Sodium: ' + nfSodium.toString() + '\n\n' +
+            'Fat: ' + nfFat + '\n\n',
         style: const TextStyle(color: Colors.black87),
         children: <TextSpan>[
           const TextSpan(text: 'The app was developed with '),
@@ -124,17 +126,21 @@ class NutritionListState extends State<NutritionList> {
 
 
 
-  void _populateNewsArticles(String restaurant) {
+  void _populateNutritionListings(String restaurant, String category) {
+
+    print(category);
 
 
 
+    Webservice().load(NutritionixData.get(restaurant)).then((nutritionListings) => {
 
 
-    Webservice().load(NutritionixData.get(restaurant)).then((newsArticles) => {
       setState(() => {
-        _nutritionixData = newsArticles
+        _nutritionixData = nutritionListings
       })
     });
+
+
 
   }
 
@@ -164,7 +170,13 @@ class NutritionListState extends State<NutritionList> {
 
             })));
   }
+
+
+
+
 }
+
+
 
 
 
@@ -235,11 +247,12 @@ class ChoiceCard extends StatelessWidget {
 
 class NutritionList extends StatefulWidget {
   final String restaurant;
+  final String mealCategory;
 
 
 
-  NutritionList({this.restaurant});
+  NutritionList({this.restaurant, this.mealCategory});
 
   @override
-  createState() => NutritionListState(restaurant: restaurant);
+  createState() => NutritionListState(restaurant: restaurant, category: mealCategory);
 }

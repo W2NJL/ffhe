@@ -1,42 +1,39 @@
-import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
 
-class RestaurantScreen extends StatelessWidget {
+class MealScreen extends StatelessWidget {
+
+  final String restaurant;
+
+
+
+  MealScreen({this.restaurant});
+
   @override
   Widget build(BuildContext context) {
     final title = "Choose a restaurant";
 
     List choices = const [
       const Choice(
-          title: 'Saladworks',
-                   imglink:
-          'saladworks.jpg'),
+          title: 'Breakfast',
+          imglink:
+          'randy-fath-SQ20tWzxXO0-unsplash.jpg'),
       const Choice(
-          title: 'Royal Farms',
+          title: 'Lunch',
 
           imglink:
-          'royal_farms.jpg'),
+          'farhad-ibrahimzade-ou_7_3e-AqU-unsplash.jpg'),
       const Choice(
-          title: 'McDonalds',
+          title: 'Dinner',
 
           imglink:
-          'mcdonalds.png'),
+          'elevate-snnhGYNqm44-unsplash.jpg'),
       const Choice(
-          title: 'Five Guys',
+          title: 'Sides',
 
           imglink:
-          'five_guys.jpg'),
-      const Choice(
-          title: 'Chick-Fil-A',
+          'pavel-subbotin-zug1Iab98yI-unsplash.jpg'),
 
-          imglink:
-          'chick-fil-a.gif'),
-      const Choice(
-          title: 'Bob Evans',
-
-          imglink:
-          'bob_evans.png'),
     ];
 
     return MaterialApp(
@@ -51,9 +48,9 @@ class RestaurantScreen extends StatelessWidget {
                 children: List.generate(choices.length, (index) {
                   return Center(
 
-                      child: ChoiceCard(
-                          choice: choices[index], item: choices[index]),
-                    );
+                    child: ChoiceCard(
+                        choice: choices[index], restaurant: restaurant,item: choices[index]),
+                  );
 
                 }))));
   }
@@ -61,7 +58,8 @@ class RestaurantScreen extends StatelessWidget {
 
 class Choice {
   final String title;
-   final String imglink;
+  final String imglink;
+
 
   const Choice({this.title,  this.imglink});
 }
@@ -72,10 +70,15 @@ class ChoiceCard extends StatelessWidget {
         this.choice,
         this.onTap,
         @required this.item,
-        this.selected: false})
+        @required this.restaurant,
+               this.selected: false})
       : super(key: key);
 
   final Choice choice;
+
+  final String restaurant;
+
+
 
   final VoidCallback onTap;
 
@@ -94,7 +97,7 @@ class ChoiceCard extends StatelessWidget {
       onTap: () {
         Navigator.push(context,
             MaterialPageRoute(
-                builder: (context) => MealScreen(restaurant: choice.title)
+                builder: (context) => NutritionList(restaurant: restaurant, mealCategory: choice.title)
             )
         );
       },
