@@ -86,20 +86,14 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
                 if (!mounted) {
                   return;
                 }
-                setState(() {
-                  tabBody =
-                      MyDiaryScreen(animationController: animationController);
-                });
+               Navigator.pushNamed(context, 'RestaurantScreen');
               });
             } else if (index == 1 || index == 3) {
               animationController.reverse().then<dynamic>((data) {
                 if (!mounted) {
                   return;
                 }
-                setState(() {
-                  tabBody =
-                      RestaurantScreen();
-                });
+                Navigator.pushNamed(context, 'RestaurantScreen');
               });
             }
           },

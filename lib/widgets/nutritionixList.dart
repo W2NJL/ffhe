@@ -56,8 +56,7 @@ class NutritionListState extends State<NutritionList> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildAboutText(restaurant.nutritionFields.nfSodium, restaurant.nutritionFields.nfCategory.first),
-          _buildLogoAttribution(),
+          _buildAboutText(restaurant),
         ],
       ),
       actions: <Widget>[
@@ -66,63 +65,67 @@ class NutritionListState extends State<NutritionList> {
             Navigator.of(context).pop();
           },
           textColor: Theme.of(context).primaryColor,
-          child: const Text('Okay, got it!'),
+          child: const Text('Add to My Day'),
         ),
       ],
     );
   }
 
-  static Widget _buildAboutText(int nfSodium, String nfFat) {
+  static Widget _buildAboutText(NutritionixData restaurant) {
     return new RichText(
       text: new TextSpan(
-        text: 'Sodium: ' + nfSodium.toString() + '\n\n' +
-            'Fat: ' + nfFat + '\n\n',
+        text: 'Calories: ' + restaurant.nutritionFields.nfCalories.toString() + " calories" + '\n\n' +
+            'Sodium: ' + restaurant.nutritionFields.nfSodium.toString() + " mg" + '\n\n' +
+            'Total Fat: '  + restaurant.nutritionFields.nfFat.toString() + " g" + '\n\n' +
+            'Sugars: ' + restaurant.nutritionFields.nfSugars.toString() + " g" + '\n\n' +
+            'Fiber: '  + restaurant.nutritionFields.nfFiber.toString() + " g" + '\n\n' +
+            'Cholesterol: ' + restaurant.nutritionFields.nfCholesterol.toString() + " mg" + '\n\n',
         style: const TextStyle(color: Colors.black87),
-        children: <TextSpan>[
-          const TextSpan(text: 'The app was developed with '),
-          new TextSpan(
-            text: 'Flutter',
-
-          ),
-          const TextSpan(
-            text: ' and it\'s open source; check out the source '
-                'code yourself from ',
-          ),
-          new TextSpan(
-            text: 'www.codesnippettalk.com',
-
-          ),
-          const TextSpan(text: '.'),
-        ],
+        // children: <TextSpan>[
+        //   const TextSpan(text: 'The app was developed with '),
+        //   new TextSpan(
+        //     text: 'Flutter',
+        //
+        //   ),
+        //   const TextSpan(
+        //     text: ' and it\'s open source; check out the source '
+        //         'code yourself from ',
+        //   ),
+        //   new TextSpan(
+        //     text: 'www.codesnippettalk.com',
+        //
+        //   ),
+        //   const TextSpan(text: '.'),
+        // ],
       ),
     );
   }
 
-  static Widget _buildLogoAttribution() {
-    return new Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: new Row(
-        children: <Widget>[
-          new Padding(
-            padding: const EdgeInsets.only(top: 0.0),
-            child: new Image.asset(
-              "assets/flutter.jpeg",
-              width: 32.0,
-            ),
-          ),
-          const Expanded(
-            child: const Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: const Text(
-                'Popup window is like a dialog box that gains complete focus when it appears on screen.',
-                style: const TextStyle(fontSize: 12.0),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // static Widget _buildLogoAttribution() {
+  //   return new Padding(
+  //     padding: const EdgeInsets.only(top: 16.0),
+  //     child: new Row(
+  //       children: <Widget>[
+  //         new Padding(
+  //           padding: const EdgeInsets.only(top: 0.0),
+  //           child: new Image.asset(
+  //             "assets/flutter.jpeg",
+  //             width: 32.0,
+  //           ),
+  //         ),
+  //         const Expanded(
+  //           child: const Padding(
+  //             padding: const EdgeInsets.only(left: 12.0),
+  //             child: const Text(
+  //               'Popup window is like a dialog box that gains complete focus when it appears on screen.',
+  //               style: const TextStyle(fontSize: 12.0),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
 
 
@@ -130,9 +133,10 @@ class NutritionListState extends State<NutritionList> {
 
     print(category);
 
+    print(restaurant);
 
+    Webservice().load(NutritionixData.get(restaurant, category)).then((nutritionListings) => {
 
-    Webservice().load(NutritionixData.get(restaurant)).then((nutritionListings) => {
 
 
       setState(() => {
@@ -156,7 +160,7 @@ class NutritionListState extends State<NutritionList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('You chose ' + restaurant),
+          title: Text(category + " from " + restaurant),
         ),
         body: new ListView(
             shrinkWrap: true,

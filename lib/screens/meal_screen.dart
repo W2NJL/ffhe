@@ -11,7 +11,7 @@ class MealScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = "Choose a restaurant";
+    final title = "Choose a " + restaurant + " meal";
 
     List choices = const [
       const Choice(
@@ -36,23 +36,22 @@ class MealScreen extends StatelessWidget {
 
     ];
 
-    return MaterialApp(
-        title: title,
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text(title),
-            ),
-            body: new ListView(
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(20.0),
-                children: List.generate(choices.length, (index) {
-                  return Center(
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(title),
+        ),
 
-                    child: ChoiceCard(
+        body: new ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(20.0),
+            children: List.generate(choices.length, (index) {
+              return Center(
+
+                child: ChoiceCard(
                         choice: choices[index], restaurant: restaurant,item: choices[index]),
                   );
 
-                }))));
+                })));
   }
 }
 

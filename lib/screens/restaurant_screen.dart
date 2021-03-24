@@ -18,7 +18,7 @@ class RestaurantScreen extends StatelessWidget {
           imglink:
           'royal_farms.jpg'),
       const Choice(
-          title: 'McDonalds',
+          title: 'McDonald\'s',
 
           imglink:
           'mcdonalds.png'),
@@ -37,14 +37,27 @@ class RestaurantScreen extends StatelessWidget {
 
           imglink:
           'bob_evans.png'),
-    ];
+      const Choice(
+          title: 'P.F. Chang\'s',
 
-    return MaterialApp(
-        title: title,
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text(title),
-            ),
+          imglink:
+          'pfchangs.jpg'),
+      const Choice(
+          title: 'Chipotle',
+
+          imglink:
+          'chipotle.png'),
+      const Choice(
+          title: 'Olive Garden',
+
+          imglink:
+          'og.jpg'),];
+
+    return Scaffold(
+        appBar: AppBar(
+        title: Text(title),
+    ),
+
             body: new ListView(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(20.0),
@@ -55,7 +68,7 @@ class RestaurantScreen extends StatelessWidget {
                           choice: choices[index], item: choices[index]),
                     );
 
-                }))));
+                })));
   }
 }
 

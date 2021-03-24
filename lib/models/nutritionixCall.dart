@@ -28,7 +28,7 @@ class NutritionixData {
 
   }
 
-  static Resource<List<NutritionixData>> get (String restaurant) {
+  static Resource<List<NutritionixData>> get (String restaurant, String category) {
 
 
 
@@ -38,7 +38,11 @@ class NutritionixData {
           final result = json.decode(response.body);
           Iterable list = result['hits'];
 
-          return list.map((model) => NutritionixData.fromJson(model)).toList();
+
+
+          list = list.map((model) => NutritionixData.fromJson(model)).toList();
+
+          return list.where((f) => f.nutritionFields.nfCategory.contains(category)).toList();
         }
     );
 
@@ -53,10 +57,10 @@ class NutritionixData {
 class Fields {
   final String itemName;
   final String brandName;
-  final int nfCalories;
+  final String nfCalories;
   final String nfSugars;
-  final int nfCholesterol;
-  final int nfSodium;
+  final String nfCholesterol;
+  final String nfSodium;
   final String nfFat;
   final String nfFiber;
   final List<String> nfCategory;
@@ -83,9 +87,9 @@ class Fields {
     return Fields(
         itemName: json['item_name'],
         brandName: json['brand_name'],
-      nfCalories: json['nf_calories'],
-      nfCholesterol: json['nf_cholesterol'],
-      nfSodium: json['nf_sodium'],
+      nfCalories: json['nf_calories'].toString(),
+      nfCholesterol: json['nf_cholesterol'].toString(),
+      nfSodium: json['nf_sodium'].toString(),
       nfSugars: json['nf_sugars'].toString(),
       nfFat: json['nf_total_fat'].toString(),
       nfFiber: json['nf_dietary_fiber'].toString(),
@@ -105,40 +109,62 @@ class Fields {
 
 determineFood(String category) {
   List<String> categoryArray = <String>[];
+  const int categories = 4;
 
-  var breakFastWords = ["waffle", "toast", "pancake", "omelette", "Omelet"];
-  var lunchWords = ["salad", "sandwich", "soup", "burger", "pasta", "gyro", "hoagie"];
-  var dinnerWords = ["burger", "steak", "pork", "ribs"];
-  var sideWords = ["dressing", "drink", "mustard", "jelly", "peanuts", "coleslaw", "Farmhouse Sides, Bob Evans Signature Coleslaw"];
-  final sideReg =  RegExp("(?:dressing|drink|mustard|jelly|peanuts|coleslaw)", caseSensitive: false);
-
-  bool isSideRegex(String string) {
-    return sideReg.hasMatch(string);
-  }
-
-  test(String value) => value.contains(category);
+  final breakfastReg =  RegExp("(?:waffle|toast|pancake|omelette|omelet|sausage|breakfast|bagel|egg|muffin|hotcakes)", caseSensitive: false);
+  final lunchReg =  RegExp("(?:salad|sandwich|soup|burger|pasta|gyro|hoagie|buffalo|sandwich|nuggets|filet|strips|pounder|tenders|mac|chicken|tacos|quesadilla)", caseSensitive: false);
+  final dinnerReg =  RegExp("(?:burger|steak|pork|ribs|chicken|pasta|meatloaf|beef)", caseSensitive: false);
+  final sideReg =  RegExp("(?:dressing|drink|mustard|jelly|peanuts|coleslaw|sauce|lemonade|fries|milk|potato|corn|rice)", caseSensitive: false);
 
 
-  if (breakFastWords.any(test))
-    {
-      categoryArray.add("Breakfast");
+
+  bool getCategory(int i, String string){
+    if(i==0){
+      return sideReg.hasMatch(string);
+    }
+    else if(i==1){
+      return breakfastReg.hasMatch(string);
+    }
+    else if(i==2){
+      return lunchReg.hasMatch(string);
+    }
+    else if(i==3){
+      return dinnerReg.hasMatch(string);
     }
 
-  else if
-   (lunchWords.contains(category))
-  {
-  categoryArray.add("Lunch");
+    return false;
   }
-  else if
-   (dinnerWords.contains(category))
-  {
-  categoryArray.add("Dinner");
+
+
+  String getCategoryWord(int i){
+
+
+    if(i==0){
+      return "Sides";
+    }
+    else if(i==1){
+      return "Breakfast";
+    }
+    else if(i==2){
+      return "Lunch";
+    }
+    else if(i==3){
+      return "Dinner";
+    }
+
+    return null;
+
+
   }
-  else if
-  (isSideRegex(category))
-  {
-  categoryArray.add("Sides");
+
+  for(int i=0; i < categories; i++){
+    if (getCategory(i, category))
+    categoryArray.add(getCategoryWord(i));
   }
+
+
+
+
 
   return categoryArray;
 }
