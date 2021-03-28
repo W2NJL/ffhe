@@ -28,15 +28,41 @@ class NutritionixData {
 
   }
 
-  static Resource<List<NutritionixData>> get (String restaurant, String category) {
-
-
-
+  static Resource<int> getTotalNum (String restaurant){
     return Resource(
         url: 'https://api.nutritionix.com/v1_1/search/' + restaurant + '?results=0:50&fields=item_name,brand_name,nf_calories,nf_sodium,nf_sugars,nf_cholesterol,nf_total_fat,nf_dietary_fiber&appId=816cee15&appKey=aab0a0a4c4224eca770bf5a2a0f4c984',
         parse: (response) {
           final result = json.decode(response.body);
+
+
+      print(result['total_hits']);
+
+
+
+
+
+          return result['total_hits'];
+        }
+    );
+  }
+
+  static Resource<List<NutritionixData>> get (String restaurant, String category, int minResults) {
+
+
+final nutritionalIncrement = 1;
+int maxResults = minResults + nutritionalIncrement;
+
+
+
+
+
+    return Resource(
+        url: 'https://api.nutritionix.com/v1_1/search/' + restaurant + '?results='+ minResults.toString() + ':' + maxResults.toString() + '&fields=item_name,brand_name,nf_calories,nf_sodium,nf_sugars,nf_cholesterol,nf_total_fat,nf_dietary_fiber&appId=816cee15&appKey=aab0a0a4c4224eca770bf5a2a0f4c984',
+        parse: (response) {
+          final result = json.decode(response.body);
           Iterable list = result['hits'];
+
+
 
 
 

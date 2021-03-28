@@ -1,3 +1,4 @@
+import 'package:fast_food_health_e/widgets/new_nutritionixList.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
 
@@ -15,24 +16,20 @@ class MealScreen extends StatelessWidget {
 
     List choices = const [
       const Choice(
-          title: 'Breakfast',
+          title: 'Entrees',
           imglink:
           'randy-fath-SQ20tWzxXO0-unsplash.jpg'),
-      const Choice(
-          title: 'Lunch',
-
-          imglink:
-          'farhad-ibrahimzade-ou_7_3e-AqU-unsplash.jpg'),
-      const Choice(
-          title: 'Dinner',
-
-          imglink:
-          'elevate-snnhGYNqm44-unsplash.jpg'),
       const Choice(
           title: 'Sides',
 
           imglink:
-          'pavel-subbotin-zug1Iab98yI-unsplash.jpg'),
+          'farhad-ibrahimzade-ou_7_3e-AqU-unsplash.jpg'),
+      const Choice(
+          title: 'Beverages',
+
+          imglink:
+          'elevate-snnhGYNqm44-unsplash.jpg'),
+
 
     ];
 
@@ -96,7 +93,7 @@ class ChoiceCard extends StatelessWidget {
       onTap: () {
         Navigator.push(context,
             MaterialPageRoute(
-                builder: (context) => NutritionList(restaurant: restaurant, mealCategory: choice.title)
+                builder: (context) => NewNutritionixList(restaurant: restaurant, mealCategory: choice.title)
             )
         );
       },

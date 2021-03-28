@@ -1,3 +1,4 @@
+import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:fast_food_health_e/screens/restaurant_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
@@ -49,6 +50,9 @@ class VoteApp extends StatelessWidget {
               ),
               'RestaurantScreen': (context) =>  Scaffold(
                 body: RestaurantScreen(),
+              ),
+              'MealScreen': (context) =>  Scaffold(
+                body: MealScreen(),
               ),
               'NutritionList': (context) =>  Scaffold(
                 body: NutritionList(),

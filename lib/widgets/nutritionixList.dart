@@ -25,6 +25,8 @@ class NutritionListState extends State<NutritionList> {
 
   List<NutritionixData> _nutritionixData = <NutritionixData>[];
 
+  int totalListings = 0;
+
   @override
   void initState() {
     super.initState();
@@ -131,21 +133,33 @@ class NutritionListState extends State<NutritionList> {
 
   void _populateNutritionListings(String restaurant, String category) {
 
+    int nutritionixIncrement = 0;
+
     print(category);
 
     print(restaurant);
 
-    Webservice().load(NutritionixData.get(restaurant, category)).then((nutritionListings) => {
+    Webservice().load(NutritionixData.getTotalNum(restaurant)).then((nutritionNum) => {
 
 
 
       setState(() => {
-        _nutritionixData = nutritionListings
+      totalListings = nutritionNum
       })
     });
 
+     for (int i =0; i <= totalListings; i+50) {
+       Webservice().load(NutritionixData.get(restaurant, category, i)).then((
+           nutritionListings) =>
+       {
 
 
+         setState(() =>
+         {
+           _nutritionixData += _nutritionixData + nutritionListings
+         })
+       });
+     }
   }
 
   ListTile _buildItemsForListView(BuildContext context, int index) {
