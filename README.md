@@ -1,4 +1,4 @@
-# vote
+# FastFoodHealth-E
 
 A new Flutter application.
 
