@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -141,24 +144,62 @@ class NewNutritionixListState extends State<NewNutritionixList> {
       setState(() {
         isLoading = true;
       });
-      var url = 'https://api.nutritionix.com/v1_1/search/' + restaurant + '?results='+ index.toString() + ':' + (index+50).toString() + '&fields=item_name,brand_name,nf_calories,nf_sodium,nf_sugars,nf_cholesterol,nf_total_fat,nf_dietary_fiber&appId=816cee15&appKey=aab0a0a4c4224eca770bf5a2a0f4c984';
-      print(url);
-      final response = await dio.get(url);
-      List tList = new List();
-      for (int i = 0; i < response.data['hits'].length; i++) {
-        if(determineFood(response.data['hits'][i]['fields']['item_name']) == category) {
-          tList.add(response.data['hits'][i]);
+      var params = {
+        "appId": "816cee15",
+        "appKey": "aab0a0a4c4224eca770bf5a2a0f4c984",
+        "query": restaurant,
+        "fields": [
+          "item_name",
+          "brand_name",
+          "nf_calories",
+          "nf_sodium",
+          "nf_total_fat",
+          "item_type",
+          "nf_cholesterol",
+        ],
+        "offset": page,
+        "limit": 50,
+        "sort": {
+          "field": "nf_calories",
+          "order": "desc"
         }
-        print(response.data['hits'][i]['fields']['item_name']);
-        print(determineFood(response.data['hits'][i]['fields']['item_name']));
-      }
+      };
 
-      setState(() {
-        isLoading = false;
-        users.addAll(tList);
-        page+=10;
-      });
+
+      //var url = 'https://api.nutritionix.com/v1_1/search/' + restaurant + '?results='+ index.toString() + ':' + (index+50).toString() + '&fields=item_name,brand_name,nf_calories,nf_sodium,nf_sugars,nf_cholesterol,nf_total_fat,nf_dietary_fiber&appId=816cee15&appKey=aab0a0a4c4224eca770bf5a2a0f4c984';
+      //print(url);
+      var url = 'https://api.nutritionix.com/v1_1/search';
+      try {
+        final response = await dio.post(url,
+          options: Options(headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+          }),
+          data: params,
+        );
+
+        List tList = new List();
+
+        for (int i = 0; i < response.data['hits'].length; i++) {
+          if (determineFood(response.data['hits'][i]['fields']['item_name']) ==
+              category) {
+            tList.add(response.data['hits'][i]);
+          }
+          print(response.data['hits'][i]['fields']['item_name']);
+          print(determineFood(response.data['hits'][i]['fields']['item_name']));
+        }
+
+        setState(() {
+          isLoading = false;
+          users.addAll(tList);
+          page += 50;
+        });
+      }
+      catch (error, stackTrace) {
+        print("Exception occurred: $error  stackTrace: $stackTrace");
+
+      }
     }
+
   }
 
   Widget _buildProgressIndicator() {
