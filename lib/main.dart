@@ -7,6 +7,7 @@ import 'package:fast_food_health_e/screens/launch_screen.dart';
 import 'package:fast_food_health_e/screens/result_screen.dart';
 import 'package:fast_food_health_e/screens/ffhe_screen.dart';
 import 'package:fast_food_health_e/screens/dietplan_screen.dart';
+import 'package:fast_food_health_e/screens/newdiet_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:fast_food_health_e/state/vote.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
@@ -46,7 +47,7 @@ class VoteApp extends StatelessWidget {
                     body: LaunchScreen(),
                   ),
               'DietScreen': (context) =>  Scaffold(
-                body: MyDietPage(),
+                body: TestApp(),
               ),
               'RestaurantScreen': (context) =>  Scaffold(
                 body: RestaurantScreen(),

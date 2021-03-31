@@ -147,7 +147,9 @@ class NewNutritionixListState extends State<NewNutritionixList> {
       var params = {
         "appId": "816cee15",
         "appKey": "aab0a0a4c4224eca770bf5a2a0f4c984",
-        "query": restaurant,
+        "queries":{
+          "brand_name": restaurant,
+        },
         "fields": [
           "item_name",
           "brand_name",
@@ -214,14 +216,36 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     );
   }
 
+  categoryWords(String category){
+
+    String nutritionixQuery;
+
+    final entreeWords = ["salad", "sandwich", "soup", "burger"];
+
+    if (category == "Entrees"){
+      for (int i=0; i<entreeWords.length; i++){
+        if(nutritionixQuery == null) {
+          nutritionixQuery == entreeWords[i];
+        }
+        else  {
+          nutritionixQuery = nutritionixQuery + " OR " + entreeWords[i];
+  }
+
+      }
+    }
+
+    return nutritionixQuery;
+
+  }
+
   determineFood(String category) {
 
     String categoryWord;
     const int categories = 3;
-    final beverageReg =  RegExp("(?:coke|tea|dr. pepper|pepsi|sprite|orange juice|coffee|milk|root beer|latte|cola|mocha|americano|frappe|shake)", caseSensitive: false);
+    final beverageReg =  RegExp("(?:coke|tea|dr. pepper|pepsi|sprite|orange juice|coffee|milk|root beer|latte|cola|mocha|americano|frappe|shake|milk)", caseSensitive: false);
     final entreeReg =  RegExp("(?:salad|sandwich|soup|burger|pasta|gyro|hoagie|buffalo|sandwich|nuggets|filet|strips|pounder|tenders|mac|chicken|tacos|quesadilla|waffle|toast|pancake|omelette|omelet|sausage|breakfast|bagel|egg|muffin|hotcakes|steak|burrito|pie|fritter)", caseSensitive: false);
 
-    final sideReg =  RegExp("(?:dressing|drink|mustard|jelly|peanuts|coleslaw|sauce|lemonade|fries|milk|potato|corn|rice|balsamic|beans|blue cheese)", caseSensitive: false);
+    final sideReg =  RegExp("(?:dressing|mustard|jelly|peanuts|coleslaw|sauce|lemonade|fries|potato|corn|rice|balsamic|beans|blue cheese)", caseSensitive: false);
 
 
 
