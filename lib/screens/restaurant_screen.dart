@@ -9,49 +9,64 @@ class RestaurantScreen extends StatelessWidget {
 
     List choices = const [
       const Choice(
-          title: 'Saladworks',
+          title: 'Applebee\'s',
                    imglink:
-          'saladworks.jpg'),
-      const Choice(
-          title: 'Royal Farms',
-
-          imglink:
-          'royal_farms.jpg'),
-      const Choice(
-          title: 'McDonald\'s',
-
-          imglink:
-          'mcdonalds.png'),
-      const Choice(
-          title: 'Five Guys',
-
-          imglink:
-          'five_guys.jpg'),
-      const Choice(
-          title: 'Chick-Fil-A',
-
-          imglink:
-          'chick-fil-a.gif'),
+          'applebees.png'),
       const Choice(
           title: 'Bob Evans',
 
           imglink:
           'bob_evans.png'),
       const Choice(
+          title: 'Burger King',
+
+          imglink:
+          'bk.jpg'),
+      const Choice(
+          title: 'Chick-Fil-A',
+
+          imglink:
+          'chick-fil-a.gif'),
+      const Choice(
+          title: 'McDonalds\'s',
+
+          imglink:
+          'mcdonalds.png'),
+      const Choice(
+          title: 'Olive Garden',
+
+          imglink:
+          'og.jpg'),
+      const Choice(
           title: 'P.F. Chang\'s',
 
           imglink:
           'pfchangs.jpg'),
       const Choice(
-          title: 'Chipotle',
+          title: 'Panera Bread',
 
           imglink:
-          'chipotle.png'),
+          'panera.jpg'),
       const Choice(
-          title: 'Olive Garden',
+          title: 'Royal Farms',
 
           imglink:
-          'og.jpg'),];
+          'royal_farms.jpg'),
+      const Choice(
+          title: 'Smash Burger',
+
+          imglink:
+          'smash.png'),
+      const Choice(
+          title: 'Taco Bell',
+
+          imglink:
+          'taco.png'),
+      const Choice(
+          title: 'Wawa',
+
+          imglink:
+          'wawa.jpg'),];
 
     return Scaffold(
         appBar: AppBar(
