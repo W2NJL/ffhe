@@ -3,28 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
 
 
-class DietScreen extends StatelessWidget {
+class SecondDietScreen extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
 
-      body: new DietPage(title: 'Select a Calorie Plan'),
+      body: new SecondDietPage(title: 'Select a Diet Plan'),
       // home: DetailPage(),
     );
   }
 }
-class DietPage extends StatefulWidget {
-  DietPage({Key key, this.title}) : super(key: key);
+class SecondDietPage extends StatefulWidget {
+  SecondDietPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _DietPageState createState() => _DietPageState();
+  _SecondDietPageState createState() => _SecondDietPageState();
 }
 
-class _DietPageState extends State<DietPage> {
+class _SecondDietPageState extends State<SecondDietPage> {
   List dietPlans;
 
   @override
@@ -88,7 +88,7 @@ class _DietPageState extends State<DietPage> {
   Widget build(BuildContext context) {
     ListTile makeListTile(DietPlan lesson) => ListTile(
       contentPadding:
-      EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       leading: Container(
         padding: EdgeInsets.only(right: 12.0),
         decoration: new BoxDecoration(
@@ -185,34 +185,49 @@ class _DietPageState extends State<DietPage> {
 List getDietPlans() {
   return [
     DietPlan(
-        title: "2000 Calorie Diet per day",
-        level: "Light",
+        title: "Lower Sodium Diet - 2300 mg sodium or less per day",
+        level: "Intermidiate",
         indicatorValue: 0.33,
-        price: 20,
-        content:
-        "This 2000 calorie diet plan is defined as 3 meals per day each meal no more than 660 calories; There are no other nutrition restrictions other than calories.",
-        content2: "When trying to lose weight, a general rule of thumb is to reduce your calorie intake to 500 fewer calories than your body needs to maintain your current weight. This will help you lose about 1 pound (0.45 kg) of body weight per week.",
-        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."
-    ),
-    DietPlan(
-        title: "Low Calorie - 1500 Calorie Diet per day",
-        level: "Intermediate",
-        indicatorValue: 0.66,
-        price: 50,
-        content:
-        "This 1500 calorie diet plan is defined as 3 meals per day each meal no more than 500 calories. There are no other nutrient restrictions other than calories.",
-        content2: "When trying to lose weight, a general rule of thumb is to reduce your calorie intake to 500 fewer calories than your body needs to maintain your current weight. This will help you lose about 1 pound (0.45 kg) of body weight per week.",
-        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
-
-    DietPlan(
-        title: "Low Calorie - 1200 Calorie Diet per day",
-        level: "Advanced",
-        indicatorValue: 0.99,
         price: 30,
         content:
-        "This 1200 calorie diet plan is defined as 3 meals per day each meal no more than 400 calories ; There are no other nutrient restrictions other than calories.",
-        content2: "When trying to lose weight, a general rule of thumb is to reduce your calorie intake to 500 fewer calories than your body needs to maintain your current weight. This will help you lose about 1 pound (0.45 kg) of body weight per week.",
+        "This diet plan is defined as no more than 2300 mg sodium consumed daily.  One meal = no more than 760 mg sodium",
+        content2: "American Heart Association recommends no more than 2300 mg sodium a day and moving toward an ideal limit of no more than 1500 mg sodium per day for most adults.",
         disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
-
+    DietPlan(
+        title: "Lowest Sodium Diet - 1500 mg sodium or less per day",
+        level: "Advanced",
+        indicatorValue: 1.0,
+        price: 50,
+        content:
+        "This diet plan is defined as no more than 1500 mg sodium consumed daily.  One meal= no more than 500 mg sodium ",
+        content2: "American Heart Association recommends no more than 2300 mg sodium a day and moving toward an ideal limit of no more than 1500 mg sodium per day for most adults.",
+        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+    DietPlan(
+        title: "Low Carbohydrate Diet Plan",
+        level: "Intermediate",
+        indicatorValue: 0.33,
+        price: 50,
+        content:
+        "this diet plan is defined as 25% of total calories from carbohydrates.",
+        content2: "Please also select a corresponding calorie plan.",
+        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+    DietPlan(
+        title: "Very Low Carbohydrate Diet Plan (Ketogenic) ",
+        level: "Advanced",
+        indicatorValue: 1.0,
+        price: 50,
+        content:
+        "This diet plan is defined as 10% of total daily calories from carbohydrates.",
+        content2: "Please also select a corresponding calorie plan.",
+        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+    DietPlan(
+        title: "Low FAT Diet Plan ",
+        level: "Intermediate",
+        indicatorValue: 0.33,
+        price: 50,
+        content:
+        "This diet plan is defined as total fat intake less than/equal to 30% of total calories and saturated fat intake less than/equal to 10%.",
+        content2: "Please also select a corresponding calorie plan.",
+        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level.")
   ];
 }

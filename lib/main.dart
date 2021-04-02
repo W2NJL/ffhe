@@ -47,7 +47,7 @@ class VoteApp extends StatelessWidget {
                     body: LaunchScreen(),
                   ),
               'DietScreen': (context) =>  Scaffold(
-                body: TestApp(),
+                body: DietScreen(),
               ),
               'RestaurantScreen': (context) =>  Scaffold(
                 body: RestaurantScreen(),

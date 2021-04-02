@@ -1,4 +1,4 @@
-class Lesson {
+class DietPlan {
   String title;
   String level;
   double indicatorValue;
@@ -7,6 +7,6 @@ class Lesson {
   String content2;
   String disclaimer;
 
-  Lesson(
+  DietPlan(
       {this.title, this.level, this.indicatorValue, this.price, this.content, this.content2, this.disclaimer});
 }

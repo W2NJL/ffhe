@@ -1,8 +1,8 @@
-import 'package:fast_food_health_e/models/lesson.dart';
+import 'package:fast_food_health_e/models/dietplan.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatelessWidget {
-  final Lesson lesson;
+  final DietPlan lesson;
   DetailPage({Key key, this.lesson}) : super(key: key);
   @override
   Widget build(BuildContext context) {
