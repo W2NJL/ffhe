@@ -12,7 +12,7 @@ class Webservice {
 
   Future<T> load<T>(Resource<T> resource) async {
 
-    final response = await http.get(resource.url);
+    final response = await http.get(null);
     if(response.statusCode == 200) {
       return resource.parse(response);
     } else {

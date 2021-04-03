@@ -56,7 +56,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
               return Stack(
                 children: <Widget>[
                   tabBody,
-                  bottomBar(),
+
                 ],
               );
             }
@@ -71,34 +71,34 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     return true;
   }
 
-  Widget bottomBar() {
-    return Column(
-      children: <Widget>[
-        const Expanded(
-          child: SizedBox(),
-        ),
-        BottomBarView(
-          tabIconsList: tabIconsList,
-          addClick: () {},
-          changeIndex: (int index) {
-            if (index == 0 || index == 2) {
-              animationController.reverse().then<dynamic>((data) {
-                if (!mounted) {
-                  return;
-                }
-               Navigator.pushNamed(context, 'RestaurantScreen');
-              });
-            } else if (index == 1 || index == 3) {
-              animationController.reverse().then<dynamic>((data) {
-                if (!mounted) {
-                  return;
-                }
-                Navigator.pushNamed(context, 'RestaurantScreen');
-              });
-            }
-          },
-        ),
-      ],
-    );
-  }
+  // Widget bottomBar() {
+  //   return Column(
+  //     children: <Widget>[
+  //       const Expanded(
+  //         child: SizedBox(),
+  //       ),
+  //       BottomBarView(
+  //         tabIconsList: tabIconsList,
+  //         addClick: () {},
+  //         changeIndex: (int index) {
+  //           if (index == 0 || index == 2) {
+  //             animationController.reverse().then<dynamic>((data) {
+  //               if (!mounted) {
+  //                 return;
+  //               }
+  //              Navigator.pushNamed(context, 'RestaurantScreen');
+  //             });
+  //           } else if (index == 1 || index == 3) {
+  //             animationController.reverse().then<dynamic>((data) {
+  //               if (!mounted) {
+  //                 return;
+  //               }
+  //               Navigator.pushNamed(context, 'RestaurantScreen');
+  //             });
+  //           }
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
 }

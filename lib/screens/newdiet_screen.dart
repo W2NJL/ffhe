@@ -1,6 +1,10 @@
 import 'package:fast_food_health_e/models/dietplan.dart';
+import 'package:fast_food_health_e/utils/constants.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class DietScreen extends StatelessWidget {
@@ -16,9 +20,11 @@ class DietScreen extends StatelessWidget {
   }
 }
 class DietPage extends StatefulWidget {
-  DietPage({Key key, this.title}) : super(key: key);
+
+  DietPage({Key key, this.title, this.app}) : super(key: key);
 
   final String title;
+  final FirebaseApp app;
 
   @override
   _DietPageState createState() => _DietPageState();
@@ -26,10 +32,16 @@ class DietPage extends StatefulWidget {
 
 class _DietPageState extends State<DietPage> {
   List dietPlans;
+  final referenceDatabase = FirebaseDatabase.instance;
+
+  final dietPlan = 'DietPlan';
+  DatabaseReference _dietPlanRef;
 
   @override
   void initState() {
     dietPlans = getDietPlans();
+    final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
+    _dietPlanRef = database.reference().child('User');
     super.initState();
   }
 
@@ -86,6 +98,7 @@ class _DietPageState extends State<DietPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ref = referenceDatabase.reference().child('User');
     ListTile makeListTile(DietPlan lesson) => ListTile(
       contentPadding:
       EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
@@ -130,7 +143,9 @@ class _DietPageState extends State<DietPage> {
       trailing:
       Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
       onTap: () {
-        print("Container clicked");
+        ref.child('DietPlan').set(lesson.title);
+        String result;
+        storeDietPlan(lesson.title);
       },
     );
 
@@ -185,7 +200,7 @@ class _DietPageState extends State<DietPage> {
 List getDietPlans() {
   return [
     DietPlan(
-        title: "2000 Calorie Diet per day",
+        title: Constants.LOW_CALORIE_1,
         level: "Light",
         indicatorValue: 0.33,
         price: 20,
@@ -195,7 +210,7 @@ List getDietPlans() {
         disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."
     ),
     DietPlan(
-        title: "Low Calorie - 1500 Calorie Diet per day",
+        title: Constants.LOW_CALORIE_2,
         level: "Intermediate",
         indicatorValue: 0.66,
         price: 50,
@@ -205,7 +220,7 @@ List getDietPlans() {
         disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
 
     DietPlan(
-        title: "Low Calorie - 1200 Calorie Diet per day",
+        title: Constants.LOW_CALORIE_3,
         level: "Advanced",
         indicatorValue: 0.99,
         price: 30,
@@ -215,4 +230,9 @@ List getDietPlans() {
         disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
 
   ];
+}
+
+void storeDietPlan(String dietPlan) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString("dietPlan", dietPlan);
 }

@@ -1,5 +1,6 @@
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/main.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
 import 'dart:math' as math;
@@ -10,7 +11,7 @@ class MediterranesnDietView extends StatelessWidget {
   final AnimationController animationController;
   final Animation animation;
 
-
+  final referenceDatabase = FirebaseDatabase.instance;
 
   const MediterranesnDietView(
 
@@ -19,8 +20,11 @@ class MediterranesnDietView extends StatelessWidget {
 
 
 
+
+
   @override
   Widget build(BuildContext context) {
+
     int calories;
     int fat;
     int sodium;
@@ -30,16 +34,14 @@ class MediterranesnDietView extends StatelessWidget {
     String dietPlan;
 
 
+    dietPlan = preferences.getString("dietPlan") ?? 'Johnny';
 
 
 
 
 
-        dietPlan = preferences.getString("dietPlan") ?? 'Johnny';
 
-
-
-      print(dietPlan);
+      print("Here it is: " + dietPlan);
 
       switch ( dietPlan ) {
         case Constants.LOW_CARB: {
@@ -51,8 +53,16 @@ class MediterranesnDietView extends StatelessWidget {
           graphMeasure = "mg";
         } break;
 
-        case Constants.LOW_CALORIE: {
+        case Constants.LOW_CALORIE_1: {
+          remainingValue = 2000;
+          graphMeasure = "Kcal";
+        } break;
+        case Constants.LOW_CALORIE_2: {
           remainingValue = 1400;
+          graphMeasure = "Kcal";
+        } break;
+        case Constants.LOW_CALORIE_3: {
+          remainingValue = 1000;
           graphMeasure = "Kcal";
         } break;
         case Constants.LOW_FAT: {
@@ -751,6 +761,15 @@ class CurvePainter extends CustomPainter {
 
 }
 Future <String> _getDietPlan() async {
+  String result;
+  final referenceDatabase = await FirebaseDatabase.instance
+  .reference()
+  .child('User')
+  .child('DietPlan')
+  .once()
+      .then((snapshot){result=snapshot.value;});
+  print(result);
+
   SharedPreferences preferences = await SharedPreferences.getInstance();
   return preferences.getString("dietPlan") ?? "No plan selected";
 }

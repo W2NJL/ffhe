@@ -17,7 +17,7 @@ class _MyDietPageState extends State<MyDietPage> {
 
 
   String valueChoose;
-  List listItem =[Constants.LOW_SODIUM, Constants.LOW_CALORIE, Constants.LOW_CARB, Constants.LOW_FAT, Constants.LOW_CHOLESTROL,
+  List listItem =[Constants.LOW_SODIUM, Constants.LOW_CALORIE_1, Constants.LOW_CARB, Constants.LOW_FAT, Constants.LOW_CHOLESTROL,
   ];
 
   @override

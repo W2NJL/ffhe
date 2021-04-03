@@ -5,6 +5,8 @@ import 'package:fast_food_health_e/fitness_app/ui_view/title_view.dart';
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/meals_list_view.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/water_view.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +20,7 @@ class MyDiaryScreen extends StatefulWidget {
 
 class _MyDiaryScreenState extends State<MyDiaryScreen>
     with TickerProviderStateMixin {
+  final referenceDatabase = FirebaseDatabase.instance;
   Animation<double> topBarAnimation;
 
   List<Widget> listViews = <Widget>[];
@@ -26,6 +29,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
   @override
   void initState() {
+
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
             parent: widget.animationController,
@@ -58,10 +62,23 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   }
 
   void addAllListData () {
-    const int count = 9;
+    const int count = 4;
 
 
+    listViews.add(
+      Card(
 
+        margin: EdgeInsets.symmetric(vertical: 20),
+        child: MaterialButton(minWidth: 5.0,
+          height: 30,
+          padding: const EdgeInsets.all(20),
+          color: Color(0xFF69F0AE),
+          child: Text('Add A Meal', style: new TextStyle(fontSize: 24.0, color: Colors.blueAccent)),
+
+          onPressed: () { Navigator.pushNamed(context, 'RestaurantScreen');},
+        ),
+      ),
+    );
     listViews.add(
     FutureBuilder(
     future: _getDietPlan(),
@@ -69,7 +86,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     builder: (BuildContext context, AsyncSnapshot<String> text) {
     return new TitleView(
     titleTxt: text.data,
-    subTxt: 'Details',
+    subTxt: 'Change Diet Plan',
     animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
     parent: widget.animationController,
     curve:
@@ -78,6 +95,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     );
     }),
     );
+
     listViews.add(
       MediterranesnDietView(
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
@@ -202,6 +220,8 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                   MediaQuery.of(context).padding.top +
                   24,
               bottom: 62 + MediaQuery.of(context).padding.bottom,
+              left: 10,
+              right: 10,
             ),
             itemCount: listViews.length,
             scrollDirection: Axis.vertical,
@@ -352,6 +372,16 @@ void storeDietPlan(String dietPlan) async {
 }
 
 Future <String> _getDietPlan() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  return preferences.getString("dietPlan") ?? "No plan selected";
+  String result;
+  final referenceDatabase = await FirebaseDatabase.instance
+      .reference()
+      .child('User')
+      .child('DietPlan')
+      .once()
+      .then((snapshot){result=snapshot.value;});
+  print(result);
+
+
+
+  return result;
 }
