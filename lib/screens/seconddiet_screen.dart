@@ -1,6 +1,13 @@
+import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
+import 'package:fast_food_health_e/fitness_app/my_diary/my_diary_screen.dart';
 import 'package:fast_food_health_e/models/dietplan.dart';
+import 'package:fast_food_health_e/utils/constants.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
+
+import 'newdiet_screen.dart';
 
 
 class SecondDietScreen extends StatelessWidget {
@@ -16,20 +23,30 @@ class SecondDietScreen extends StatelessWidget {
   }
 }
 class SecondDietPage extends StatefulWidget {
-  SecondDietPage({Key key, this.title}) : super(key: key);
+  SecondDietPage({Key key, this.title, this.app}) : super(key: key);
 
   final String title;
+  final FirebaseApp app;
 
   @override
   _SecondDietPageState createState() => _SecondDietPageState();
 }
 
 class _SecondDietPageState extends State<SecondDietPage> {
-  List dietPlans;
+  List sodiumPlans;
+  List carbPlans;
+  List fatPlans;
+  final referenceDatabase = FirebaseDatabase.instance;
 
   @override
   void initState() {
-    dietPlans = getDietPlans();
+    sodiumPlans = getSodiumPlans();
+    carbPlans = getCarbPlans();
+    fatPlans = getFatPlans();
+    final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
+    final dietPlan = 'DietPlan';
+    DatabaseReference _dietPlanRef;
+
     super.initState();
   }
 
@@ -86,6 +103,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ref = referenceDatabase.reference().child('User');
     ListTile makeListTile(DietPlan lesson) => ListTile(
       contentPadding:
       EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -130,7 +148,14 @@ class _SecondDietPageState extends State<SecondDietPage> {
       trailing:
       Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
       onTap: () {
-        print("Container clicked");
+
+
+        ref.child(checkDietPlan(lesson.title)).set(true);
+        String result;
+
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => FitnessAppHomeScreen())
+        );
       },
     );
 
@@ -145,15 +170,74 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
     final makeBody = Container(
       // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: dietPlans.length,
-        itemBuilder: (BuildContext context, int index) {
-          return makeCard(dietPlans[index]);
-        },
-      ),
+        child: new Column(
+          children:[ SizedBox(height: 10), new Container(
+            child: Text('Low Sodium Plans',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: 'Aleo',
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15.0,
+                  color: Colors.white
+              ),
+            ),),
+            SizedBox(height: 10),
+            new Container(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: sodiumPlans.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return makeCard(sodiumPlans[index]);
+                },
+              ),),
+            SizedBox(height: 20),
+            new Container(
+              child: Text('Low Carb Plans',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'Aleo',
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0,
+                    color: Colors.white
+                ),
+              ),),
+            SizedBox(height: 10),
+            new Container(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: carbPlans.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return makeCard(carbPlans[index]);
+                },
+              ),),
+            SizedBox(height: 20),
+            new Container(
+              child: Text('Other Plans',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'Aleo',
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0,
+                    color: Colors.white
+                ),
+              ),),
+            SizedBox(height: 10),
+            new Container(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: fatPlans.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return makeCard(fatPlans[index]);
+                },
+              ),),],)
     );
+
 
 
 
@@ -178,14 +262,66 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
     );
   }
+
+  String checkDietPlan(String title) {
+    if(title == Constants.LOW_SODIUM_2 || title == Constants.LOW_SODIUM_1){
+      return "Sodium";
+    }
+    else if
+    (title == Constants.LOW_CARB|| title == Constants.KETO) {
+      return "Low Carb";
+    }
+    else if
+    (title == Constants.LOW_FAT){
+      return "Low Fat";
+    }
+    else if
+    (title == Constants.LOW_CHOLESTROL){
+      return "Low Cholestrol";
+    }
+  }
+}
+
+List getCarbPlans(){
+  return [ DietPlan(
+      title: Constants.LOW_CARB,
+      level: "Intermediate",
+      indicatorValue: 0.33,
+      price: 50,
+      content:
+      "this diet plan is defined as 25% of total calories from carbohydrates.",
+      content2: "Please also select a corresponding calorie plan.",
+      disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+    DietPlan(
+        title: Constants.KETO,
+        level: "Advanced",
+        indicatorValue: 1.0,
+        price: 50,
+        content:
+        "This diet plan is defined as 10% of total daily calories from carbohydrates.",
+        content2: "Please also select a corresponding calorie plan.",
+        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),];
+}
+
+List getFatPlans(){
+  return[
+    DietPlan(
+        title: Constants.LOW_FAT,
+        level: "Intermediate",
+        indicatorValue: 0.33,
+        price: 50,
+        content:
+        "This diet plan is defined as total fat intake less than/equal to 30% of total calories and saturated fat intake less than/equal to 10%.",
+        content2: "Please also select a corresponding calorie plan.",
+        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level.")
+  ];
 }
 
 
-
-List getDietPlans() {
+List getSodiumPlans() {
   return [
     DietPlan(
-        title: "Lower Sodium Diet - 2300 mg sodium or less per day",
+        title: Constants.LOW_SODIUM_1,
         level: "Intermidiate",
         indicatorValue: 0.33,
         price: 30,
@@ -194,7 +330,7 @@ List getDietPlans() {
         content2: "American Heart Association recommends no more than 2300 mg sodium a day and moving toward an ideal limit of no more than 1500 mg sodium per day for most adults.",
         disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
     DietPlan(
-        title: "Lowest Sodium Diet - 1500 mg sodium or less per day",
+        title: Constants.LOW_SODIUM_2,
         level: "Advanced",
         indicatorValue: 1.0,
         price: 50,
@@ -202,32 +338,7 @@ List getDietPlans() {
         "This diet plan is defined as no more than 1500 mg sodium consumed daily.  One meal= no more than 500 mg sodium ",
         content2: "American Heart Association recommends no more than 2300 mg sodium a day and moving toward an ideal limit of no more than 1500 mg sodium per day for most adults.",
         disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
-    DietPlan(
-        title: "Low Carbohydrate Diet Plan",
-        level: "Intermediate",
-        indicatorValue: 0.33,
-        price: 50,
-        content:
-        "this diet plan is defined as 25% of total calories from carbohydrates.",
-        content2: "Please also select a corresponding calorie plan.",
-        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
-    DietPlan(
-        title: "Very Low Carbohydrate Diet Plan (Ketogenic) ",
-        level: "Advanced",
-        indicatorValue: 1.0,
-        price: 50,
-        content:
-        "This diet plan is defined as 10% of total daily calories from carbohydrates.",
-        content2: "Please also select a corresponding calorie plan.",
-        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
-    DietPlan(
-        title: "Low FAT Diet Plan ",
-        level: "Intermediate",
-        indicatorValue: 0.33,
-        price: 50,
-        content:
-        "This diet plan is defined as total fat intake less than/equal to 30% of total calories and saturated fat intake less than/equal to 10%.",
-        content2: "Please also select a corresponding calorie plan.",
-        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level.")
+
+
   ];
 }

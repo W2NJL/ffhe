@@ -1,4 +1,5 @@
 import 'package:fast_food_health_e/models/dietplan.dart';
+import 'package:fast_food_health_e/screens/seconddiet_screen.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -26,11 +27,13 @@ class DietPage extends StatefulWidget {
   final String title;
   final FirebaseApp app;
 
+
   @override
   _DietPageState createState() => _DietPageState();
 }
 
 class _DietPageState extends State<DietPage> {
+  String selectedPlan;
   List dietPlans;
   final referenceDatabase = FirebaseDatabase.instance;
 
@@ -44,6 +47,28 @@ class _DietPageState extends State<DietPage> {
     _dietPlanRef = database.reference().child('User');
     super.initState();
   }
+
+  _DietPageState(){
+    _getDietPlan().then((value) => setState(() {
+      selectedPlan = value;
+    }));
+  }
+
+  Future <String> _getDietPlan() async {
+    String result;
+    final referenceDatabase = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('DietPlan')
+        .once()
+        .then((snapshot){result=snapshot.value;});
+    print("The result is: " + result);
+
+
+
+    return result;
+  }
+
 
   static Widget _buildAboutText(DietPlan lesson) {
     return new Text.rich(
@@ -75,6 +100,7 @@ class _DietPageState extends State<DietPage> {
   }
 
   static Widget _buildAboutDialog(BuildContext context, DietPlan lesson) {
+
     return new AlertDialog(
       title: Text(lesson.title),
       content: new Column(
@@ -98,7 +124,9 @@ class _DietPageState extends State<DietPage> {
 
   @override
   Widget build(BuildContext context) {
+
     final ref = referenceDatabase.reference().child('User');
+
     ListTile makeListTile(DietPlan lesson) => ListTile(
       contentPadding:
       EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
@@ -118,7 +146,7 @@ class _DietPageState extends State<DietPage> {
         lesson.title,
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
-      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+       subtitle: selectedPlan == lesson.title ? Text("Selected Plan", style: TextStyle(color: Colors.white)) : null,
 
       // subtitle: Row(
       //   children: <Widget>[
@@ -143,9 +171,13 @@ class _DietPageState extends State<DietPage> {
       trailing:
       Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
       onTap: () {
+
         ref.child('DietPlan').set(lesson.title);
         String result;
         storeDietPlan(lesson.title);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => SecondDietScreen())
+        );
       },
     );
 
@@ -153,7 +185,7 @@ class _DietPageState extends State<DietPage> {
       elevation: 8.0,
       margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       child: Container(
-        decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+        decoration: BoxDecoration(color: selectedPlan == lesson.title ?  Color.fromRGBO(233, 2, 16, .9) :  Color.fromRGBO(1, 22, 96, .9) ),
         child: makeListTile(lesson),
       ),
     );
@@ -169,6 +201,7 @@ class _DietPageState extends State<DietPage> {
         },
       ),
     );
+
 
 
 
@@ -193,6 +226,22 @@ class _DietPageState extends State<DietPage> {
 
     );
   }
+
+  selectedDietPlan(String title)  {
+    String joe;
+
+    // _getDietPlan().then((val) => setState(() {
+    //   joe = val;
+    // }));
+
+    print("Holler: ");
+    if (title == joe){
+      return true;
+    }
+
+print("I got here!");
+
+  return false;
 }
 
 
@@ -235,4 +284,4 @@ List getDietPlans() {
 void storeDietPlan(String dietPlan) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("dietPlan", dietPlan);
-}
+}}

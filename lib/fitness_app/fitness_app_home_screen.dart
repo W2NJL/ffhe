@@ -1,6 +1,11 @@
+import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/fitness_app/models/tabIcon_data.dart';
 import 'package:fast_food_health_e/fitness_app/traning/training_screen.dart';
+import 'package:fast_food_health_e/state/authentication.dart';
+import 'package:fast_food_health_e/state/vote.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../utilities.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'fintness_app_theme.dart';
 import 'my_diary/my_diary_screen.dart';
@@ -43,28 +48,63 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: FitnessAppTheme.background,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: FutureBuilder<bool>(
-          future: getData(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (!snapshot.hasData) {
-              return const SizedBox();
-            } else {
-              return Stack(
-                children: <Widget>[
-                  tabBody,
-
-                ],
-              );
-            }
-          },
-        ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthenticationState()),
+      ],
+    child:
+    Consumer<AuthenticationState>(builder: (context, authState, child) {
+      return Container(
+        color: FitnessAppTheme.background,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(kAppName),
+        actions: <Widget>[
+          getActions(context, authState),
+        ],
       ),
+          backgroundColor: Colors.transparent,
+          body: FutureBuilder<bool>(
+            future: getData(),
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+              if (!snapshot.hasData) {
+                return const SizedBox();
+              } else {
+                return Stack(
+                  children: <Widget>[
+                    tabBody,
+
+                  ],
+                );
+              }
+            },
+          ),
+        ),
+      );
+    }
+    )
     );
   }
+
+  PopupMenuButton getActions(
+      BuildContext context, AuthenticationState authState) {
+    return PopupMenuButton<int>(
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          child: Text('Logout'),
+        )
+      ],
+      onSelected: (value) {
+        if (value == 1) {
+          // logout
+          authState.logout();
+          gotoLoginScreen(context, authState);
+        }
+      },
+    );
+  }
+}
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
@@ -101,4 +141,4 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
   //     ],
   //   );
   // }
-}
+

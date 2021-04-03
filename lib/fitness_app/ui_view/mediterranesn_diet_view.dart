@@ -11,7 +11,7 @@ class MediterranesnDietView extends StatelessWidget {
   final AnimationController animationController;
   final Animation animation;
 
-  final referenceDatabase = FirebaseDatabase.instance;
+
 
   const MediterranesnDietView(
 
@@ -48,7 +48,7 @@ class MediterranesnDietView extends StatelessWidget {
           remainingValue = 100;
           graphMeasure = "g";
         } break;
-        case Constants.LOW_SODIUM: {
+        case Constants.LOW_SODIUM_1: {
           remainingValue = 1500;
           graphMeasure = "mg";
         } break;

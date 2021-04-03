@@ -24,9 +24,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   preferences = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
-  runApp(VoteApp());
+  runApp(FastFoodHealthEApp());
 }
-class VoteApp extends StatelessWidget {
+class FastFoodHealthEApp extends StatelessWidget {
 
 
   @override
@@ -62,12 +62,6 @@ class VoteApp extends StatelessWidget {
 
 
               '/home': (context) => Scaffold(
-                appBar: AppBar(
-                  title: Text(kAppName),
-                  actions: <Widget>[
-                    getActions(context, authState),
-                  ],
-                ),
                 body: FitnessAppHomeScreen(),
               ),
               '/result': (context) => Scaffold(
