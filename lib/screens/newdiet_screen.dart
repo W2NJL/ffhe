@@ -155,7 +155,7 @@ class _DietPageState extends State<DietPage> {
       //     //     child: Container(
       //     //       // tag: 'hero',
       //     //       child: LinearProgressIndicator(
-      //     //           backgroundColor: Color.fromRGBO(209, 224, 224, 0.2),
+      //     //           backgroundColor: Color.fromRGBO(209, 224, 224, 0.2)
       //     //           value: lesson.indicatorValue,
       //     //           valueColor: AlwaysStoppedAnimation(Colors.green)),
       //     //     )),
@@ -173,6 +173,7 @@ class _DietPageState extends State<DietPage> {
       onTap: () {
 
         ref.child('DietPlan').set(lesson.title);
+        ref.child('DietVals').child('Calories').child('MaxValue').set(lesson.number);
         String result;
         storeDietPlan(lesson.title);
         Navigator.pushReplacement(context,
@@ -250,6 +251,7 @@ List getDietPlans() {
   return [
     DietPlan(
         title: Constants.LOW_CALORIE_1,
+        number: 2000,
         level: "Light",
         indicatorValue: 0.33,
         price: 20,
@@ -260,6 +262,7 @@ List getDietPlans() {
     ),
     DietPlan(
         title: Constants.LOW_CALORIE_2,
+        number: 1500,
         level: "Intermediate",
         indicatorValue: 0.66,
         price: 50,
@@ -270,6 +273,7 @@ List getDietPlans() {
 
     DietPlan(
         title: Constants.LOW_CALORIE_3,
+        number: 1200,
         level: "Advanced",
         indicatorValue: 0.99,
         price: 30,

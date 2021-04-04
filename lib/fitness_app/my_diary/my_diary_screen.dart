@@ -8,6 +8,7 @@ import 'package:fast_food_health_e/fitness_app/my_diary/water_view.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyDiaryScreen extends StatefulWidget {
@@ -97,7 +98,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     );
 
     listViews.add(
-      MediterranesnDietView(
+      DrillDownScreen(
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController,
             curve:
@@ -213,29 +214,37 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
         if (!snapshot.hasData) {
           return const SizedBox();
         } else {
-          return ListView.builder(
-            controller: scrollController,
-            padding: EdgeInsets.only(
-              top: AppBar().preferredSize.height +
-                  MediaQuery.of(context).padding.top +
-                  24,
-              bottom: 62 + MediaQuery.of(context).padding.bottom,
-              left: 10,
-              right: 10,
-            ),
-            itemCount: listViews.length,
-            scrollDirection: Axis.vertical,
-            itemBuilder: (BuildContext context, int index) {
-              widget.animationController.forward();
-              return listViews[index];
-            },
-          );
+          return LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+            return ListView.builder(
+              controller: scrollController,
+              padding: EdgeInsets.only(
+                top: AppBar().preferredSize.height +
+                    MediaQuery.of(context).padding.top +
+                    24,
+                bottom: 62 + MediaQuery.of(context).padding.bottom,
+                left: 10,
+                right: 10,
+              ),
+              itemCount: listViews.length,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (BuildContext context, int index) {
+                widget.animationController.forward();
+                return listViews[index];
+              },
+            );
+            }
+            );
+
         }
       },
     );
   }
 
   Widget getAppBarUI() {
+    var now = new DateTime.now();
+    var formatter = new  DateFormat.MMMMd('en_US');
+    String formattedDate = formatter.format(now);
     return Column(
       children: <Widget>[
         AnimatedBuilder(
@@ -322,7 +331,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                                     ),
                                   ),
                                   Text(
-                                    '24 March',
+                                    formattedDate,
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontFamily: FitnessAppTheme.fontName,
@@ -385,3 +394,4 @@ Future <String> _getDietPlan() async {
 
   return result;
 }
+

@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:fast_food_health_e/services/FirebaseCalls.dart';
 
 class NewNutritionixList extends StatefulWidget {
   final String restaurant;
@@ -18,18 +21,86 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   final String restaurant;
   final String category;
   static int page = 0;
+  static int totalCalories;
+  static int remainingCalories;
+  static String formattedDate;
+  var now = new DateTime.now();
+  var formatter = new DateFormat('yyyy-MM-dd');
+
+
+
   ScrollController _sc = new ScrollController();
   bool isLoading = false;
   List users = new List();
   final dio = new Dio();
 
-  NewNutritionixListState({this.restaurant, this.category});
+
+
+
+  NewNutritionixListState({this.restaurant, this.category}){
+    _getTotalCalories().then((value) => setState(() {
+
+      totalCalories = value;
+    }));
+    _getRemainingCalories().then((value) => setState((){
+      remainingCalories = value;
+    }));
+  }
+
+
+  Future <int> _getRemainingCalories() async {
+
+    String formattedDate = formatter.format(now);
+
+    int result;
+
+    final referenceDatabase2 = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('DietVals')
+        .child(formattedDate)
+        .child('Calories')
+        .once()
+        .then((snapshot) {
+      result = snapshot.value;
+    });
+
+    return result;
+  }
+
+  Future <int> _getTotalCalories() async {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+   formattedDate = formatter.format(now);
+
+    int result;
+    int maxValue;
+
+    final referenceDatabase3 = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('DietVals')
+        .child('Calories')
+        .child('MaxValue')
+        .once()
+        .then((snapshot) {
+      maxValue = snapshot.value;
+    });
+
+
+    return maxValue;
+  }
+
 
   @override
   void initState() {
     page = 0;
+    String formattedDate = formatter.format(now);
     this._getMoreData(page, this.restaurant, this.category);
     super.initState();
+
+
+
     _sc.addListener(() {
       if (_sc.position.pixels ==
           _sc.position.maxScrollExtent) {
@@ -90,6 +161,9 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   }
 
   static Widget _buildAboutDialog(BuildContext context, user) {
+    final referenceDatabase = FirebaseDatabase.instance;
+    final ref = referenceDatabase.reference().child('User');
+
     return new AlertDialog(
       title: Text(user['fields']['item_name']),
       content: new Column(
@@ -102,6 +176,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
       actions: <Widget>[
         new FlatButton(
           onPressed: () {
+            ref.child('DietVals').child(formattedDate).child('Calories').set(ServerValue.increment(user['fields']['nf_calories']));
             Navigator.of(context).pop();
           },
           textColor: Theme.of(context).primaryColor,
@@ -164,6 +239,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         "sort": {
           "field": "nf_calories",
           "order": "desc"
+        },
+        "filters": {
+
+          "nf_calories": {
+            "from": 0,
+            "to": totalCalories-remainingCalories
+          }
         }
       };
 
@@ -295,5 +377,12 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   }
 
   _buildAboutDialog2(BuildContext context, user) {}
+
+  getCals(DateTime dateTime) {
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(dateTime);
+
+
+  }
 
 }

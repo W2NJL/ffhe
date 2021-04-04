@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'newdiet_screen.dart';
 
@@ -33,9 +34,13 @@ class SecondDietPage extends StatefulWidget {
 }
 
 class _SecondDietPageState extends State<SecondDietPage> {
+  String selectedPlan;
   List sodiumPlans;
   List carbPlans;
   List fatPlans;
+  var diets = {"Low Carb": "", "Low Fat": "", "Sodium": ""};
+
+  List<String> dietResults = [];
   final referenceDatabase = FirebaseDatabase.instance;
 
   @override
@@ -49,6 +54,36 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
     super.initState();
   }
+
+
+
+  _SecondDietPageState(){
+    for(int i =0; i  <diets.length; i++){
+      String key = diets.keys.elementAt(i);
+      print("Hold The Line: " + key);
+    _getDietPlan(key).then((value) => setState(() {
+      print("The value is: " + value);
+      diets[key] = value;
+    }
+    ));
+  }}
+
+  Future <String> _getDietPlan(String plan) async {
+    String result;
+    final referenceDatabase = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child(plan)
+        .once()
+        .then((snapshot){result=snapshot.value;});
+    print("The result is: " + result);
+
+
+
+    return result;
+  }
+
+
 
   static Widget _buildAboutText(DietPlan lesson) {
     return new Text.rich(
@@ -101,6 +136,8 @@ class _SecondDietPageState extends State<SecondDietPage> {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     final ref = referenceDatabase.reference().child('User');
@@ -123,7 +160,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
         lesson.title,
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
-      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+       subtitle: diets[checkDietPlan(lesson.title)] == lesson.title ? Text("Selected Plan", style: TextStyle(color: Colors.white)) : null,
 
       // subtitle: Row(
       //   children: <Widget>[
@@ -150,12 +187,11 @@ class _SecondDietPageState extends State<SecondDietPage> {
       onTap: () {
 
 
-        ref.child(checkDietPlan(lesson.title)).set(true);
+        ref.child(checkDietPlan(lesson.title)).set(lesson.title);
         String result;
+        storeDietPlan(lesson.title);
 
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => FitnessAppHomeScreen())
-        );
+        Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
       },
     );
 
@@ -163,12 +199,12 @@ class _SecondDietPageState extends State<SecondDietPage> {
       elevation: 8.0,
       margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       child: Container(
-        decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+        decoration: BoxDecoration(color: diets[checkDietPlan(lesson.title)] == lesson.title ?  Color.fromRGBO(233, 2, 16, .9) :  Color.fromRGBO(1, 22, 96, .9) ),
         child: makeListTile(lesson),
       ),
     );
 
-    final makeBody = Container(
+    final makeBody = SingleChildScrollView(
       // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
         child: new Column(
           children:[ SizedBox(height: 10), new Container(
@@ -263,6 +299,11 @@ class _SecondDietPageState extends State<SecondDietPage> {
     );
   }
 
+  void storeDietPlan(String dietPlan) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString(checkDietPlan(dietPlan), dietPlan);
+  }}
+
   String checkDietPlan(String title) {
     if(title == Constants.LOW_SODIUM_2 || title == Constants.LOW_SODIUM_1){
       return "Sodium";
@@ -279,8 +320,10 @@ class _SecondDietPageState extends State<SecondDietPage> {
     (title == Constants.LOW_CHOLESTROL){
       return "Low Cholestrol";
     }
+
+    return null;
   }
-}
+
 
 List getCarbPlans(){
   return [ DietPlan(
@@ -342,3 +385,4 @@ List getSodiumPlans() {
 
   ];
 }
+

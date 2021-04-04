@@ -1,47 +1,120 @@
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/main.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
+import 'package:intl/intl.dart';
 import 'dart:math' as math;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MediterranesnDietView extends StatelessWidget {
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+
+      body: new DrillDownScreen(),
+      // home: DetailPage(),
+    );
+  }
+}
+
+class DrillDownScreen extends StatefulWidget {
   final AnimationController animationController;
   final Animation animation;
 
+  final int calories;
 
 
-  const MediterranesnDietView(
 
-      {Key key, this.animationController, this.animation})
-      : super(key: key);
+  DrillDownScreen({Key key, this.calories, this.title, this.app, this.animation, this.animationController}) : super(key: key);
+
+  final String title;
+  final FirebaseApp app;
 
 
+  @override
+  _DrillDownScreenState createState() => _DrillDownScreenState();
+}
+
+
+
+class _DrillDownScreenState extends State<DrillDownScreen> {
+
+  int Calories;
+  bool done = false;
+
+  _DrillDownScreenState(){
+    _getCalorieValue().then((value) => setState(() {
+      Calories = value;
+      done = true;
+    }));
+  }
+
+  Future <int> _getCalorieValue() async {
+
+    final referenceDatabase = FirebaseDatabase.instance;
+    final ref = referenceDatabase.reference().child('User').child('DietVals');
+
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+
+    int result;
+    int maxValue;
+    final referenceDatabase2 = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('DietVals')
+        .child(formattedDate)
+        .child('Calories')
+        .once()
+        .then((snapshot){result=snapshot.value;});
+    final referenceDatabase3 = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('DietVals')
+        .child('Calories')
+        .child('MaxValue')
+        .once()
+        .then((snapshot){maxValue=snapshot.value;});
+
+    if(result == null){
+
+      ref.child(formattedDate).child('Calories').set(2000);
+
+    }
+    print("Here it is NICKY: " + result.toString());
+    done = true;
+    return maxValue-result;
+
+  }
 
 
 
   @override
   Widget build(BuildContext context) {
 
-    int calories;
+
     int fat;
     int sodium;
     int protein;
     int remainingValue;
     String graphMeasure;
     String dietPlan;
+    String sodiumPlan;
+    String carbPlan;
+    String fatPlan;
 
 
     dietPlan = preferences.getString("dietPlan") ?? 'Johnny';
+    sodiumPlan = preferences.getString("Sodium") ?? null;
+    carbPlan = preferences.getString("Low Carb") ?? null;
+    fatPlan = preferences.getString("Low Fat") ?? null;
 
 
-
-
-
-
-      print("Here it is: " + dietPlan);
 
       switch ( dietPlan ) {
         case Constants.LOW_CARB: {
@@ -54,15 +127,16 @@ class MediterranesnDietView extends StatelessWidget {
         } break;
 
         case Constants.LOW_CALORIE_1: {
-          remainingValue = 2000;
+          remainingValue = Calories;
           graphMeasure = "Kcal";
+
         } break;
         case Constants.LOW_CALORIE_2: {
-          remainingValue = 1400;
+          remainingValue = Calories;
           graphMeasure = "Kcal";
         } break;
         case Constants.LOW_CALORIE_3: {
-          remainingValue = 1000;
+          remainingValue = Calories;
           graphMeasure = "Kcal";
         } break;
         case Constants.LOW_FAT: {
@@ -86,15 +160,15 @@ class MediterranesnDietView extends StatelessWidget {
 
 
 
-
+if(done){
     return AnimatedBuilder(
-      animation: animationController,
+      animation: widget.animationController,
       builder: (BuildContext context, Widget child) {
         return FadeTransition(
-          opacity: animation,
+          opacity: widget.animation,
           child: new Transform(
             transform: new Matrix4.translationValues(
-                0.0, 30 * (1.0 - animation.value), 0.0),
+                0.0, 30 * (1.0 - widget.animation.value), 0.0),
             child: Padding(
               padding: const EdgeInsets.only(
                   left: 24, right: 24, top: 16, bottom: 18),
@@ -354,7 +428,7 @@ class MediterranesnDietView extends StatelessWidget {
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            '${(remainingValue * animation.value).toInt()}',
+                                            '${(remainingValue * widget.animation.value).toInt()}',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily:
@@ -394,7 +468,7 @@ class MediterranesnDietView extends StatelessWidget {
                                           ],
                                           angle: 140 +
                                               (360 - 140) *
-                                                  (1.0 - animation.value)),
+                                                  (1.0 - widget.animation.value)),
                                       child: SizedBox(
                                         width: 108,
                                         height: 108,
@@ -422,15 +496,15 @@ class MediterranesnDietView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 24, right: 24, top: 8, bottom: 16),
-                      child: Row(
+                      child:  Row(
                         children: <Widget>[
-                          Expanded(
-                            child: Column(
+                          sodiumPlan != null? Expanded(
+                            child:  Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'Carbs',
+                                  'Sodium',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: FitnessAppTheme.fontName,
@@ -454,7 +528,7 @@ class MediterranesnDietView extends StatelessWidget {
                                     child: Row(
                                       children: <Widget>[
                                         Container(
-                                          width: ((70 / 1.2) * animation.value),
+                                          width: ((80 / 1.2) * widget.animation.value),
                                           height: 4,
                                           decoration: BoxDecoration(
                                             gradient: LinearGradient(colors: [
@@ -486,8 +560,11 @@ class MediterranesnDietView extends StatelessWidget {
                                 ),
                               ],
                             ),
-                          ),
-                          Expanded(
+                          ):SizedBox(
+              width: 1,
+              height: 1,
+            ),
+                          carbPlan != null? Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -497,7 +574,7 @@ class MediterranesnDietView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      'Protein',
+                                      'Carbs',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
@@ -522,7 +599,7 @@ class MediterranesnDietView extends StatelessWidget {
                                           children: <Widget>[
                                             Container(
                                               width: ((70 / 2) *
-                                                  animationController.value),
+                                                  widget.animationController.value),
                                               height: 4,
                                               decoration: BoxDecoration(
                                                 gradient:
@@ -557,8 +634,8 @@ class MediterranesnDietView extends StatelessWidget {
                                 ),
                               ],
                             ),
-                          ),
-                          Expanded(
+                          ): SizedBox(height: 1),
+                          fatPlan != null? Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -593,7 +670,7 @@ class MediterranesnDietView extends StatelessWidget {
                                           children: <Widget>[
                                             Container(
                                               width: ((70 / 2.5) *
-                                                  animationController.value),
+                                                  widget.animationController.value),
                                               height: 4,
                                               decoration: BoxDecoration(
                                                 gradient:
@@ -628,7 +705,7 @@ class MediterranesnDietView extends StatelessWidget {
                                 ),
                               ],
                             ),
-                          )
+                          ): SizedBox(height: 1)
                         ],
                       ),
                     )
@@ -640,6 +717,9 @@ class MediterranesnDietView extends StatelessWidget {
         );
       },
     );
+}
+  else
+  return Center(child: CircularProgressIndicator());
   }
 }
 
@@ -773,3 +853,4 @@ Future <String> _getDietPlan() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   return preferences.getString("dietPlan") ?? "No plan selected";
 }
+

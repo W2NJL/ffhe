@@ -6,7 +6,8 @@ class DietPlan {
   String content;
   String content2;
   String disclaimer;
+  int number;
 
   DietPlan(
-      {this.title, this.level, this.indicatorValue, this.price, this.content, this.content2, this.disclaimer});
+      {this.title, this.level, this.indicatorValue, this.price, this.content, this.content2, this.disclaimer, this.number});
 }

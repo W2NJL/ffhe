@@ -58,6 +58,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
         color: FitnessAppTheme.background,
         child: Scaffold(
           appBar: AppBar(
+              automaticallyImplyLeading: false,
             title: Text(kAppName),
         actions: <Widget>[
           getActions(context, authState),
