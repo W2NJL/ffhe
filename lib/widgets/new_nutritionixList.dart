@@ -24,6 +24,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   static int totalCalories;
   static int remainingCalories;
   static String formattedDate;
+  bool done = false;
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
 
@@ -38,14 +39,12 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
 
   NewNutritionixListState({this.restaurant, this.category}){
-    _getTotalCalories().then((value) => setState(() {
+    // _getTotalCalories().then((value) => setState(() {
+    //
+    //   totalCalories = value;
+    // }));
 
-      totalCalories = value;
-    }));
-    _getRemainingCalories().then((value) => setState((){
-      remainingCalories = value;
-    }));
-  }
+    }
 
 
   Future <int> _getRemainingCalories() async {
@@ -119,8 +118,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: (){Navigator.pushNamedAndRemoveUntil(context, "RestaurantScreen", (_) => false);}
+        ),
         title:  Text(restaurant),
       ),
+
       body: Container(
         child: _buildList(),
       ),
@@ -128,39 +132,45 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     );
   }
 
+
   Widget _buildList() {
-    return ListView.builder(
-      itemCount: users.length + 1, // Add one more item for progress indicator
-      padding: EdgeInsets.symmetric(vertical: 8.0),
-      itemBuilder: (BuildContext context, int index) {
-        if (index == users.length) {
-          return _buildProgressIndicator();
-        } else {
-          return GestureDetector(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => _buildAboutDialog(context, users[index]  ),
-              );
-            },
-            child: ListTile(
-              leading: CircleAvatar(
-                radius: 30.0,
+
+      return ListView.builder(
+        itemCount: users.length + 1, // Add one more item for progress indicator
+        padding: EdgeInsets.symmetric(vertical: 8.0),
+        itemBuilder: (BuildContext context, int index) {
+          if (index == users.length) {
+            return _buildProgressIndicator();
+          } else {
+            return GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      _buildAboutDialog(context, users[index]),
+                );
+              },
+              child: ListTile(
+                leading: CircleAvatar(
+                  radius: 30.0,
 // backgroundImage: NetworkImage(
 // users[index]['picture']['large'],
 // ),
+                ),
+                title: Text((users[index]['fields']['item_name'])),
+                subtitle: Text(
+                    (users[index]['fields']['nf_calories'].toString()) +
+                        ' calories'),
               ),
-              title: Text((users[index]['fields']['item_name'])),
-              subtitle: Text((users[index]['fields']['nf_calories'].toString()) + ' calories'),
-            ),
-          );
-        }
-      },
-      controller: _sc,
-    );
-  }
+            );
+          }
+        },
+        controller: _sc,
+      );
+    }
 
-  static Widget _buildAboutDialog(BuildContext context, user) {
+
+ Widget _buildAboutDialog(BuildContext context, user) {
     final referenceDatabase = FirebaseDatabase.instance;
     final ref = referenceDatabase.reference().child('User');
 
@@ -177,7 +187,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         new FlatButton(
           onPressed: () {
             ref.child('DietVals').child(formattedDate).child('Calories').set(ServerValue.increment(user['fields']['nf_calories']));
-            Navigator.of(context).pop();
+            ref.child('DietVals').child(formattedDate).child('Meals').child(user['fields']['item_name']).set(ServerValue.increment(user['fields']['nf_calories']));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewNutritionixList(restaurant: restaurant, mealCategory: category),
+              ),
+            );
           },
           textColor: Theme.of(context).primaryColor,
           child: const Text('Add to My Day'),
@@ -215,11 +231,30 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   }
 
   void _getMoreData(int index, String restaurant, String category) async {
+    int totalCalories2;
+    var params;
     if (!isLoading) {
       setState(() {
         isLoading = true;
       });
-      var params = {
+
+    await _getTotalCalories().then((value) => setState(() {
+
+      totalCalories = value;
+
+      print("Totalcalroies is " + totalCalories.toString());
+    }));
+
+    await _getRemainingCalories().then((value) => setState((){
+      remainingCalories = value;
+
+
+      print("recalroies is " + remainingCalories.toString());
+
+    }));
+
+
+      params = {
         "appId": "816cee15",
         "appKey": "aab0a0a4c4224eca770bf5a2a0f4c984",
         "queries":{
@@ -248,6 +283,8 @@ class NewNutritionixListState extends State<NewNutritionixList> {
           }
         }
       };
+
+
 
 
       //var url = 'https://api.nutritionix.com/v1_1/search/' + restaurant + '?results='+ index.toString() + ':' + (index+50).toString() + '&fields=item_name,brand_name,nf_calories,nf_sodium,nf_sugars,nf_cholesterol,nf_total_fat,nf_dietary_fiber&appId=816cee15&appKey=aab0a0a4c4224eca770bf5a2a0f4c984';

@@ -1,3 +1,4 @@
+import 'package:fast_food_health_e/fitness_app/models/todaysMeals.dart';
 import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:fast_food_health_e/screens/restaurant_screen.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,9 @@ class FastFoodHealthEApp extends StatelessWidget {
               'NutritionList': (context) =>  Scaffold(
                 body: NutritionList(),
               ),
-
+              'TodaysMeals': (context) =>  Scaffold(
+                body: TodaysMeals(),
+              ),
 
 
               '/home': (context) => Scaffold(

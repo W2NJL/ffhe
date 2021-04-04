@@ -70,6 +70,10 @@ class RestaurantScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
+          leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: (){Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);}
+          ),
         title: Text(title),
     ),
 
@@ -120,6 +124,8 @@ class ChoiceCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
+
+
         Navigator.push(context,
             MaterialPageRoute(
                 builder: (context) => MealScreen(restaurant: choice.title)

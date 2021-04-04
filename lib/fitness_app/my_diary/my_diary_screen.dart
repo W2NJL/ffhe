@@ -76,7 +76,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
           color: Color(0xFF69F0AE),
           child: Text('Add A Meal', style: new TextStyle(fontSize: 24.0, color: Colors.blueAccent)),
 
-          onPressed: () { Navigator.pushNamed(context, 'RestaurantScreen');},
+          onPressed: () { Navigator.pushNamedAndRemoveUntil(context, "RestaurantScreen", (_) => false);},
         ),
       ),
     );
@@ -99,6 +99,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
     listViews.add(
       DrillDownScreen(
+
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController,
             curve:

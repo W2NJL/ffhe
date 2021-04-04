@@ -34,7 +34,12 @@ class MealScreen extends StatelessWidget {
     ];
 
     return Scaffold(
+
         appBar: AppBar(
+          leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: (){Navigator.pushNamedAndRemoveUntil(context, "RestaurantScreen", (_) => false);}
+          ),
           title: Text(title),
         ),
 
