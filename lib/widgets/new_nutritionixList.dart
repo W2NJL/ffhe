@@ -23,6 +23,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   static int page = 0;
   static int totalCalories;
   static int remainingCalories;
+  static int calorieSum;
+  static int totalSodium;
+  static int remainingSodium;
+  static int totalCarbs;
+  static int remainingCarbs;
+  static int sodiumSum;
+  static int carbSum;
   static String formattedDate;
   bool done = false;
   var now = new DateTime.now();
@@ -47,7 +54,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     }
 
 
-  Future <int> _getRemainingCalories() async {
+  Future <int> _getRemainingNutrients(String diet) async {
 
     String formattedDate = formatter.format(now);
 
@@ -58,7 +65,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         .child('User')
         .child('DietVals')
         .child(formattedDate)
-        .child('Calories')
+        .child(diet)
         .once()
         .then((snapshot) {
       result = snapshot.value;
@@ -67,7 +74,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     return result;
   }
 
-  Future <int> _getTotalCalories() async {
+  Future <int> _getTotalNutrients(String diet) async {
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy-MM-dd');
    formattedDate = formatter.format(now);
@@ -79,7 +86,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         .reference()
         .child('User')
         .child('DietVals')
-        .child('Calories')
+        .child(diet)
         .child('MaxValue')
         .once()
         .then((snapshot) {
@@ -187,6 +194,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         new FlatButton(
           onPressed: () {
             ref.child('DietVals').child(formattedDate).child('Calories').set(ServerValue.increment(user['fields']['nf_calories']));
+            ref.child('DietVals').child(formattedDate).child('Sodium').set(ServerValue.increment(user['fields']['nf_sodium']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['fields']['item_name']).set(ServerValue.increment(user['fields']['nf_calories']));
             Navigator.pushReplacement(
               context,
@@ -206,6 +214,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     return new RichText(
       text: new TextSpan(
         text: 'Calories: ' + user['fields']['nf_calories'].toString() + " calories" + '\n\n' +
+            'Total Carbohydrates: ' + user['fields']['nf_total_carbohydrate'].toString() + " g" + '\n\n' +
             'Sodium: ' + user['fields']['nf_sodium'].toString() + " mg" + '\n\n' +
             'Total Fat: '  + user['fields']['nf_total_fat'].toString() + " g" + '\n\n' +
             'Cholesterol: ' + user['fields']['nf_cholesterol'].toString() + " mg" + '\n\n',
@@ -238,21 +247,72 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         isLoading = true;
       });
 
-    await _getTotalCalories().then((value) => setState(() {
+    await _getTotalNutrients('Calories').then((value) => setState(() {
 
       totalCalories = value;
 
       print("Totalcalroies is " + totalCalories.toString());
     }));
 
-    await _getRemainingCalories().then((value) => setState((){
+      await _getTotalNutrients('Sodium').then((value) => setState(() {
+
+        totalSodium = value;
+
+
+      }));
+
+      await _getTotalNutrients('Low Carb').then((value) => setState(() {
+
+        totalCarbs = value;
+
+
+      }));
+
+    await _getRemainingNutrients('Calories').then((value) => setState((){
       remainingCalories = value;
+
+      if (remainingCalories == null)
+        {
+          calorieSum = totalCalories;
+        }
+      else{
+        calorieSum = totalCalories-remainingCalories;
+      }
 
 
       print("recalroies is " + remainingCalories.toString());
 
     }));
 
+      await _getRemainingNutrients('Sodium').then((value) => setState((){
+        remainingSodium = value;
+
+        if (remainingSodium == null)
+        {
+          sodiumSum = totalSodium;
+        }
+        else{
+          sodiumSum = totalSodium-remainingSodium;
+        }}));
+
+
+
+
+
+
+
+      await _getRemainingNutrients('Low Carb').then((value) => setState(() {
+        remainingCarbs = value;
+
+        if (remainingCarbs == null) {
+          carbSum = totalCarbs;
+        }
+        else {
+          carbSum = totalCarbs - remainingCarbs;
+        }
+
+        print("CarbSum is: " + carbSum.toString());
+        }));
 
       params = {
         "appId": "816cee15",
@@ -268,6 +328,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
           "nf_total_fat",
           "item_type",
           "nf_cholesterol",
+          "nf_total_carbohydrate"
         ],
         "offset": page,
         "limit": 50,
@@ -279,7 +340,15 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
           "nf_calories": {
             "from": 0,
-            "to": totalCalories-remainingCalories
+            "to": calorieSum
+          },
+          "nf_sodium": {
+            "from": 0,
+            "to": sodiumSum
+          },
+          "nf_total_carbohydrate": {
+            "from": 0,
+            "to": carbSum
           }
         }
       };

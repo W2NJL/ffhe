@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'newdiet_screen.dart';
@@ -29,12 +30,15 @@ class SecondDietPage extends StatefulWidget {
   final String title;
   final FirebaseApp app;
 
+
   @override
   _SecondDietPageState createState() => _SecondDietPageState();
 }
 
 class _SecondDietPageState extends State<SecondDietPage> {
   String selectedPlan;
+  int totalCalories;
+
   List sodiumPlans;
   List carbPlans;
   List fatPlans;
@@ -46,7 +50,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
   @override
   void initState() {
     sodiumPlans = getSodiumPlans();
-    carbPlans = getCarbPlans();
+
     fatPlans = getFatPlans();
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
     final dietPlan = 'DietPlan';
@@ -65,8 +69,21 @@ class _SecondDietPageState extends State<SecondDietPage> {
       print("The value is: " + value);
       diets[key] = value;
     }
+
     ));
+
+      _getTotalNutrients('Calories').then((value) => setState(() {
+
+
+        totalCalories = value;
+        carbPlans = getCarbPlans();
+
+        print("Benatar: " + totalCalories.toString());
+      }
+
+      ));
   }}
+
 
   Future <String> _getDietPlan(String plan) async {
     String result;
@@ -83,7 +100,79 @@ class _SecondDietPageState extends State<SecondDietPage> {
     return result;
   }
 
+  Future <int> _getTotalNutrients(String diet) async {
 
+    int result;
+    int maxValue;
+
+    final referenceDatabase3 = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('DietVals')
+        .child(diet)
+        .child('MaxValue')
+        .once()
+        .then((snapshot) {
+      maxValue = snapshot.value;
+    });
+
+
+    return maxValue;
+  }
+
+  getCarb(String plan){
+    if(plan == Constants.KETO && totalCalories == 2000)
+      {
+        return 50;
+      }
+
+    else if(plan == Constants.KETO && totalCalories == 1500)
+    {
+      return 38;
+    }
+
+    else if(plan == Constants.KETO && totalCalories == 1200)
+    {
+      return 30;
+    }
+
+    else if(plan == Constants.LOW_CARB && totalCalories == 2000)
+    {
+      return 125;
+    }
+    else if(plan == Constants.LOW_CARB && totalCalories == 1500)
+    {
+      return 94;
+    }
+    else if(plan == Constants.LOW_CARB && totalCalories == 2000)
+    {
+      return 75;
+    }
+
+  }
+
+  List getCarbPlans(){
+    return [ DietPlan(
+        title: Constants.LOW_CARB,
+        level: "Intermediate",
+        indicatorValue: 0.33,
+        price: 50,
+        number: getCarb(Constants.LOW_CARB),
+        content:
+        "this diet plan is defined as 25% of total calories from carbohydrates.",
+        content2: "Please also select a corresponding calorie plan.",
+        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+      DietPlan(
+          title: Constants.KETO,
+          level: "Advanced",
+          indicatorValue: 1.0,
+          price: 50,
+          number: getCarb(Constants.KETO),
+          content:
+          "This diet plan is defined as 10% of total daily calories from carbohydrates.",
+          content2: "Please also select a corresponding calorie plan.",
+          disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),];
+  }
 
   static Widget _buildAboutText(DietPlan lesson) {
     return new Text.rich(
@@ -186,8 +275,9 @@ class _SecondDietPageState extends State<SecondDietPage> {
       Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
       onTap: () {
 
-
-        ref.child(checkDietPlan(lesson.title)).set(lesson.title);
+        print("Test! " + totalCalories.toString());
+        // ref.child(checkDietPlan(lesson.title)).set(lesson.title);
+        ref.child('DietVals').child(checkDietPlan(lesson.title)).child('MaxValue').set(lesson.number);
         String result;
         storeDietPlan(lesson.title);
 
@@ -325,26 +415,10 @@ class _SecondDietPageState extends State<SecondDietPage> {
   }
 
 
-List getCarbPlans(){
-  return [ DietPlan(
-      title: Constants.LOW_CARB,
-      level: "Intermediate",
-      indicatorValue: 0.33,
-      price: 50,
-      content:
-      "this diet plan is defined as 25% of total calories from carbohydrates.",
-      content2: "Please also select a corresponding calorie plan.",
-      disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
-    DietPlan(
-        title: Constants.KETO,
-        level: "Advanced",
-        indicatorValue: 1.0,
-        price: 50,
-        content:
-        "This diet plan is defined as 10% of total daily calories from carbohydrates.",
-        content2: "Please also select a corresponding calorie plan.",
-        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),];
-}
+
+
+
+
 
 List getFatPlans(){
   return[
@@ -368,6 +442,7 @@ List getSodiumPlans() {
         level: "Intermidiate",
         indicatorValue: 0.33,
         price: 30,
+        number: 2300,
         content:
         "This diet plan is defined as no more than 2300 mg sodium consumed daily.  One meal = no more than 760 mg sodium",
         content2: "American Heart Association recommends no more than 2300 mg sodium a day and moving toward an ideal limit of no more than 1500 mg sodium per day for most adults.",
@@ -377,6 +452,7 @@ List getSodiumPlans() {
         level: "Advanced",
         indicatorValue: 1.0,
         price: 50,
+        number: 1500,
         content:
         "This diet plan is defined as no more than 1500 mg sodium consumed daily.  One meal= no more than 500 mg sodium ",
         content2: "American Heart Association recommends no more than 2300 mg sodium a day and moving toward an ideal limit of no more than 1500 mg sodium per day for most adults.",
@@ -384,5 +460,7 @@ List getSodiumPlans() {
 
 
   ];
+
+
 }
 

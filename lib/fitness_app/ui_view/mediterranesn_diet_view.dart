@@ -44,16 +44,26 @@ class DrillDownScreen extends StatefulWidget {
 class _DrillDownScreenState extends State<DrillDownScreen> {
 
   int Calories;
+  int sodium;
+  int carbs;
   bool done = false;
 
   _DrillDownScreenState(){
-    _getCalorieValue().then((value) => setState(() {
+    _getCalorieValue('Calories').then((value) => setState(() {
       Calories = value;
       done = true;
     }));
+    _getCalorieValue('Sodium').then((value) => setState((){
+      sodium = value;
+    }));
+    _getCalorieValue('Low Carb').then((value) => setState((){
+      carbs = value;
+    }));
   }
 
-  Future <int> _getCalorieValue() async {
+
+
+  Future <int> _getCalorieValue(String diet) async {
 
     final referenceDatabase = FirebaseDatabase.instance;
     final ref = referenceDatabase.reference().child('User').child('DietVals');
@@ -69,28 +79,34 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
         .child('User')
         .child('DietVals')
         .child(formattedDate)
-        .child('Calories')
+        .child(diet)
         .once()
         .then((snapshot){result=snapshot.value;});
     final referenceDatabase3 = await FirebaseDatabase.instance
         .reference()
         .child('User')
         .child('DietVals')
-        .child('Calories')
+        .child(diet)
         .child('MaxValue')
         .once()
         .then((snapshot){maxValue=snapshot.value;});
 
-    if(result == null){
-
-      ref.child(formattedDate).child('Calories').set(2000);
-
-    }
+    // if(result == null){
+    //
+    //   ref.child(formattedDate).child('Calories').set(2000);
+    //
+    // }
     print("Here it is NICKY: " + result.toString());
     done = true;
-    return maxValue-result;
+
+    if(result != null) {
+      return maxValue - result;
+    }
+    else return maxValue;
 
   }
+
+
 
 
 
@@ -99,7 +115,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
 
     int fat;
-    int sodium;
+
     int protein;
     int remainingValue;
     String graphMeasure;
@@ -556,7 +572,7 @@ if(done){
                                   Padding(
                                     padding: const EdgeInsets.only(top: 6),
                                     child: Text(
-                                      '12g left',
+                                      sodium.toString() + ' mg left',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
@@ -628,7 +644,7 @@ if(done){
                                       Padding(
                                         padding: const EdgeInsets.only(top: 6),
                                         child: Text(
-                                          '30g left',
+                                          carbs.toString() + 'g left',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontFamily: FitnessAppTheme.fontName,
