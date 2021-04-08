@@ -47,6 +47,11 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   int sodium;
   int carbs;
   bool done = false;
+  String image1;
+  String image2;
+  String image3;
+  String image4;
+  String image5;
 
   _DrillDownScreenState(){
     _getCalorieValue('Calories').then((value) => setState(() {
@@ -59,6 +64,9 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
     _getCalorieValue('Low Carb').then((value) => setState((){
       carbs = value;
     }));
+    // _getImageValue().then((value) => setState((){
+    //   image1 = value;
+    // }));
   }
 
 
@@ -96,7 +104,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
     //   ref.child(formattedDate).child('Calories').set(2000);
     //
     // }
-    print("Here it is NICKY: " + result.toString());
+
     done = true;
 
     if(result != null) {
@@ -106,6 +114,36 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
   }
 
+
+  // Future <String> _getImageValue() async {
+  //
+  //   final referenceDatabase = FirebaseDatabase.instance;
+  //   final ref = referenceDatabase.reference().child('User').child('DietVals');
+  //
+  //   var now = new DateTime.now();
+  //   var formatter = new DateFormat('yyyy-MM-dd');
+  //   String formattedDate = formatter.format(now);
+  //
+  //   String result;
+  //
+  //   final referenceDatabase2 = await FirebaseDatabase.instance
+  //       .reference()
+  //       .child('User')
+  //       .child('DietVals')
+  //       .child(formattedDate)
+  //       .child('Meals')
+  //       .once()
+  //       .then((snapshot){result=snapshot.value;});
+  //
+  //   print("Here it is NICKY: " + result.toString());
+  //   done = true;
+  //
+  //   if(result != null) {
+  //     return result;
+  //   }
+  //   else return null;
+  //
+  // }
 
 
 
@@ -159,7 +197,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
           remainingValue = 45;
           graphMeasure = "g";
         } break;
-        case Constants.LOW_CHOLESTROL: {
+        case Constants.LOW_CHOLESTEROL: {
           remainingValue = 150;
           graphMeasure = "mg";
         } break;
@@ -262,65 +300,63 @@ if(done){
                                     //               ),
                                     //             ),
                                     //           ),
-                                    //           // Row(
-                                    //           //   mainAxisAlignment:
-                                    //           //       MainAxisAlignment.center,
-                                    //           //   crossAxisAlignment:
-                                    //           //       CrossAxisAlignment.end,
-                                    //           //   children: <Widget>[
-                                    //           //     SizedBox(
-                                    //           //       width: 28,
-                                    //           //       height: 28,
-                                    //           //       child: Image.asset(
-                                    //           //           "images/fitness_app/eaten.png"),
-                                    //           //     ),
-                                    //           //     Padding(
-                                    //           //       padding:
-                                    //           //           const EdgeInsets.only(
-                                    //           //               left: 4, bottom: 3),
-                                    //           //       child: Text(
-                                    //           //         '${(1127 * animation.value).toInt()}',
-                                    //           //         textAlign: TextAlign.center,
-                                    //           //         style: TextStyle(
-                                    //           //           fontFamily:
-                                    //           //               FitnessAppTheme
-                                    //           //                   .fontName,
-                                    //           //           fontWeight:
-                                    //           //               FontWeight.w600,
-                                    //           //           fontSize: 16,
-                                    //           //           color: FitnessAppTheme
-                                    //           //               .darkerText,
-                                    //           //         ),
-                                    //           //       ),
-                                    //           //     ),
-                                    //           //     Padding(
-                                    //           //       padding:
-                                    //           //           const EdgeInsets.only(
-                                    //           //               left: 4, bottom: 3),
-                                    //           //       child: Text(
-                                    //           //         "Kcal",
-                                    //           //         textAlign: TextAlign.center,
-                                    //           //         style: TextStyle(
-                                    //           //           fontFamily:
-                                    //           //               FitnessAppTheme
-                                    //           //                   .fontName,
-                                    //           //           fontWeight:
-                                    //           //               FontWeight.w600,
-                                    //           //           fontSize: 12,
-                                    //           //           letterSpacing: -0.2,
-                                    //           //           color: FitnessAppTheme
-                                    //           //               .grey
-                                    //           //               .withOpacity(0.5),
-                                    //           //         ),
-                                    //           //       ),
-                                    //           //     ),
-                                    //           //   ],
-                                    //           // )
-                                    //         ],
-                                    //       ),
-                                    //     )
-                                    //   ],
-                                    // ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: <Widget>[
+
+                                                  sodiumPlan != null? SizedBox(
+                                                    width: 40,
+                                                    height: 40,
+                                                    child: Image.asset(
+                                                        "images/bob_evans.png"),
+                                                  ) : SizedBox(height: 0),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4, bottom: 3),
+                                                    // child: Text(
+                                                    //   '${(1127 * widget.animation.value).toInt()}',
+                                                    //   textAlign: TextAlign.center,
+                                                    //   style: TextStyle(
+                                                    //     fontFamily:
+                                                    //         FitnessAppTheme
+                                                    //             .fontName,
+                                                    //     fontWeight:
+                                                    //         FontWeight.w600,
+                                                    //     fontSize: 16,
+                                                    //     color: FitnessAppTheme
+                                                    //         .darkerText,
+                                                    //   ),
+                                                    // ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4, bottom: 3),
+                                                    // child: Text(
+                                                    //   "Kcal",
+                                                    //   textAlign: TextAlign.center,
+                                                    //   style: TextStyle(
+                                                    //     fontFamily:
+                                                    //         FitnessAppTheme
+                                                    //             .fontName,
+                                                    //     fontWeight:
+                                                    //         FontWeight.w600,
+                                                    //     fontSize: 12,
+                                                    //     letterSpacing: -0.2,
+                                                    //     color: FitnessAppTheme
+                                                    //         .grey
+                                                    //         .withOpacity(0.5),
+                                                    //   ),
+                                                    // ),
+                                                  ),
+                              ]),
+
+
+
                                     SizedBox(
                                       height: 8,
                                     ),

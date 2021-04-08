@@ -12,6 +12,7 @@ class Constants {
   static const String LOW_CARB = "Low Carbohydrate Diet Plan";
   static const String KETO = "Very Low Carbohydrate Diet Plan (Ketogenic)";
   static const String LOW_FAT = "Low Fat Diet Plan";
-  static const String LOW_CHOLESTROL = "Low Cholestrol";
+  static const String LOWEST_FAT = "Lowest Fat Diet Plan";
+  static const String LOW_CHOLESTEROL = "Low Cholesterol";
 
 }

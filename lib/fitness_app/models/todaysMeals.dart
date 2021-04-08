@@ -21,6 +21,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
   String callLetters;
+  int sodiumVal;
 
 
   DatabaseReference _callLettersRef;
@@ -33,6 +34,23 @@ class _TodaysMealsState extends State<TodaysMeals> {
     _callLettersRef = database.reference().child('User').child('DietVals').child(formattedDate).child('Meals');
 
     super.initState();
+  }
+
+  Future <String> _getNutrientAmount(String mealName, String diet) async {
+    String result;
+    final referenceDatabase = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('DietPlan')
+        .child(formattedDate)
+        .child('Meals')
+        .once()
+        .then((snapshot){result=snapshot.value;});
+    print("The result is: " + result);
+
+
+
+    return result;
   }
 
   @override
@@ -74,9 +92,11 @@ leading: new IconButton(
                             int index){
                           return new ListTile(
                             trailing: IconButton(icon: Icon(Icons.delete), onPressed: () =>{
-                                ref.child('User').child('DietVals').child(formattedDate).child('Calories').set(ServerValue.increment(-snapshot.value)),
+                                ref.child('User').child('DietVals').child(formattedDate).child('Calories').set(ServerValue.increment(-snapshot.value['calories'])),
+                              ref.child('User').child('DietVals').child(formattedDate).child('Sodium').set(ServerValue.increment(-snapshot.value['sodium'])),
+                              ref.child('User').child('DietVals').child(formattedDate).child('Low Carb').set(ServerValue.increment(-snapshot.value['carbs'])),
                                 _callLettersRef.child(snapshot.key).remove(),}),
-                            title: new Text(snapshot.key + "\n(Calories: " + snapshot.value.toString() + ")"
+                            title: new Text(snapshot.key + "\n(Calories: " + snapshot.value['calories'].toString() + " Sodium: " + snapshot.value['sodium'].toString() + ")"
                             ),
                           );
                         })

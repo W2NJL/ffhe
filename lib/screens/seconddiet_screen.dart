@@ -42,6 +42,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
   List sodiumPlans;
   List carbPlans;
   List fatPlans;
+  List cholesterolPlans;
   var diets = {"Low Carb": "", "Low Fat": "", "Sodium": ""};
 
   List<String> dietResults = [];
@@ -51,7 +52,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
   void initState() {
     sodiumPlans = getSodiumPlans();
 
-    fatPlans = getFatPlans();
+
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
     final dietPlan = 'DietPlan';
     DatabaseReference _dietPlanRef;
@@ -77,6 +78,8 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
         totalCalories = value;
         carbPlans = getCarbPlans();
+        fatPlans = getFatPlans();
+        cholesterolPlans = getCholesterolPlans();
 
         print("Benatar: " + totalCalories.toString());
       }
@@ -144,11 +147,35 @@ class _SecondDietPageState extends State<SecondDietPage> {
     {
       return 94;
     }
-    else if(plan == Constants.LOW_CARB && totalCalories == 2000)
-    {
-      return 75;
-    }
 
+
+  }
+
+  getFat(String plan){
+    if(plan == Constants.LOW_FAT && totalCalories == 2000)
+    {
+    return 67;
+    }
+    else if(plan == Constants.LOW_FAT && totalCalories == 1500)
+    {
+    return 50;
+    }
+    else if(plan == Constants.LOW_FAT && totalCalories == 1200)
+    {
+    return 40;
+    }
+    else if(plan == Constants.LOWEST_FAT && totalCalories == 2000)
+    {
+    return 22;
+    }
+    else if(plan == Constants.LOWEST_FAT && totalCalories == 1500)
+    {
+    return 17;
+    }
+    else if(plan == Constants.LOWEST_FAT && totalCalories == 1200)
+    {
+    return 13;
+    }
   }
 
   List getCarbPlans(){
@@ -172,6 +199,45 @@ class _SecondDietPageState extends State<SecondDietPage> {
           "This diet plan is defined as 10% of total daily calories from carbohydrates.",
           content2: "Please also select a corresponding calorie plan.",
           disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),];
+  }
+
+  List getCholesterolPlans(){
+    return [ DietPlan(
+        title: Constants.LOW_CHOLESTEROL,
+        level: "Intermediate",
+        indicatorValue: 0.33,
+        price: 50,
+        number: getCarb(Constants.LOW_CARB),
+        content:
+        "This diet plan is defined as saturated fat intake less than/equal to 10% of total calories and 0 grams trans fat and no more than 200-300 mg cholesterol per day.",
+        content2: "Please also select a corresponding calorie plan.",
+        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+     ];
+  }
+
+  List getFatPlans(){
+    return[
+      DietPlan(
+          title: Constants.LOW_FAT,
+          level: "Intermediate",
+          indicatorValue: 0.33,
+          price: 50,
+          number: getFat(Constants.LOW_FAT),
+          content:
+          "This diet plan is defined as total fat intake less than/equal to 30% of total calories and saturated fat intake less than/equal to 10%.",
+          content2: "Please also select a corresponding calorie plan.",
+          disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+      DietPlan(
+          title: Constants.LOWEST_FAT,
+          level: "Intermediate",
+          indicatorValue: 0.33,
+          price: 50,
+          number: getFat(Constants.LOWEST_FAT),
+          content:
+          "this diet plan is defined as total fat intake less than/equal to 10% of total calories this diet plan is defined as total fat intake less than/equal to 10% of total calories alllotted.",
+          content2: "Please also select a corresponding calorie plan.",
+          disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level.")
+    ];
   }
 
   static Widget _buildAboutText(DietPlan lesson) {
@@ -342,7 +408,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
               ),),
             SizedBox(height: 20),
             new Container(
-              child: Text('Other Plans',
+              child: Text('Low Fat Plans',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: 'Aleo',
@@ -361,7 +427,30 @@ class _SecondDietPageState extends State<SecondDietPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return makeCard(fatPlans[index]);
                 },
-              ),),],)
+              ),),
+            SizedBox(height: 20),
+            new Container(
+              child: Text('Low Cholesterol Plans',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'Aleo',
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0,
+                    color: Colors.white
+                ),
+              ),),
+            SizedBox(height: 10),
+            new Container(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: cholesterolPlans.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return makeCard(cholesterolPlans[index]);
+                },
+              ),)
+            ,],)
     );
 
 
@@ -403,11 +492,11 @@ class _SecondDietPageState extends State<SecondDietPage> {
       return "Low Carb";
     }
     else if
-    (title == Constants.LOW_FAT){
+    (title == Constants.LOW_FAT || title == Constants.LOWEST_FAT){
       return "Low Fat";
     }
     else if
-    (title == Constants.LOW_CHOLESTROL){
+    (title == Constants.LOW_CHOLESTEROL){
       return "Low Cholestrol";
     }
 
@@ -420,19 +509,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
 
 
-List getFatPlans(){
-  return[
-    DietPlan(
-        title: Constants.LOW_FAT,
-        level: "Intermediate",
-        indicatorValue: 0.33,
-        price: 50,
-        content:
-        "This diet plan is defined as total fat intake less than/equal to 30% of total calories and saturated fat intake less than/equal to 10%.",
-        content2: "Please also select a corresponding calorie plan.",
-        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level.")
-  ];
-}
+
 
 
 List getSodiumPlans() {
