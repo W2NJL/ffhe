@@ -342,7 +342,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
       onTap: () {
 
         print("Test! " + totalCalories.toString());
-        // ref.child(checkDietPlan(lesson.title)).set(lesson.title);
+        ref.child(checkDietPlan(lesson.title)).set(lesson.title);
         ref.child('DietVals').child(checkDietPlan(lesson.title)).child('MaxValue').set(lesson.number);
         String result;
         storeDietPlan(lesson.title);

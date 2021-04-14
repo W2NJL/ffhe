@@ -67,9 +67,53 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
 
     listViews.add(
+        Container(
+          child: Row(
+            children:[
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+              ),
+              Text(
+                "Diet plan:",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: FitnessAppTheme.darkerText,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+              ),
+            FutureBuilder(
+                future: _getDietPlan(),
+                initialData: "Loading text..",
+                builder: (BuildContext context, AsyncSnapshot<String> text) {
+                  return Text(
+                    text.data,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: FitnessAppTheme.fontName,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      letterSpacing: -0.2,
+                      color: FitnessAppTheme.darkerText,
+                    ),
+                  );}
+            ),
+      ]
+          ),
+        ),
+
+
+    );
+
+    listViews.add(
       Card(
 
-        margin: EdgeInsets.symmetric(vertical: 20),
+        margin: EdgeInsets.only(top: 20, bottom: 4, left: 20, right: 20),
         child: MaterialButton(minWidth: 5.0,
           height: 30,
           padding: const EdgeInsets.all(20),
@@ -80,22 +124,37 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
         ),
       ),
     );
+
     listViews.add(
-    FutureBuilder(
-    future: _getDietPlan(),
-    initialData: "Loading text..",
-    builder: (BuildContext context, AsyncSnapshot<String> text) {
-    return new TitleView(
-    titleTxt: text.data,
-    subTxt: 'Change Diet Plan',
-    animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-    parent: widget.animationController,
-    curve:
-    Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
-    animationController: widget.animationController,
+      Card(
+
+        margin: EdgeInsets.only(top: 4, bottom: 8, left: 20, right: 20),
+        child: MaterialButton(minWidth: 5.0,
+          height: 30,
+          padding: const EdgeInsets.all(20),
+          color: Color(0xFF2D3CEB),
+          child: Text('Change Diet Plan', style: new TextStyle(fontSize: 24.0, color: Colors.white70)),
+
+          onPressed: () { Navigator.pushNamedAndRemoveUntil(context, "DietScreen", (_) => false);},
+        ),
+      ),
     );
-    }),
-    );
+    // listViews.add(
+    // FutureBuilder(
+    // future: _getDietPlan(),
+    // initialData: "Loading text..",
+    // builder: (BuildContext context, AsyncSnapshot<String> text) {
+    // return new TitleView(
+    // titleTxt: text.data,
+    // subTxt: 'Change Diet Plan',
+    // animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+    // parent: widget.animationController,
+    // curve:
+    // Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
+    // animationController: widget.animationController,
+    // );
+    // }),
+    // );
 
     listViews.add(
       DrillDownScreen(
@@ -198,7 +257,6 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
         body: Stack(
           children: <Widget>[
             getMainListViewUI(),
-            getAppBarUI(),
             SizedBox(
               height: MediaQuery.of(context).padding.bottom,
             )
@@ -220,9 +278,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             return ListView.builder(
               controller: scrollController,
               padding: EdgeInsets.only(
-                top: AppBar().preferredSize.height +
-                    MediaQuery.of(context).padding.top +
-                    24,
+                top: 5,
                 bottom: 62 + MediaQuery.of(context).padding.bottom,
                 left: 10,
                 right: 10,
@@ -285,54 +341,13 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Hi Judy',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontFamily: FitnessAppTheme.fontName,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 22 + 6 - 6 * topBarOpacity,
-                                    letterSpacing: 1.2,
-                                    color: FitnessAppTheme.darkerText,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 38,
-                              width: 38,
-                              child: InkWell(
-                                highlightColor: Colors.transparent,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(32.0)),
-                                onTap: () {},
-                                child: Center(
-                                  child: Icon(
-                                    Icons.keyboard_arrow_left,
-                                    color: FitnessAppTheme.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 8,
-                                right: 8,
-                              ),
                               child: Row(
                                 children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 8),
-                                    child: Icon(
-                                      Icons.calendar_today,
-                                      color: FitnessAppTheme.grey,
-                                      size: 18,
-                                    ),
+                                    padding: const EdgeInsets.only(right: 4),
                                   ),
                                   Text(
-                                    formattedDate,
+                                    "Diet plan:",
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontFamily: FitnessAppTheme.fontName,
@@ -345,22 +360,28 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              height: 38,
-                              width: 38,
-                              child: InkWell(
-                                highlightColor: Colors.transparent,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(32.0)),
-                                onTap: () {},
-                                child: Center(
-                                  child: Icon(
-                                    Icons.keyboard_arrow_right,
-                                    color: FitnessAppTheme.grey,
-                                  ),
-                                ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: FutureBuilder(
+                                    future: _getDietPlan(),
+                                    initialData: "Loading text..",
+                                    builder: (BuildContext context, AsyncSnapshot<String> text) {
+                                      return Text(
+                                          text.data,
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                          fontFamily: FitnessAppTheme.fontName,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          letterSpacing: -0.2,
+                                          color: FitnessAppTheme.darkerText,
+                                      ),
+                                    );}
                               ),
                             ),
+                            ),
+
                           ],
                         ),
                       )
@@ -373,6 +394,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
         )
       ],
     );
+
   }
 }
 
@@ -383,16 +405,52 @@ void storeDietPlan(String dietPlan) async {
 
 Future <String> _getDietPlan() async {
   String result;
+  String result2;
+  String result3;
+  String result4;
+  String result5;
   final referenceDatabase = await FirebaseDatabase.instance
       .reference()
       .child('User')
       .child('DietPlan')
       .once()
       .then((snapshot){result=snapshot.value;});
+
+
+  final referenceDatabase2 = await FirebaseDatabase.instance
+      .reference()
+      .child('User')
+      .child('Low Carb')
+      .once()
+      .then((snapshot){result2=snapshot.value;});
+
+
+  final referenceDatabase3 = await FirebaseDatabase.instance
+      .reference()
+      .child('User')
+      .child('Sodium')
+      .once()
+      .then((snapshot){result3=snapshot.value;});
+
+
+  final referenceDatabase4 = await FirebaseDatabase.instance
+      .reference()
+      .child('User')
+      .child('Low Fat')
+      .once()
+      .then((snapshot){result4=snapshot.value;});
+  print(result);
+
+  final referenceDatabase5 = await FirebaseDatabase.instance
+      .reference()
+      .child('User')
+      .child('Low Cholestrol')
+      .once()
+      .then((snapshot){result5=snapshot.value;});
   print(result);
 
 
 
-  return result;
+  return result + ", \n" + result2 + ", " + result3 +", \n"+ result4 + ", " + result5;
 }
 

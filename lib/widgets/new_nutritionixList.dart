@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -133,47 +134,130 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         title:  Text(restaurant),
       ),
 
-      body: Container(
-        child: _buildList(),
+      body: Column(children:
+          [
+            Container(
+              child: _showTitle(),
+            ),
+            Container(
+              child: _buildList(),
+            ),
+          ]
+
       ),
       resizeToAvoidBottomInset: false,
     );
   }
 
 
+  Widget _showTitle(){
+    return FutureBuilder(
+        future: _getDietPlan(),
+        initialData: "Loading text..",
+        builder: (BuildContext context, AsyncSnapshot<String> text) {
+          return Text(
+            "Diet plan: " + text.data,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontFamily: FitnessAppTheme.fontName,
+              fontWeight: FontWeight.normal,
+              fontSize: 18,
+              letterSpacing: -0.2,
+              color: FitnessAppTheme.darkerText,
+            ),
+          );
+        }
+    );
+  }
+
+  Future <String> _getDietPlan() async {
+    String result;
+    String result2;
+    String result3;
+    String result4;
+    String result5;
+    final referenceDatabase = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('DietPlan')
+        .once()
+        .then((snapshot){result=snapshot.value;});
+
+
+    final referenceDatabase2 = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('Low Carb')
+        .once()
+        .then((snapshot){result2=snapshot.value;});
+
+
+    final referenceDatabase3 = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('Sodium')
+        .once()
+        .then((snapshot){result3=snapshot.value;});
+
+
+    final referenceDatabase4 = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('Low Fat')
+        .once()
+        .then((snapshot){result4=snapshot.value;});
+    print(result);
+
+    final referenceDatabase5 = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('Low Cholestrol')
+        .once()
+        .then((snapshot){result5=snapshot.value;});
+    print(result);
+
+
+
+    return result + ", \n" + result2 + ", " + result3 +", \n"+ result4 + ", " + result5;
+  }
+
+
   Widget _buildList() {
 
-      return ListView.builder(
-        itemCount: users.length + 1, // Add one more item for progress indicator
-        padding: EdgeInsets.symmetric(vertical: 8.0),
-        itemBuilder: (BuildContext context, int index) {
-          if (index == users.length) {
-            return _buildProgressIndicator();
-          } else {
-            return GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      _buildAboutDialog(context, users[index]),
-                );
-              },
-              child: ListTile(
-                leading: CircleAvatar(
-                  radius: 30.0,
+      return Expanded(
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: users.length + 1, // Add one more item for progress indicator
+          padding: EdgeInsets.symmetric(vertical: 8.0),
+          itemBuilder: (BuildContext context, int index) {
+            if (index == users.length) {
+              return _buildProgressIndicator();
+            } else {
+              return GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        _buildAboutDialog(context, users[index]),
+                  );
+                },
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30.0,
 // backgroundImage: NetworkImage(
 // users[index]['picture']['large'],
 // ),
+                  ),
+                  title: Text((users[index]['item_name'])),
+                  subtitle: Text(
+                      (users[index]['nf_calories'].toString()) +
+                          ' calories'),
                 ),
-                title: Text((users[index]['item_name'])),
-                subtitle: Text(
-                    (users[index]['nf_calories'].toString()) +
-                        ' calories'),
-              ),
-            );
-          }
-        },
-        controller: _sc,
+              );
+            }
+          },
+          controller: _sc,
+        ),
       );
     }
 
@@ -247,7 +331,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   void _getMoreData(int index, String restaurant, String category) async {
     int totalCalories2;
     var params;
-    if (!isLoading) {
+        if (!isLoading) {
       setState(() {
         isLoading = true;
       });
@@ -305,7 +389,6 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
 
 
-
       await _getRemainingNutrients('Low Carb').then((value) => setState(() {
         remainingCarbs = value;
 
@@ -320,85 +403,51 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         }));
 
       List tList = new List();
-
-      while(tList.length < 10) {
-        params = {
-          "appId": "816cee15",
-          "appKey": "aab0a0a4c4224eca770bf5a2a0f4c984",
-          "queries": {
-            "brand_name": restaurant,
-          },
-          "fields": [
-            "item_name",
-            "brand_name",
-            "nf_calories",
-            "nf_sodium",
-            "nf_total_fat",
-            "item_type",
-            "nf_cholesterol",
-            "nf_total_carbohydrate"
-          ],
-          "offset": page,
-          "limit": 50,
-          "sort": {
-            "field": "nf_calories",
-            "order": "desc"
-          },
-          "filters": {
-
-            "nf_calories": {
-              "from": 0,
-              "to": calorieSum
-            },
-            "nf_sodium": {
-              "from": 0,
-              "to": sodiumSum
-            },
-            "nf_total_carbohydrate": {
-              "from": 0,
-              "to": carbSum
-            }
-          }
-        };
+      var url = 'https://api.nutritionix.com/v1_1/search';
 
 
-        //var url = 'https://api.nutritionix.com/v1_1/search/' + restaurant + '?results='+ index.toString() + ':' + (index+50).toString() + '&fields=item_name,brand_name,nf_calories,nf_sodium,nf_sugars,nf_cholesterol,nf_total_fat,nf_dietary_fiber&appId=816cee15&appKey=aab0a0a4c4224eca770bf5a2a0f4c984';
-        //print(url);
-        var url = 'https://api.nutritionix.com/v1_1/search';
-        try {
-          final response = await dio.post(url,
-            options: Options(headers: {
-              HttpHeaders.contentTypeHeader: "application/json",
-            }),
-            data: params,
-          );
+      try {
+        params = generateParams(params, restaurant);
+        Response<dynamic> response = await responseCall(url, params);
+
+        while (tList.length < 10 && response.data['hits'] != null) {
+
+
+
+          //var url = 'https://api.nutritionix.com/v1_1/search/' + restaurant + '?results='+ index.toString() + ':' + (index+50).toString() + '&fields=item_name,brand_name,nf_calories,nf_sodium,nf_sugars,nf_cholesterol,nf_total_fat,nf_dietary_fiber&appId=816cee15&appKey=aab0a0a4c4224eca770bf5a2a0f4c984';
+          //print(url);
 
 
           List<String> foodList = <String>[];
 
+          int orig = tList.length;
+
 
           for (int i = 0; i < response.data['hits'].length; i++) {
-            if (determineFood(
-                response.data['hits'][i]['fields']['item_name']) ==
-                category && !foodList.contains(
-                response.data['hits'][i]['fields']['item_name']
-                    .toString()
-                    .toLowerCase())) {
-              tList.add(response.data['hits'][i]['fields']);
-              foodList.add(response.data['hits'][i]['fields']['item_name']
-                  .toString()
-                  .toLowerCase());
-            }
-
+            addFoodtoTList(response, i, category, foodList, tList);
+            print("Length of list is: " + tList.length.toString());
           }
 
+          if (tList.length == orig){
+            break;
+          }
 
 
           setState(() {
             page += 50;
           });
 
+           if(tList.length < 10){
+             print("Page is " + page.toString());
 
+            setState(() {
+               params = generateParams(params, restaurant);
+             });
+
+
+             response = await responseCall(url, params);
+           }
+        }
       }
 
 
@@ -407,14 +456,83 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
     }
 
+  //}
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+          print(tList.toString());
+          users.addAll(tList);
+        });
+      }
+    }
+    }
+
+  generateParams(params, String restaurant) {
+    params = {
+      "appId": "816cee15",
+      "appKey": "aab0a0a4c4224eca770bf5a2a0f4c984",
+      "queries": {
+        "brand_name": restaurant,
+      },
+      "fields": [
+        "item_name",
+        "brand_name",
+        "nf_calories",
+        "nf_sodium",
+        "nf_total_fat",
+        "item_type",
+        "nf_cholesterol",
+        "nf_total_carbohydrate"
+      ],
+      "offset": page,
+      "limit": 50,
+      "sort": {
+        "field": "nf_calories",
+        "order": "desc"
+      },
+      "filters": {
+
+        "nf_calories": {
+          "from": 0,
+          "to": calorieSum
+        },
+        "nf_sodium": {
+          "from": 0,
+          "to": sodiumSum
+        },
+        "nf_total_carbohydrate": {
+          "from": 0,
+          "to": carbSum
+        }
+      }
+    };
+    return params;
   }
-      setState(() {
-        isLoading = false;
-        print(tList.toString());
-        users.addAll(tList);
-      });
+
+  Future<Response<dynamic>> responseCall(String url, params) async {
+     final response = await dio.post(url,
+      options: Options(headers: {
+        HttpHeaders.contentTypeHeader: "application/json",
+      }),
+      data: params,
+    );
+    return response;
+  }
+
+  void addFoodtoTList(Response<dynamic> response, int i, String category, List<String> foodList, List<dynamic> tList) {
+     if (determineFood(
+        response.data['hits'][i]['fields']['item_name']) ==
+        category && !foodList.contains(
+        response.data['hits'][i]['fields']['item_name']
+            .toString()
+            .toLowerCase())) {
+
+      tList.add(response.data['hits'][i]['fields']);
+      foodList.add(response.data['hits'][i]['fields']['item_name']
+          .toString()
+          .toLowerCase());
     }
-    }
+  }
 
 
 
