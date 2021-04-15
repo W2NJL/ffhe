@@ -6,6 +6,10 @@ class Constants {
 
   static const String LOW_SODIUM_1 = "2300 mg sodium";
   static const String LOW_SODIUM_2 = "1500 mg sodium";
+  static const String NO_SODIUM = "No sodium plan";
+  static const String NO_FAT = "No fat plan";
+  static const String NO_CARB = "No carb plan";
+  static const String NO_CHOLESTEROL = "No Cholesterol plan";
   static const String LOW_CALORIE_1 = "2000 Calorie Diet per day";
   static const String LOW_CALORIE_2 = "1500 Calorie Diet per day";
   static const String LOW_CALORIE_3 = "1200 Calorie Diet per day";

@@ -423,6 +423,10 @@ Future <String> _getDietPlan() async {
       .child('Low Carb')
       .once()
       .then((snapshot){result2=snapshot.value;});
+  //
+  // if(result2 == 'No Carb Plan'){
+  //   result2 == ''
+  // }
 
 
   final referenceDatabase3 = await FirebaseDatabase.instance
@@ -451,6 +455,33 @@ Future <String> _getDietPlan() async {
 
 
 
-  return result + ", \n" + result2 + ", " + result3 +", \n"+ result4 + ", " + result5;
+  return result + ", \n" + analyzeResult(result2) + analyzeResult(result3) + checkForNewLine(result2, result3) + analyzeResult(result4) + analyzeResult(result5);
 }
 
+String checkForNewLine(String result1, String result2) {
+  if (result1.contains("No") && result2.contains("No"))
+    {
+      return "";
+    }
+  else{
+    return "\n";
+  }
+}
+
+analyzeResult(String result){
+  if (result.contains("No")){
+    return "";
+  }
+  else
+    return result + lastComma(result);
+
+
+}
+
+String lastComma(String result) {
+  if(result.contains("Cholesterol")) {
+    return "";
+  }
+  else
+    return ", ";
+}

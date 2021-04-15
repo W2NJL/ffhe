@@ -198,7 +198,17 @@ class _SecondDietPageState extends State<SecondDietPage> {
           content:
           "This diet plan is defined as 10% of total daily calories from carbohydrates.",
           content2: "Please also select a corresponding calorie plan.",
-          disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),];
+          disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+      DietPlan(
+          title: Constants.NO_CARB,
+          level: "Intermidiate",
+          indicatorValue: 0.33,
+          price: 30,
+          number: null,
+          content:
+          "This diet plan is defined as no more than 2300 mg sodium consumed daily.  One meal = no more than 760 mg sodium",
+          content2: "American Heart Association recommends no more than 2300 mg sodium a day and moving toward an ideal limit of no more than 1500 mg sodium per day for most adults.",
+          disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level.")];
   }
 
   List getCholesterolPlans(){
@@ -212,6 +222,16 @@ class _SecondDietPageState extends State<SecondDietPage> {
         "This diet plan is defined as saturated fat intake less than/equal to 10% of total calories and 0 grams trans fat and no more than 200-300 mg cholesterol per day.",
         content2: "Please also select a corresponding calorie plan.",
         disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+      DietPlan(
+          title: Constants.NO_CHOLESTEROL,
+          level: "Intermidiate",
+          indicatorValue: 0.33,
+          price: 30,
+          number: null,
+          content:
+          "This diet plan is defined as no more than 2300 mg sodium consumed daily.  One meal = no more than 760 mg sodium",
+          content2: "American Heart Association recommends no more than 2300 mg sodium a day and moving toward an ideal limit of no more than 1500 mg sodium per day for most adults.",
+          disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level.")
      ];
   }
 
@@ -236,6 +256,16 @@ class _SecondDietPageState extends State<SecondDietPage> {
           content:
           "this diet plan is defined as total fat intake less than/equal to 10% of total calories this diet plan is defined as total fat intake less than/equal to 10% of total calories alllotted.",
           content2: "Please also select a corresponding calorie plan.",
+          disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+      DietPlan(
+          title: Constants.NO_FAT,
+          level: "Intermidiate",
+          indicatorValue: 0.33,
+          price: 30,
+          number: null,
+          content:
+          "This diet plan is defined as no more than 2300 mg sodium consumed daily.  One meal = no more than 760 mg sodium",
+          content2: "American Heart Association recommends no more than 2300 mg sodium a day and moving toward an ideal limit of no more than 1500 mg sodium per day for most adults.",
           disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level.")
     ];
   }
@@ -484,19 +514,19 @@ class _SecondDietPageState extends State<SecondDietPage> {
   }}
 
   String checkDietPlan(String title) {
-    if(title == Constants.LOW_SODIUM_2 || title == Constants.LOW_SODIUM_1){
+    if(title == Constants.LOW_SODIUM_2 || title == Constants.LOW_SODIUM_1 || title == Constants.NO_SODIUM){
       return "Sodium";
     }
     else if
-    (title == Constants.LOW_CARB|| title == Constants.KETO) {
+    (title == Constants.LOW_CARB|| title == Constants.KETO || title == Constants.NO_CARB) {
       return "Low Carb";
     }
     else if
-    (title == Constants.LOW_FAT || title == Constants.LOWEST_FAT){
+    (title == Constants.LOW_FAT || title == Constants.LOWEST_FAT || title == Constants.NO_FAT){
       return "Low Fat";
     }
     else if
-    (title == Constants.LOW_CHOLESTEROL){
+    (title == Constants.LOW_CHOLESTEROL || title == Constants.NO_CHOLESTEROL){
       return "Low Cholestrol";
     }
 
@@ -514,6 +544,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
 List getSodiumPlans() {
   return [
+
     DietPlan(
         title: Constants.LOW_SODIUM_1,
         level: "Intermidiate",
@@ -534,6 +565,16 @@ List getSodiumPlans() {
         "This diet plan is defined as no more than 1500 mg sodium consumed daily.  One meal= no more than 500 mg sodium ",
         content2: "American Heart Association recommends no more than 2300 mg sodium a day and moving toward an ideal limit of no more than 1500 mg sodium per day for most adults.",
         disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+    DietPlan(
+        title: Constants.NO_SODIUM,
+        level: "Intermidiate",
+        indicatorValue: 0.33,
+        price: 30,
+        number: null,
+        content:
+        "This diet plan is defined as no more than 2300 mg sodium consumed daily.  One meal = no more than 760 mg sodium",
+        content2: "American Heart Association recommends no more than 2300 mg sodium a day and moving toward an ideal limit of no more than 1500 mg sodium per day for most adults.",
+        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level.")
 
 
   ];
