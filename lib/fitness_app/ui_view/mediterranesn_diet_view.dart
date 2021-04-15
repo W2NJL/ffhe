@@ -168,6 +168,8 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
     carbPlan = preferences.getString("Low Carb") ?? null;
     fatPlan = preferences.getString("Low Fat") ?? null;
 
+    print("Sodium Plan is: " + sodiumPlan);
+
 
 
       switch ( dietPlan ) {
@@ -559,7 +561,7 @@ if(done){
                             left: 24, right: 24, top: 8, bottom: 16),
                         child:  Row(
                           children: <Widget>[
-                            sodiumPlan != null? Expanded(
+                            sodiumPlan != "No sodium plan"? Expanded(
                               child:  Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -625,7 +627,7 @@ if(done){
                 width: 1,
                 height: 1,
               ),
-                            carbPlan != null? Expanded(
+                            carbPlan != "No carb plan"? Expanded(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
