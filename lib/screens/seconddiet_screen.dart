@@ -527,7 +527,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
     }
     else if
     (title == Constants.LOW_CHOLESTEROL || title == Constants.NO_CHOLESTEROL){
-      return "Low Cholestrol";
+      return "Low Cholesterol";
     }
 
     return null;

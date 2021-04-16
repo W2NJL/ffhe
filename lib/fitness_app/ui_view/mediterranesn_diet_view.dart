@@ -46,6 +46,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   int Calories;
   int sodium;
   int carbs;
+  int fat;
   bool done = false;
   String image1;
   String image2;
@@ -63,6 +64,9 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
     }));
     _getCalorieValue('Low Carb').then((value) => setState((){
       carbs = value;
+    }));
+    _getCalorieValue('Low Fat').then((value) => setState((){
+      fat = value;
     }));
     // _getImageValue().then((value) => setState((){
     //   image1 = value;
@@ -152,7 +156,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   Widget build(BuildContext context) {
 
 
-    int fat;
+
 
     int protein;
     int remainingValue;
@@ -698,7 +702,7 @@ if(done){
                                 ],
                               ),
                             ): SizedBox(height: 1),
-                            fatPlan != null? Expanded(
+                            fatPlan != "No fat plan"? Expanded(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -753,7 +757,7 @@ if(done){
                                       Padding(
                                         padding: const EdgeInsets.only(top: 6),
                                         child: Text(
-                                          '10g left',
+                                          fat.toString() + 'g left',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontFamily: FitnessAppTheme.fontName,

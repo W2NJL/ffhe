@@ -448,7 +448,7 @@ Future <String> _getDietPlan() async {
   final referenceDatabase5 = await FirebaseDatabase.instance
       .reference()
       .child('User')
-      .child('Low Cholestrol')
+      .child('Low Cholesterol')
       .once()
       .then((snapshot){result5=snapshot.value;});
   print(result);
