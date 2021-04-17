@@ -93,11 +93,22 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
       itemBuilder: (context) => [
         PopupMenuItem(
           value: 1,
+          child: Text('Change Diet Plan'),
+        ),
+        PopupMenuItem(
+          value: 2,
           child: Text('Logout'),
         )
+
       ],
       onSelected: (value) {
         if (value == 1) {
+          // logout
+          Navigator.pushNamedAndRemoveUntil(context, "DietScreen", (_) => false);
+        }
+
+
+        if (value == 2) {
           // logout
           authState.logout();
           gotoLoginScreen(context, authState);

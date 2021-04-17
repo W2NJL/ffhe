@@ -125,20 +125,20 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
       ),
     );
 
-    listViews.add(
-      Card(
-
-        margin: EdgeInsets.only(top: 4, bottom: 8, left: 20, right: 20),
-        child: MaterialButton(minWidth: 5.0,
-          height: 30,
-          padding: const EdgeInsets.all(20),
-          color: Color(0xFF2D3CEB),
-          child: Text('Change Diet Plan', style: new TextStyle(fontSize: 24.0, color: Colors.white70)),
-
-          onPressed: () { Navigator.pushNamedAndRemoveUntil(context, "DietScreen", (_) => false);},
-        ),
-      ),
-    );
+    // listViews.add(
+    //   Card(
+    //
+    //     margin: EdgeInsets.only(top: 4, bottom: 8, left: 20, right: 20),
+    //     child: MaterialButton(minWidth: 5.0,
+    //       height: 30,
+    //       padding: const EdgeInsets.all(20),
+    //       color: Color(0xFF2D3CEB),
+    //       child: Text('Change Diet Plan', style: new TextStyle(fontSize: 24.0, color: Colors.white70)),
+    //
+    //       onPressed: () { Navigator.pushNamedAndRemoveUntil(context, "DietScreen", (_) => false);},
+    //     ),
+    //   ),
+    // );
     // listViews.add(
     // FutureBuilder(
     // future: _getDietPlan(),
