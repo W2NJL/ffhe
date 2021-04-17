@@ -110,6 +110,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
         if (value == 2) {
           // logout
+          // authState.checkAuthentication();
           authState.logout();
           gotoLoginScreen(context, authState);
         }

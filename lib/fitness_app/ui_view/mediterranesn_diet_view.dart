@@ -54,36 +54,74 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   String image3;
   String image4;
   String image5;
+  List<String> restaurants = <String>[];
+  List<String> imageArray = <String>[];
 
   _DrillDownScreenState(){
-    _getCalorieValue('Calories').then((value) => setState(() {
-      Calories = value;
-      done = true;
-    }));
-    _getCalorieValue('Sodium').then((value) => setState((){
-      sodium = value;
-    }));
-    _getCalorieValue('Low Carb').then((value) => setState((){
-      carbs = value;
-    }));
-    _getCalorieValue('Low Fat').then((value) => setState((){
-      fat = value;
-    }));
-    _getMaxValue('Calories').then((value) => setState((){
-      calorieMax = value;
-    }));
+
+    this._getMoreData();
+
+
+
+
     // _getImageValue().then((value) => setState((){
     //   image1 = value;
     // }));
   }
 
+
+
+  void _getMoreData() async {
+    bool cals, sodiums, carbies, fats, calmaxs, rests;
+
+    await _getCalorieValue('Calories').then((value) =>
+        setState(() {
+          Calories = value;
+          cals = true;
+        }));
+    await _getCalorieValue('Sodium').then((value) =>
+        setState(() {
+          sodium = value;
+          sodiums = true;
+        }));
+    await _getCalorieValue('Low Carb').then((value) =>
+        setState(() {
+          carbs = value;
+          carbies = true;
+        }));
+    await _getCalorieValue('Low Fat').then((value) =>
+        setState(() {
+          fat = value;
+          fats = true;
+        }));
+    await _getMaxValue('Calories').then((value) =>
+        setState(() {
+          calorieMax = value;
+          calmaxs = true;
+        }));
+
+    await _getRestaurantImages().then((value) =>
+        setState(() {
+          restaurants = value;
+          rests = true;
+        }));
+
+    print("First I look at the Hearst: " + restaurants.first);
+
+    for (String restaurant in restaurants) {
+      imageArray.add(cleanRestaurant(restaurant));
+    }
+
+    if(cals && sodiums && carbies && fats && calmaxs && rests ){
+      done = true;
+    }
+}
+
   Future <int> _getMaxValue(String diet) async {
     final referenceDatabase = FirebaseDatabase.instance;
     final ref = referenceDatabase.reference().child('User').child('DietVals');
 
-    var now = new DateTime.now();
-    var formatter = new DateFormat('yyyy-MM-dd');
-    String formattedDate = formatter.format(now);
+    String formattedDate = getDate();
 
 
     int maxValue;
@@ -102,6 +140,36 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
       return maxValue;
   }
 
+  Future <List> _getRestaurantImages() async{
+
+    String formattedDate = getDate();
+    Map<dynamic, dynamic> meals;
+    List<String> restaurants = <String>[];
+
+    final referenceDatabase2 = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('DietVals')
+        .child(formattedDate)
+        .child('Meals')
+        .once()
+        .then((snapshot){
+      meals = snapshot.value;
+    });
+
+
+//    print(fridgesDs.runtimeType);
+    meals.forEach((key, value) {
+      print("Value is: " + value['Restaurant'].toString());
+
+
+        restaurants.add(value['Restaurant'].toString());
+
+
+  });
+
+    return restaurants;
+        }
 
 
   Future <int> _getCalorieValue(String diet) async {
@@ -109,9 +177,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
     final referenceDatabase = FirebaseDatabase.instance;
     final ref = referenceDatabase.reference().child('User').child('DietVals');
 
-    var now = new DateTime.now();
-    var formatter = new DateFormat('yyyy-MM-dd');
-    String formattedDate = formatter.format(now);
+    String formattedDate = getDate();
 
     int result;
     int maxValue;
@@ -131,13 +197,20 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
     //
     // }
 
-    done = true;
+
 
     if(result == null) {
       return 0;
     }
     else return result;
 
+  }
+
+  String getDate() {
+     var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+    return formattedDate;
   }
 
 
@@ -243,6 +316,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
 
 if(done){
+  print("yeehaw" + imageArray.elementAt(0).toString());
     return InkWell(
           highlightColor: Colors.transparent,
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
@@ -348,17 +422,18 @@ if(done){
                                       //             ),
                                       //           ),
                                                 Row(
+
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.end,
                                                   children: <Widget>[
 
-                                                    sodiumPlan != null? SizedBox(
+                                                    imageArray.elementAt(0) != null? SizedBox(
                                                       width: 40,
                                                       height: 40,
                                                       child: Image.asset(
-                                                          "images/bob_evans.png"),
+                                                          "images/" + imageArray.elementAt(0)),
                                                     ) : SizedBox(height: 0),
                                                     Padding(
                                                       padding:
@@ -383,6 +458,8 @@ if(done){
                                                       padding:
                                                           const EdgeInsets.only(
                                                               left: 4, bottom: 3),
+
+
                                                       // child: Text(
                                                       //   "Kcal",
                                                       //   textAlign: TextAlign.center,
@@ -400,7 +477,15 @@ if(done){
                                                       //   ),
                                                       // ),
                                                     ),
-                                ]),
+                                                    imageArray.elementAt(1) != null? SizedBox(
+                                                      width: 40,
+                                                      height: 40,
+                                                      child: Image.asset(
+                                                          "images/" + imageArray.elementAt(1)),
+                                                    ) : SizedBox(height: 0),
+
+
+                                ], ),
 
 
 
@@ -536,7 +621,7 @@ if(done){
                                                 CrossAxisAlignment.center,
                                             children: <Widget>[
                                               Text(
-                                                remainingValue.toString(),
+                                                Calories.toString(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily:
@@ -574,7 +659,7 @@ if(done){
                                                 HexColor("#8A98E8"),
                                                 HexColor("#8A98E8")
                                               ],
-                                              angle: (remainingValue/calorieMax)*360 +
+                                              angle: (Calories/calorieMax)*360 +
                                                   (360 - 140) *
                                                       (1.0 - widget.animation.value)),
                                           child: SizedBox(
@@ -827,6 +912,21 @@ if(done){
 }
   else
   return Center(child: CircularProgressIndicator());
+  }
+
+  String cleanRestaurant(String restaurant) {
+    print("Hmm " + restaurant);
+
+
+    if(restaurant.contains("Bob"))
+      {
+        return "bob_evans.png";
+      }
+    else if (restaurant.contains("Olive")){
+      return "og.jpg";
+    }
+    
+    
   }
 }
 
