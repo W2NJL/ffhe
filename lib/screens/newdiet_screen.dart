@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class DietScreen extends StatelessWidget {
+
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -40,17 +42,22 @@ class _DietPageState extends State<DietPage> {
   final dietPlan = 'DietPlan';
   DatabaseReference _dietPlanRef;
 
+
+
   @override
   void initState() {
+
     dietPlans = getDietPlans();
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
     _dietPlanRef = database.reference().child('User');
     super.initState();
+
   }
 
   _DietPageState(){
     _getDietPlan().then((value) => setState(() {
       selectedPlan = value;
+      _showDialog();
     }));
   }
 
@@ -67,6 +74,29 @@ class _DietPageState extends State<DietPage> {
 
 
     return result;
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Select your Calorie plan"),
+          content: new Text("First, please choose one of our 3 calorie plans."),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
 
@@ -124,6 +154,8 @@ class _DietPageState extends State<DietPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
 
     final ref = referenceDatabase.reference().child('User');
 

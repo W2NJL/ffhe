@@ -39,11 +39,11 @@ class _SecondDietPageState extends State<SecondDietPage> {
   String selectedPlan;
   int totalCalories;
 
-  List sodiumPlans;
-  List carbPlans;
-  List fatPlans;
-  List cholesterolPlans;
-  var diets = {"Low Carb": "", "Low Fat": "", "Sodium": ""};
+  List sodiumPlans = [];
+  List carbPlans = [];
+  List fatPlans = [];
+  List cholesterolPlans = [];
+  var diets = {"Low Carb": "", "Low Fat": "", "Sodium": "", "Low Cholesterol": ""};
 
   List<String> dietResults = [];
   final referenceDatabase = FirebaseDatabase.instance;
@@ -51,6 +51,9 @@ class _SecondDietPageState extends State<SecondDietPage> {
   @override
   void initState() {
     sodiumPlans = getSodiumPlans();
+    carbPlans = getCarbPlans();
+    fatPlans = getFatPlans();
+    cholesterolPlans = getCholesterolPlans();
 
 
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
@@ -73,20 +76,32 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
     ));
 
-      _getTotalNutrients('Calories').then((value) => setState(() {
 
 
-        totalCalories = value;
-        carbPlans = getCarbPlans();
-        fatPlans = getFatPlans();
-        cholesterolPlans = getCholesterolPlans();
 
-        print("Benatar: " + totalCalories.toString());
-      }
+  }
+    _getMoreData();
+  }
 
-      ));
-  }}
 
+  void _getMoreData() async {
+
+    await _getTotalNutrients('Calories').then((value) => setState(() {
+
+
+      totalCalories = value;
+
+
+      print("Benatar: " + totalCalories.toString());
+    }
+
+
+
+    ));
+
+    _showDialog();
+
+  }
 
   Future <String> _getDietPlan(String plan) async {
     String result;
@@ -121,6 +136,29 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
 
     return maxValue;
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Select additional diet plans"),
+          content: new Text("Choose from one of our low sodium, low carb, low fat, and low cholesterol options."),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   getCarb(String plan){

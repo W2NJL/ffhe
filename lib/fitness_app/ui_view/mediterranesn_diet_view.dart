@@ -106,11 +106,11 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
           rests = true;
         }));
 
-    print("First I look at the Hearst: " + restaurants.first);
 
+if(restaurants != null){
     for (String restaurant in restaurants) {
       imageArray.add(cleanRestaurant(restaurant));
-    }
+    }}
 
     if(cals && sodiums && carbies && fats && calmaxs && rests ){
       done = true;
@@ -157,16 +157,16 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
       meals = snapshot.value;
     });
 
-
+if(meals!=null){
 //    print(fridgesDs.runtimeType);
     meals.forEach((key, value) {
       print("Value is: " + value['Restaurant'].toString());
 
 
-        restaurants.add(value['Restaurant'].toString());
+      restaurants.add(value['Restaurant'].toString());
+    });
 
-
-  });
+  }
 
     return restaurants;
         }
@@ -316,7 +316,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
 
 if(done){
-  print("yeehaw" + imageArray.elementAt(0).toString());
+
     return InkWell(
           highlightColor: Colors.transparent,
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
@@ -374,14 +374,14 @@ if(done){
                   ),]),
                         Padding(
                           padding:
-                              const EdgeInsets.only(top: 16, left: 16, right: 16),
+                              const EdgeInsets.only(top: 4, left: 16, right: 16),
                           child: Row(
 
                             children: <Widget>[
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 8, right: 8, top: 4),
+                                      left: 0, right: 8, top: 0, bottom: 5),
                                   child: Column(
                                     children: <Widget>[
                                       // Row(
@@ -429,7 +429,7 @@ if(done){
                                                       CrossAxisAlignment.end,
                                                   children: <Widget>[
 
-                                                    imageArray.elementAt(0) != null? SizedBox(
+                                                    imageArray.isNotEmpty ? SizedBox(
                                                       width: 40,
                                                       height: 40,
                                                       child: Image.asset(
@@ -438,7 +438,7 @@ if(done){
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.only(
-                                                              left: 4, bottom: 3),
+                                                              left: 4, bottom: 0),
                                                       // child: Text(
                                                       //   '${(1127 * widget.animation.value).toInt()}',
                                                       //   textAlign: TextAlign.center,
@@ -457,7 +457,7 @@ if(done){
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.only(
-                                                              left: 4, bottom: 3),
+                                                              left: 4, bottom: 0),
 
 
                                                       // child: Text(
@@ -477,13 +477,60 @@ if(done){
                                                       //   ),
                                                       // ),
                                                     ),
-                                                    imageArray.elementAt(1) != null? SizedBox(
+                                                    imageArray.isNotEmpty && imageArray.length >= 2? SizedBox(
                                                       width: 40,
                                                       height: 40,
                                                       child: Image.asset(
                                                           "images/" + imageArray.elementAt(1)),
                                                     ) : SizedBox(height: 0),
+                                                    Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          left: 4, bottom: 0),
+                                                      // child: Text(
+                                                      //   '${(1127 * widget.animation.value).toInt()}',
+                                                      //   textAlign: TextAlign.center,
+                                                      //   style: TextStyle(
+                                                      //     fontFamily:
+                                                      //         FitnessAppTheme
+                                                      //             .fontName,
+                                                      //     fontWeight:
+                                                      //         FontWeight.w600,
+                                                      //     fontSize: 16,
+                                                      //     color: FitnessAppTheme
+                                                      //         .darkerText,
+                                                      //   ),
+                                                      // ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          left: 4, bottom: 0),
 
+
+                                                      // child: Text(
+                                                      //   "Kcal",
+                                                      //   textAlign: TextAlign.center,
+                                                      //   style: TextStyle(
+                                                      //     fontFamily:
+                                                      //         FitnessAppTheme
+                                                      //             .fontName,
+                                                      //     fontWeight:
+                                                      //         FontWeight.w600,
+                                                      //     fontSize: 12,
+                                                      //     letterSpacing: -0.2,
+                                                      //     color: FitnessAppTheme
+                                                      //         .grey
+                                                      //         .withOpacity(0.5),
+                                                      //   ),
+                                                      // ),
+                                                    ),
+                                                    imageArray.isNotEmpty && imageArray.length >= 3? SizedBox(
+                                                      width: 40,
+                                                      height: 40,
+                                                      child: Image.asset(
+                                                          "images/" + imageArray.elementAt(2)),
+                                                    ) : SizedBox(height: 0),
 
                                 ], ),
 
@@ -675,6 +722,124 @@ if(done){
                             ],
                           ),
                         ),
+
+              Padding(
+                padding:
+                const EdgeInsets.only(top: 0, left: 16, right: 16),
+                child: Row(
+                    children: <Widget>[
+                Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.only(
+                    left: 0, right: 8, top: 0, bottom: 5),
+                  child: Column(
+                    children: <Widget>[
+                  // Row(
+                  //   children: <Widget>[
+                  //     Container(
+                  //       height: 48,
+                  //       width: 2,
+                  //       decoration: BoxDecoration(
+                  //         color: HexColor('#87A0E5')
+                  //             .withOpacity(0.5),
+                  //         borderRadius: BorderRadius.all(
+                  //             Radius.circular(4.0)),
+                  //       ),
+                  //     ),
+                  //     Padding(
+                  //       padding: const EdgeInsets.all(8.0),
+                  //       child: Column(
+                  //         mainAxisAlignment:
+                  //             MainAxisAlignment.center,
+                  //         crossAxisAlignment:
+                  //             CrossAxisAlignment.start,
+                  //         children: <Widget>[
+                  //           Padding(
+                  //             padding: const EdgeInsets.only(
+                  //                 left: 4, bottom: 2),
+                  //             child: Text(
+                  //               'Eaten',
+                  //               textAlign: TextAlign.center,
+                  //               style: TextStyle(
+                  //                 fontFamily:
+                  //                     FitnessAppTheme.fontName,
+                  //                 fontWeight: FontWeight.w500,
+                  //                 fontSize: 16,
+                  //                 letterSpacing: -0.1,
+                  //                 color: FitnessAppTheme.grey
+                  //                     .withOpacity(0.5),
+                  //               ),
+                  //             ),
+                  //           ),
+                  Row(
+
+                  mainAxisAlignment:
+                  MainAxisAlignment.start,
+                    crossAxisAlignment:
+                    CrossAxisAlignment.end,
+                    children: <Widget>[
+
+                      imageArray.isNotEmpty && imageArray.length >= 4 ? SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: Image.asset(
+                        "images/" + imageArray.elementAt(3)),
+                  ) : SizedBox(height: 0),
+              Padding(
+                padding:
+                const EdgeInsets.only(
+                    left: 4, bottom: 3),
+                // child: Text(
+                //   '${(1127 * widget.animation.value).toInt()}',
+                //   textAlign: TextAlign.center,
+                //   style: TextStyle(
+                //     fontFamily:
+                //         FitnessAppTheme
+                //             .fontName,
+                //     fontWeight:
+                //         FontWeight.w600,
+                //     fontSize: 16,
+                //     color: FitnessAppTheme
+                //         .darkerText,
+                //   ),
+                // ),
+              ),
+              Padding(
+                padding:
+                const EdgeInsets.only(
+                    left: 4, bottom: 3),
+
+
+                // child: Text(
+                //   "Kcal",
+                //   textAlign: TextAlign.center,
+                //   style: TextStyle(
+                //     fontFamily:
+                //         FitnessAppTheme
+                //             .fontName,
+                //     fontWeight:
+                //         FontWeight.w600,
+                //     fontSize: 12,
+                //     letterSpacing: -0.2,
+                //     color: FitnessAppTheme
+                //         .grey
+                //         .withOpacity(0.5),
+                //   ),
+                // ),
+              ),
+              imageArray.isNotEmpty && imageArray.length >= 5? SizedBox(
+                width: 40,
+                height: 40,
+                child: Image.asset(
+                    "images/" + imageArray.elementAt(4)),
+              ) : SizedBox(height: 0),
+
+
+          ],
+          ),
+          ],
+          )
+          ))])),
 
                       Padding(
                         padding: const EdgeInsets.only(
@@ -922,11 +1087,39 @@ if(done){
       {
         return "bob_evans.png";
       }
-    else if (restaurant.contains("Olive")){
-      return "og.jpg";
+    else if (restaurant.contains("Apple")){
+      return "applebees.png";
     }
-    
-    
+    else if (restaurant.contains("King")){
+      return "bk.jpg";
+    }
+    else if (restaurant.contains("Chick")){
+      return "chick-fil-a.gif";
+    }
+    else if (restaurant.contains("donald")){
+      return "mcdonalds.png";
+    }
+    else if (restaurant.contains("Chang")){
+      return "pfchangs.jpg";
+    }
+    else if (restaurant.contains("Panera")){
+      return "panera.jpg";
+    }
+    else if (restaurant.contains("Royal")){
+      return "royal_farms.jpg";
+    }
+    else if (restaurant.contains("Smash")){
+      return "smash.png";
+    }
+    else if (restaurant.contains("Taco")){
+      return "taco.png";
+    }
+    else if (restaurant.contains("Wawa")){
+      return "wawa.jpg";
+    }
+
+
+
   }
 }
 
