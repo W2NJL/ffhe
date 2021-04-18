@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_animated_button/flutter_animated_button.dart';
 
 
 class DietScreen extends StatelessWidget {
@@ -208,9 +209,10 @@ class _DietPageState extends State<DietPage> {
         ref.child('DietVals').child('Calories').child('MaxValue').set(lesson.number);
         String result;
         storeDietPlan(lesson.title);
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => SecondDietScreen())
-        );
+        setState(() {
+          selectedPlan = lesson.title;
+        });
+
       },
     );
 
@@ -225,14 +227,39 @@ class _DietPageState extends State<DietPage> {
 
     final makeBody = Container(
       // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: dietPlans.length,
-        itemBuilder: (BuildContext context, int index) {
-          return makeCard(dietPlans[index]);
-        },
-      ),
+      child: Column(
+
+        children: <Widget>[
+
+          SizedBox(
+            width: 200,
+            child: ElevatedButton(
+
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (BuildContext context) => SecondDietScreen())
+                );
+              },
+
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Continue",style: TextStyle(fontSize: 20)),
+                      Icon(Icons.navigate_next)
+                    ],
+
+                ),
+              ),
+          ),
+          ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: dietPlans.length,
+          itemBuilder: (BuildContext context, int index) {
+            return makeCard(dietPlans[index]);
+          },
+        ),
+      ]),
     );
 
 

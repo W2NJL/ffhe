@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'newdiet_screen.dart';
 
 
@@ -414,8 +414,10 @@ class _SecondDietPageState extends State<SecondDietPage> {
         ref.child('DietVals').child(checkDietPlan(lesson.title)).child('MaxValue').set(lesson.number);
         String result;
         storeDietPlan(lesson.title);
+        setState(() {
+          diets[checkDietPlan(lesson.title)] = lesson.title;
+        });
 
-        Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
       },
     );
 
@@ -428,98 +430,119 @@ class _SecondDietPageState extends State<SecondDietPage> {
       ),
     );
 
-    final makeBody = SingleChildScrollView(
+    final makeBody = Container(
       // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
-        child: new Column(
-          children:[ SizedBox(height: 10), new Container(
-            child: Text('Low Sodium Plans',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontFamily: 'Aleo',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0,
-                  color: Colors.white
+        child: SingleChildScrollView(
+          child: new Column(
+            children: <Widget>[ SizedBox(height: 10),  SizedBox(
+              width: 300,
+              child: ElevatedButton(
+
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
+                },
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Back to Home Screen",style: TextStyle(fontSize: 20)),
+                    Icon(Icons.navigate_next)
+                  ],
+
+                ),
               ),
-            ),),
-            SizedBox(height: 10),
-            new Container(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: sodiumPlans.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return makeCard(sodiumPlans[index]);
-                },
-              ),),
-            SizedBox(height: 20),
-            new Container(
-              child: Text('Low Carb Plans',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'Aleo',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.0,
-                    color: Colors.white
-                ),
-              ),),
-            SizedBox(height: 10),
-            new Container(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: carbPlans.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return makeCard(carbPlans[index]);
-                },
-              ),),
-            SizedBox(height: 20),
-            new Container(
-              child: Text('Low Fat Plans',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'Aleo',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.0,
-                    color: Colors.white
-                ),
-              ),),
-            SizedBox(height: 10),
-            new Container(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: fatPlans.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return makeCard(fatPlans[index]);
-                },
-              ),),
-            SizedBox(height: 20),
-            new Container(
-              child: Text('Low Cholesterol Plans',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'Aleo',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.0,
-                    color: Colors.white
-                ),
-              ),),
-            SizedBox(height: 10),
-            new Container(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: cholesterolPlans.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return makeCard(cholesterolPlans[index]);
-                },
-              ),)
-            ,],)
-    );
+            ),
+              SizedBox(height: 10),
+          new Container(
+                  child: Text('Low Sodium Plans',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontFamily: 'Aleo',
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15.0,
+                        color: Colors.white
+                    ),
+                  ),),
+
+              SizedBox(height: 10),
+              new Container(
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: sodiumPlans.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return makeCard(sodiumPlans[index]);
+                  },
+                ),),
+              SizedBox(height: 20),
+              new Container(
+                child: Text('Low Carb Plans',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: 'Aleo',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0,
+                      color: Colors.white
+                  ),
+                ),),
+              SizedBox(height: 10),
+              new Container(
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: carbPlans.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return makeCard(carbPlans[index]);
+                  },
+                ),),
+              SizedBox(height: 20),
+              new Container(
+                child: Text('Low Fat Plans',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: 'Aleo',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0,
+                      color: Colors.white
+                  ),
+                ),),
+              SizedBox(height: 10),
+              new Container(
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: fatPlans.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return makeCard(fatPlans[index]);
+                  },
+                ),),
+              SizedBox(height: 20),
+              new Container(
+                child: Text('Low Cholesterol Plans',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: 'Aleo',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0,
+                      color: Colors.white
+                  ),
+                ),),
+              SizedBox(height: 10),
+              new Container(
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: cholesterolPlans.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return makeCard(cholesterolPlans[index]);
+                  },
+                ),)
+              ,],),
+        ));
 
 
 

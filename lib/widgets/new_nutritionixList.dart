@@ -7,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fast_food_health_e/services/FirebaseCalls.dart';
+import 'package:unsplash_client/unsplash_client.dart' hide Response;
 
 class NewNutritionixList extends StatefulWidget {
   final String restaurant;
@@ -42,6 +43,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   bool done = false;
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
+
+  final client = UnsplashClient(
+    settings: ClientSettings(credentials: AppCredentials(
+      accessKey: 'rH4xDYBXLLC1QLwSp0pHWmSXcHqYck0lMzJIVKG688M',
+      secretKey: 'SG-k3_ZhUZDc-eOB8nDR8hyjhbSgRQ3-RvfLn0yC75c',
+    )),
+  );
 
 
 
@@ -232,6 +240,22 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     return result + ", \n" + result2 + ", " + result3 +", \n"+ result4 + ", " + result5;
   }
 
+  
+  Future <Uri> _getPhotos(user) async{
+    // Call `goAndGet` to execute the [Request] returned from `random`
+// and throw an exception if the [Response] is not ok.
+    final photos = await client.photos.random(count: 1, query: user).goAndGet();
+
+// The api returns a `Photo` which contains metadata about the photo and urls to download it.
+    final photo = photos.first;
+
+    final thumb = photo.urls.thumb;
+
+
+
+
+    return thumb;
+  }
 
   Widget _buildList() {
 
@@ -246,18 +270,30 @@ class NewNutritionixListState extends State<NewNutritionixList> {
             } else {
               return GestureDetector(
                 onTap: () {
+
+
                   showDialog(
+
                     context: context,
                     builder: (BuildContext context) =>
                         _buildAboutDialog(context, users[index]),
                   );
                 },
                 child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30.0,
-// backgroundImage: NetworkImage(
-// users[index]['picture']['large'],
-// ),
+                  leading: FutureBuilder<Uri>(
+                      future: _getPhotos(users[index]['item_name']),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return CircleAvatar(
+                           radius: 30,
+                            backgroundImage: NetworkImage(
+                              snapshot.data.toString()
+                            ),
+
+                          );
+                        }
+                        return CircularProgressIndicator();
+                      }
                   ),
                   title: Text((users[index]['item_name'])),
                   subtitle: Text(
