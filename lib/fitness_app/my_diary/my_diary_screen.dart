@@ -424,12 +424,13 @@ Future <String> _getDietPlan() async {
   String result3;
   String result4;
   String result5;
+  List<String> resultList = <String>[];
   final referenceDatabase = await FirebaseDatabase.instance
       .reference()
       .child('User')
       .child('DietPlan')
       .once()
-      .then((snapshot){result=snapshot.value;});
+      .then((snapshot){resultList.add(snapshot.value);});
 
 
   final referenceDatabase2 = await FirebaseDatabase.instance
@@ -437,7 +438,7 @@ Future <String> _getDietPlan() async {
       .child('User')
       .child('Low Carb')
       .once()
-      .then((snapshot){result2=snapshot.value;});
+      .then((snapshot){resultList.add(snapshot.value);});
   //
   // if(result2 == 'No Carb Plan'){
   //   result2 == ''
@@ -449,7 +450,7 @@ Future <String> _getDietPlan() async {
       .child('User')
       .child('Sodium')
       .once()
-      .then((snapshot){result3=snapshot.value;});
+      .then((snapshot){resultList.add(snapshot.value);});
 
 
   final referenceDatabase4 = await FirebaseDatabase.instance
@@ -457,7 +458,7 @@ Future <String> _getDietPlan() async {
       .child('User')
       .child('Low Fat')
       .once()
-      .then((snapshot){result4=snapshot.value;});
+      .then((snapshot){resultList.add(snapshot.value);});
   print(result);
 
   final referenceDatabase5 = await FirebaseDatabase.instance
@@ -465,38 +466,42 @@ Future <String> _getDietPlan() async {
       .child('User')
       .child('Low Cholesterol')
       .once()
-      .then((snapshot){result5=snapshot.value;});
+      .then((snapshot){resultList.add(snapshot.value);});
   print(result);
 
 
 
-  return result + ", \n" + analyzeResult(result2) + analyzeResult(result3) + checkForNewLine(result2, result3) + analyzeResult(result4) + analyzeResult(result5);
+
+
+
+
+  return analyzeResult(resultList);
 }
 
-String checkForNewLine(String result1, String result2) {
-  if (result1.contains("No") && result2.contains("No"))
-    {
-      return "";
+
+
+String analyzeResult(List<String> result){
+  String returnValue;
+  returnValue = result.elementAt(0);
+
+  Iterator<String> joe = result.iterator;
+
+  joe.moveNext();
+
+  while(joe.moveNext()) {
+String now = joe.current;
+    if(!now.contains("No")) {
+      returnValue += "\n" + joe.current;
     }
-  else{
-    return "\n";
-  }
-}
 
-analyzeResult(String result){
-  if (result.contains("No")){
-    return "";
-  }
-  else
-    return result + lastComma(result);
+    }
+
+
+
+
+
+    return returnValue;
 
 
 }
 
-String lastComma(String result) {
-  if(result.contains("Cholesterol")) {
-    return "";
-  }
-  else
-    return ", ";
-}
