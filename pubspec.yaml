@@ -20,6 +20,7 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
+
 dependencies:
   flutter:
     sdk: flutter
@@ -44,6 +45,7 @@ dependencies:
   intl: ^0.17.0
   flutter_animated_button: ^2.0.0
   unsplash_client: ^2.0.0
+  mailer: ^3.0.3
 
 
 dev_dependencies:

@@ -168,8 +168,8 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     );
     listViews.add(
       TitleView(
-        titleTxt: 'Meal recommendations',
-        subTxt: 'Customize',
+        titleTxt: 'Ask A Nutritionist',
+
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController,
             curve:
@@ -179,15 +179,30 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     );
 
     listViews.add(
-      MealsListView(
-        mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
-            CurvedAnimation(
-                parent: widget.animationController,
-                curve: Interval((1 / count) * 3, 1.0,
-                    curve: Curves.fastOutSlowIn))),
-        mainScreenAnimationController: widget.animationController,
+    Text(
+      "Get fast nutrition advice from our team, which includes a clinical professor and a 30 year nutritionist.",
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontFamily: FitnessAppTheme.fontName,
+        fontWeight: FontWeight.normal,
+        fontSize: 14,
+        letterSpacing: -0.2,
+        color: FitnessAppTheme.darkerText,
+      ),
+    ),
+    );
+
+    listViews.add(
+      Card(
+
+        margin: EdgeInsets.only(top: 20, bottom: 4, left: 20, right: 20),
+        child: Image.asset("images\/" + "nutritionist.jpg"),
+
       ),
     );
+
+
+
     //
     // listViews.add(
     //   TitleView(

@@ -49,7 +49,7 @@ class TitleView extends StatelessWidget {
                       highlightColor: Colors.transparent,
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
                       onTap: () {
-                        Navigator.pushNamed(context, 'DietScreen');
+                        Navigator.pushNamed(context, 'AskANutritionist');
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8),

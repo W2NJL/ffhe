@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
+import '../utils/email_screen.dart';
 
 
 class DietScreen extends StatelessWidget {
@@ -144,7 +145,9 @@ class _DietPageState extends State<DietPage> {
       actions: <Widget>[
         new FlatButton(
           onPressed: () {
+
             Navigator.of(context).pop();
+
           },
           textColor: Theme.of(context).primaryColor,
           child: const Text('Select this plan'),
@@ -236,6 +239,7 @@ class _DietPageState extends State<DietPage> {
             child: ElevatedButton(
 
               onPressed: () {
+
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (BuildContext context) => SecondDietScreen())
                 );
