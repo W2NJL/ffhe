@@ -51,7 +51,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
   @override
   void initState() {
     sodiumPlans = getSodiumPlans();
-    carbPlans = getCarbPlans();
+
     fatPlans = getFatPlans();
     cholesterolPlans = getCholesterolPlans();
 
@@ -97,9 +97,11 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
 
 
+
     ));
 
     _showDialog();
+    carbPlans = getCarbPlans();
 
   }
 
@@ -162,6 +164,9 @@ class _SecondDietPageState extends State<SecondDietPage> {
   }
 
   getCarb(String plan){
+
+    print("Plan is : " + plan + totalCalories.toString());
+
     if(plan == Constants.KETO && totalCalories == 2000)
       {
         return 50;
@@ -190,6 +195,8 @@ class _SecondDietPageState extends State<SecondDietPage> {
   }
 
   getFat(String plan){
+
+
     if(plan == Constants.LOW_FAT && totalCalories == 2000)
     {
     return 67;
@@ -409,7 +416,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
       Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
       onTap: () {
 
-        print("Test! " + totalCalories.toString());
+        print("Test! " + lesson.title);
         ref.child(checkDietPlan(lesson.title)).set(lesson.title);
         ref.child('DietVals').child(checkDietPlan(lesson.title)).child('MaxValue').set(lesson.number);
         String result;

@@ -484,14 +484,14 @@ String analyzeResult(List<String> result){
   String returnValue;
   returnValue = result.elementAt(0);
 
-  Iterator<String> joe = result.iterator;
+  Iterator<String> listIterator = result.iterator;
 
-  joe.moveNext();
+  listIterator.moveNext();
 
-  while(joe.moveNext()) {
-String now = joe.current;
+  while(listIterator.moveNext()) {
+String now = listIterator.current;
     if(!now.contains("No")) {
-      returnValue += "\n" + joe.current;
+      returnValue += "\n" + listIterator.current;
     }
 
     }

@@ -246,12 +246,18 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     String result3;
     String result4;
     String result5;
+    List<String> resultList = <String>[];
+
     final referenceDatabase = await FirebaseDatabase.instance
         .reference()
         .child('User')
         .child('DietPlan')
         .once()
-        .then((snapshot){result=snapshot.value;});
+        .then((snapshot){result = snapshot.value;});
+
+    result = result += "(" + calorieSum.toString() + " cals remaining)";
+
+    resultList.add(result);
 
 
     final referenceDatabase2 = await FirebaseDatabase.instance
@@ -259,7 +265,11 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         .child('User')
         .child('Low Carb')
         .once()
-        .then((snapshot){result2=snapshot.value;});
+        .then((snapshot){result2 = snapshot.value;});
+
+    result2 = result2 += "(" + carbSum.toString() + " g carbs remaining)";
+
+    resultList.add(result2);
 
 
     final referenceDatabase3 = await FirebaseDatabase.instance
@@ -267,7 +277,11 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         .child('User')
         .child('Sodium')
         .once()
-        .then((snapshot){result3=snapshot.value;});
+        .then((snapshot){result3 = snapshot.value;});
+
+    result3 = result3 += "(" + sodiumSum.toString() + " mg sodium remaining)";
+
+    resultList.add(result3);
 
 
     final referenceDatabase4 = await FirebaseDatabase.instance
@@ -275,7 +289,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         .child('User')
         .child('Low Fat')
         .once()
-        .then((snapshot){result4=snapshot.value;});
+        .then((snapshot){resultList.add(snapshot.value);});
     print(result);
 
     final referenceDatabase5 = await FirebaseDatabase.instance
@@ -283,12 +297,37 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         .child('User')
         .child('Low Cholesterol')
         .once()
-        .then((snapshot){result5=snapshot.value;});
+        .then((snapshot){resultList.add(snapshot.value);});
     print(result);
 
 
 
-    return result + ", \n" + result2 + ", " + result3 +", \n"+ result4 + ", " + result5;
+    return analyzeResult(resultList);
+  }
+
+  String analyzeResult(List<String> result){
+    String returnValue;
+    returnValue = result.elementAt(0);
+
+    Iterator<String> listIterator = result.iterator;
+
+    listIterator.moveNext();
+
+    while(listIterator.moveNext()) {
+      String now = listIterator.current;
+      if(!now.contains("No")) {
+        returnValue += "\n" + listIterator.current;
+      }
+
+    }
+
+
+
+
+
+    return returnValue;
+
+
   }
 
   
