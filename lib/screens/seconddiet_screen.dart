@@ -52,8 +52,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
   void initState() {
     sodiumPlans = getSodiumPlans();
 
-    fatPlans = getFatPlans();
-    cholesterolPlans = getCholesterolPlans();
+
 
 
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
@@ -102,6 +101,8 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
     _showDialog();
     carbPlans = getCarbPlans();
+    fatPlans = getFatPlans();
+    cholesterolPlans = getCholesterolPlans();
 
   }
 
@@ -163,36 +164,44 @@ class _SecondDietPageState extends State<SecondDietPage> {
     );
   }
 
-  getCarb(String plan){
-
+  getCarb(String plan) {
     print("Plan is : " + plan + totalCalories.toString());
 
-    if(plan == Constants.KETO && totalCalories == 2000)
-      {
-        return 50;
-      }
+    if (plan == Constants.KETO && totalCalories == 2000) {
+      return 50;
+    }
 
-    else if(plan == Constants.KETO && totalCalories == 1500)
-    {
+    else if (plan == Constants.KETO && totalCalories == 1500) {
       return 38;
     }
 
-    else if(plan == Constants.KETO && totalCalories == 1200)
-    {
+    else if (plan == Constants.KETO && totalCalories == 1200) {
       return 30;
     }
 
-    else if(plan == Constants.LOW_CARB && totalCalories == 2000)
-    {
+    else if (plan == Constants.LOW_CARB && totalCalories == 2000) {
       return 125;
     }
-    else if(plan == Constants.LOW_CARB && totalCalories == 1500)
-    {
+    else if (plan == Constants.LOW_CARB && totalCalories == 1500) {
       return 94;
     }
-
-
   }
+
+    getCholesterol() {
+
+
+      if (totalCalories == 2000) {
+        return 300;
+      }
+
+      else if (totalCalories == 1500) {
+        return 200;
+      }
+
+      else if (totalCalories == 1200) {
+        return 80;
+      }
+    }
 
   getFat(String plan){
 
@@ -262,7 +271,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
         level: "Intermediate",
         indicatorValue: 0.33,
         price: 50,
-        number: getCarb(Constants.LOW_CARB),
+        number: getCholesterol(),
         content:
         "This diet plan is defined as saturated fat intake less than/equal to 10% of total calories and 0 grams trans fat and no more than 200-300 mg cholesterol per day.",
         content2: "Please also select a corresponding calorie plan.",

@@ -53,7 +53,7 @@ class RestaurantScreen extends StatelessWidget {
           imglink:
           'royal_farms.jpg'),
       const Choice(
-          title: 'Smash Burger',
+          title: 'SmashBurger',
 
           imglink:
           'smash.png'),

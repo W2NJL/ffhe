@@ -126,7 +126,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         return
         'royal_farms.jpg';
     }
-    else if(restaurant.contains('Smash Burger')){
+    else if(restaurant.contains('SmashBurger')){
 
         return
         'smash.png';
@@ -289,16 +289,21 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         .child('User')
         .child('Low Fat')
         .once()
-        .then((snapshot){resultList.add(snapshot.value);});
-    print(result);
+        .then((snapshot){result4 = snapshot.value;});
+
+    result4 = result4 += "(" + fatSum.toString() + " mg total fat remaining)";
+    resultList.add(result4);
 
     final referenceDatabase5 = await FirebaseDatabase.instance
         .reference()
         .child('User')
         .child('Low Cholesterol')
         .once()
-        .then((snapshot){resultList.add(snapshot.value);});
-    print(result);
+        .then((snapshot){result5 = snapshot.value;});
+
+    result5 = result5 += "(" + cholesterolSum.toString() + " mg cholesterol remaining)";
+    resultList.add(result5);
+
 
 
 
@@ -404,7 +409,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('calories').set(ServerValue.increment(user['nf_calories']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('sodium').set(ServerValue.increment(user['nf_sodium']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('carbs').set(ServerValue.increment(user['nf_total_carbohydrate']));
-            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('fat').set(ServerValue.increment(user['nf_total_fat']));
+            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('fat').set(ServerValue.increment(user['nf_total_fat'].toInt()));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('cholesterol').set(ServerValue.increment(user['nf_cholesterol']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Restaurant').set(user['brand_name']);
             Navigator.pushReplacement(

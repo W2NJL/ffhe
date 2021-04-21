@@ -18,9 +18,12 @@ class _TodaysMealsState extends State<TodaysMeals> {
 
   final radioController = TextEditingController();
   static String formattedDate;
+  String month;
+  int day;
+  int year;
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
-  String callLetters;
+  String currDate;
   int sodiumVal;
 
 
@@ -29,11 +32,26 @@ class _TodaysMealsState extends State<TodaysMeals> {
   @override
   void initState() {
     formattedDate = formatter.format(now);
-    callLetters = formattedDate;
+    String returnMonth(DateTime date) {
+      return new DateFormat.MMMM().format(date);
+    }
+
+    getDate(returnMonth);
+
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
     _callLettersRef = database.reference().child('User').child('DietVals').child(formattedDate).child('Meals');
 
     super.initState();
+  }
+
+  void getDate (String returnMonth(DateTime date)) async {
+     String month = returnMonth(now);
+    day = now.day;
+    year = now.year;
+
+    currDate = month + " " + day.toString() + ", " + year.toString();
+
+    print("Hi :" + currDate);
   }
 
   Future <String> _getNutrientAmount(String mealName, String diet) async {
@@ -51,6 +69,60 @@ class _TodaysMealsState extends State<TodaysMeals> {
 
 
     return result;
+  }
+
+  static Widget _buildAboutText(DataSnapshot snapshot) {
+    return new RichText(
+      text: new TextSpan(
+        text: 'Calories: ' + snapshot.value['calories'].toString() + " calories" + '\n\n' +
+            'Total Carbohydrates: ' + snapshot.value['carbs'].toString() + " g" + '\n\n' +
+            'Sodium: ' + snapshot.value['sodium'].toString() + " mg" + '\n\n' +
+            'Total Fat: '  + snapshot.value['fat'].toString() + " g" + '\n\n' +
+            'Cholesterol: ' + snapshot.value['cholesterol'].toString() + " mg" + '\n\n',
+        style: const TextStyle(color: Colors.black87),
+        // children: <TextSpan>[
+        //   const TextSpan(text: 'The app was developed with '),
+        //   new TextSpan(
+        //     text: 'Flutter',
+        //
+        //   ),
+        //   const TextSpan(
+        //     text: ' and it\'s open source; check out the source '
+        //         'code yourself from ',
+        //   ),
+        //   new TextSpan(
+        //     text: 'www.codesnippettalk.com',
+        //
+        //   ),
+        //   const TextSpan(text: '.'),
+        // ],
+      ),
+    );
+  }
+
+  Widget _buildAboutDialog(BuildContext context, DataSnapshot snapshot) {
+
+
+    return new AlertDialog(
+      title: Text(snapshot.key),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildAboutText(snapshot),
+        ],
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+
+            Navigator.pop(context);
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('Dismiss'),
+        ),
+      ],
+    );
   }
 
   @override
@@ -73,24 +145,51 @@ leading: new IconButton(
           children:[
             Center(
               child: Container(
-                color: Colors.green,
+                color: Colors.greenAccent,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   children: [
                     Text(
-                      callLetters,
+                      currDate,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
                     ),
 
                     Flexible(
                         child: new FirebaseAnimatedList(
                             shrinkWrap: true,
+
                             query: _callLettersRef, itemBuilder: (BuildContext context, DataSnapshot snapshot,
                             Animation<double> animation,
                             int index){
                           return new ListTile(
+                            contentPadding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+
+                            leading: GestureDetector(
+                              onTap: (){
+
+
+
+                                  showDialog(
+
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        _buildAboutDialog(context, snapshot),
+                                  );
+                                },
+
+                              child: ConstrainedBox(
+                                  constraints:
+                                  BoxConstraints(minWidth: 100, minHeight: 100),
+                                  child: Image.asset(
+                                    getRestaurantIcon(snapshot.value['Restaurant'].toString()),
+                                    width: 100,
+                                    height: 100,
+
+                                  )),
+                            ),
+
                             trailing: IconButton(icon: Icon(Icons.delete), onPressed: () =>{
                                 ref.child('User').child('DietVals').child(formattedDate).child('Calories').set(ServerValue.increment(-snapshot.value['calories'])),
                               ref.child('User').child('DietVals').child(formattedDate).child('Sodium').set(ServerValue.increment(-snapshot.value['sodium'])),
@@ -98,8 +197,9 @@ leading: new IconButton(
                               ref.child('User').child('DietVals').child(formattedDate).child('Low Cholesterol').set(ServerValue.increment(-snapshot.value['cholesterol'])),
                               ref.child('User').child('DietVals').child(formattedDate).child('Low Fat').set(ServerValue.increment(-snapshot.value['fat'])),
                                 _callLettersRef.child(snapshot.key).remove(),}),
-                            title: new Text(snapshot.key + "\n(Calories: " + snapshot.value['calories'].toString() + " Sodium: " + snapshot.value['sodium'].toString() + ")"
+                            title: new Text(snapshot.key
                             ),
+                            subtitle: new Text("(Calories: " + snapshot.value['calories'].toString() + " Sodium: " + snapshot.value['sodium'].toString() + ")"),
                           );
                         })
                     ),
@@ -113,4 +213,50 @@ leading: new IconButton(
 
     );
   }
-}
+
+  getRestaurantIcon(String restaurant) {
+
+   
+      print("Hmm " + restaurant);
+
+
+      if(restaurant.contains("Bob"))
+      {
+        return "images/" + "bob_evans.png";
+      }
+      else if (restaurant.contains("Apple")){
+        return "images/" + "applebees.png";
+      }
+      else if (restaurant.contains("King")){
+        return "images/" + "bk.jpg";
+      }
+      else if (restaurant.contains("Chick")){
+        return "images/" + "chick-fil-a.gif";
+      }
+      else if (restaurant.contains("Donald")){
+        return "images/" + "mcdonalds.png";
+      }
+      else if (restaurant.contains("Chang")){
+        return "images/" + "pfchangs.jpg";
+      }
+      else if (restaurant.contains("Panera")){
+        return "images/" +"panera.jpg";
+      }
+      else if (restaurant.contains("Royal")){
+        return "images/" +"royal_farms.jpg";
+      }
+      else if (restaurant.contains("Smash")){
+        return "images/" +"smash.png";
+      }
+      else if (restaurant.contains("Taco")){
+        return "images/" +"taco.png";
+      }
+      else if (restaurant.contains("Wawa")){
+        return"images/" +"wawa.jpg";
+      }
+
+
+
+    }
+  }
+

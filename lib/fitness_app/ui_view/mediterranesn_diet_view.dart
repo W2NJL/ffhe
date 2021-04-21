@@ -48,6 +48,9 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   int carbs;
   int fat;
   int calorieMax;
+  int carbMax;
+  int sodiumMax;
+  int fatMax;
   bool done = false;
   String image1;
   String image2;
@@ -72,7 +75,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
 
   void _getMoreData() async {
-    bool cals, sodiums, carbies, fats, calmaxs, rests;
+    bool cals, sodiums, carbies, fats, calmaxs, rests, sodmaxs, carbmax, fatmax;
 
     await _getCalorieValue('Calories').then((value) =>
         setState(() {
@@ -99,6 +102,24 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
           calorieMax = value;
           calmaxs = true;
         }));
+    await _getMaxValue('Sodium').then((value) =>
+        setState(() {
+          sodiumMax = value;
+          sodmaxs = true;
+          print("Ava max: " + sodiumMax.toString());
+        }));
+    await _getMaxValue('Low Carb').then((value) =>
+        setState(() {
+          carbMax = value;
+          carbmax = true;
+
+        }));
+    await _getMaxValue('Low Fat').then((value) =>
+        setState(() {
+          fatMax = value;
+          fatmax = true;
+
+        }));
 
     await _getRestaurantImages().then((value) =>
         setState(() {
@@ -109,10 +130,12 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
 if(restaurants != null){
     for (String restaurant in restaurants) {
-      imageArray.add(cleanRestaurant(restaurant));
+      if(!imageArray.contains(cleanRestaurant(restaurant))) {
+        imageArray.add(cleanRestaurant(restaurant));
+      }
     }}
 
-    if(cals && sodiums && carbies && fats && calmaxs && rests ){
+    if(cals && sodiums && carbies && fats && calmaxs && rests && sodmaxs && carbmax && fatmax ){
       done = true;
     }
 }
@@ -886,8 +909,8 @@ if(done){
                                       ),
                                       child: Row(
                                         children: <Widget>[
-                                          Container(
-                                            width: ((sodium/ 50) * widget.animation.value),
+                                          sodiumMax != null? Container(
+                                            width: ((sodium/sodiumMax)*60),
                                             height: 4,
                                             decoration: BoxDecoration(
                                               gradient: LinearGradient(colors: [
@@ -898,7 +921,7 @@ if(done){
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(4.0)),
                                             ),
-                                          )
+                                          ): SizedBox(height: 0),
                                         ],
                                       ),
                                     ),
@@ -953,9 +976,8 @@ if(done){
                                           ),
                                           child: Row(
                                             children: <Widget>[
-                                              Container(
-                                                width: ((carbs / 4) *
-                                                    widget.animationController.value),
+                                              carbMax != null? Container(
+                                                width: ((carbs/carbMax)*70),
                                                 height: 4,
                                                 decoration: BoxDecoration(
                                                   gradient:
@@ -967,7 +989,7 @@ if(done){
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(4.0)),
                                                 ),
-                                              ),
+                                              ): SizedBox(height: 0),
                                             ],
                                           ),
                                         ),
@@ -1024,9 +1046,8 @@ if(done){
                                           ),
                                           child: Row(
                                             children: <Widget>[
-                                              Container(
-                                                width: ((fat / 2.5) *
-                                                    widget.animationController.value),
+                                              fatMax != null? Container(
+                                                width: ((fat/fatMax)*70),
                                                 height: 4,
                                                 decoration: BoxDecoration(
                                                   gradient:
@@ -1038,7 +1059,7 @@ if(done){
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(4.0)),
                                                 ),
-                                              ),
+                                              ): SizedBox(height: 0),
                                             ],
                                           ),
                                         ),
@@ -1096,7 +1117,7 @@ if(done){
     else if (restaurant.contains("Chick")){
       return "chick-fil-a.gif";
     }
-    else if (restaurant.contains("donald")){
+    else if (restaurant.contains("Donald")){
       return "mcdonalds.png";
     }
     else if (restaurant.contains("Chang")){
