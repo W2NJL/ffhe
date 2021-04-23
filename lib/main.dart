@@ -1,5 +1,6 @@
 import 'package:fast_food_health_e/fitness_app/models/todaysMeals.dart';
 import 'package:fast_food_health_e/screens/ask_a_nutritionist.dart';
+import 'package:fast_food_health_e/screens/limit_screen.dart';
 import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:fast_food_health_e/screens/restaurant_screen.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,9 @@ class FastFoodHealthEApp extends StatelessWidget {
               'AskANutritionist': (context) =>  Scaffold(
                 body: AskNutritionist(),
               ),
-
+              'LimitScreen': (context) =>  Scaffold(
+                body: LimitScreen(),
+              ),
 
               '/home': (context) => Scaffold(
                 body: FitnessAppHomeScreen(),

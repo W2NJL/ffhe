@@ -7,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fast_food_health_e/services/FirebaseCalls.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewNutritionixList extends StatefulWidget {
   final String restaurant;
@@ -40,6 +41,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   static int mealNum = 1;
   static String formattedDate;
   bool done = false;
+  bool listingLimit;
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
 
@@ -463,6 +465,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         isLoading = true;
       });
 
+      await _getLimitPref().then((value) => setState(() {
+
+        listingLimit = value;
+
+
+      }));
+
     await _getTotalNutrients('Calories').then((value) => setState(() {
 
       totalCalories = value;
@@ -631,7 +640,9 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     }
 
   generateParams(params, String restaurant) {
-    params = {
+
+
+    params = listingLimit? {
       "appId": "816cee15",
       "appKey": "aab0a0a4c4224eca770bf5a2a0f4c984",
       "queries": {
@@ -676,6 +687,29 @@ class NewNutritionixListState extends State<NewNutritionixList> {
           "to": cholesterolSum
         }
       }
+    }:{
+      "appId": "816cee15",
+      "appKey": "aab0a0a4c4224eca770bf5a2a0f4c984",
+      "queries": {
+        "brand_name": restaurant,
+      },
+      "fields": [
+        "item_name",
+        "brand_name",
+        "nf_calories",
+        "nf_sodium",
+        "nf_total_fat",
+        "item_type",
+        "nf_cholesterol",
+        "nf_total_carbohydrate"
+      ],
+      "offset": page,
+      "limit": 50,
+      "sort": {
+        "field": "nf_calories",
+        "order": "desc"
+      },
+
     };
     return params;
   }
@@ -804,6 +838,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     String formattedDate = formatter.format(dateTime);
 
 
+  }
+
+  Future <bool> _getLimitPref() async {
+
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool("listings");
   }
 
 }

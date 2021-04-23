@@ -97,6 +97,10 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
         ),
         PopupMenuItem(
           value: 2,
+          child: Text('Limit Listings'),
+        ),
+        PopupMenuItem(
+          value: 3,
           child: Text('Logout'),
         )
 
@@ -107,8 +111,13 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
           Navigator.pushNamedAndRemoveUntil(context, "DietScreen", (_) => false);
         }
 
-
         if (value == 2) {
+          // logout
+          Navigator.pushNamed(context, 'LimitScreen');
+        }
+
+
+        if (value == 3) {
           // logout
           // authState.checkAuthentication();
           authState.logout();
