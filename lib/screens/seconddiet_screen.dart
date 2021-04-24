@@ -212,31 +212,40 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
   getFat(String plan){
 
+    List<int> fats = <int>[];
+
 
     if(plan == Constants.LOW_FAT && totalCalories == 2000)
     {
-    return 67;
+    fats.add(67);
+    fats.add(22);
     }
     else if(plan == Constants.LOW_FAT && totalCalories == 1500)
     {
-    return 50;
+      fats.add(50);
+      fats.add(17);
+
     }
     else if(plan == Constants.LOW_FAT && totalCalories == 1200)
     {
-    return 40;
+      fats.add(40);
+      fats.add(13);
+
     }
     else if(plan == Constants.LOWEST_FAT && totalCalories == 2000)
     {
-    return 22;
+      fats.add(22);
     }
     else if(plan == Constants.LOWEST_FAT && totalCalories == 1500)
     {
-    return 17;
+      fats.add(17);
     }
     else if(plan == Constants.LOWEST_FAT && totalCalories == 1200)
     {
-    return 13;
+    fats.add(13);
     }
+
+    return fats;
   }
 
   List getCarbPlans(){
@@ -284,6 +293,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
         price: 50,
         number: cholesterols.elementAt(0),
         satFat:  cholesterols.elementAt(1),
+        transFat: 0,
         content:
         "This diet plan is defined as saturated fat intake less than/equal to 10% of total calories and 0 grams trans fat and no more than 200-300 mg cholesterol per day.",
         content2: "Please also select a corresponding calorie plan.",
@@ -302,13 +312,18 @@ class _SecondDietPageState extends State<SecondDietPage> {
   }
 
   List getFatPlans(){
+
+    List<int> fats1 = getFat(Constants.LOW_FAT);
+    List<int> fats2 = getFat(Constants.LOWEST_FAT);
+
     return[
       DietPlan(
           title: Constants.LOW_FAT,
           level: "Intermediate",
           indicatorValue: 0.33,
           price: 50,
-          number: getFat(Constants.LOW_FAT),
+          number: fats1.elementAt(0),
+          satFat: fats1.elementAt(1),
           content:
           "This diet plan is defined as total fat intake less than/equal to 30% of total calories and saturated fat intake less than/equal to 10%.",
           content2: "Please also select a corresponding calorie plan.",
@@ -318,7 +333,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
           level: "Intermediate",
           indicatorValue: 0.33,
           price: 50,
-          number: getFat(Constants.LOWEST_FAT),
+          number: fats2.elementAt(0),
           content:
           "this diet plan is defined as total fat intake less than/equal to 10% of total calories this diet plan is defined as total fat intake less than/equal to 10% of total calories alllotted.",
           content2: "Please also select a corresponding calorie plan.",
@@ -446,6 +461,10 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
         if(lesson.satFat !=null){
           ref.child('DietVals').child('Saturated Fat').child('MaxValue').set(lesson.satFat);
+        }
+
+        if(lesson.transFat !=null){
+          ref.child('DietVals').child('Trans Fat').child('MaxValue').set(lesson.transFat);
         }
 
         String result;

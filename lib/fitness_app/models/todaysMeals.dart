@@ -79,7 +79,8 @@ class _TodaysMealsState extends State<TodaysMeals> {
             'Sodium: ' + snapshot.value['sodium'].toString() + " mg" + '\n\n' +
             'Total Fat: '  + snapshot.value['fat'].toString() + " g" + '\n\n' +
             'Saturated Fat: '  + snapshot.value['Saturated Fat'].toString() + " g" + '\n\n' +
-            'Cholesterol: ' + snapshot.value['cholesterol'].toString() + " mg" + '\n\n',
+            'Cholesterol: ' + snapshot.value['cholesterol'].toString() + " mg" + '\n\n' +
+          'Trans Fat: '  + snapshot.value['Trans Fat'].toString() + " g" + '\n\n' ,
         style: const TextStyle(color: Colors.black87),
         // children: <TextSpan>[
         //   const TextSpan(text: 'The app was developed with '),
@@ -198,6 +199,7 @@ leading: new IconButton(
                               ref.child('User').child('DietVals').child(formattedDate).child('Low Cholesterol').set(ServerValue.increment(-snapshot.value['cholesterol'])),
                               ref.child('User').child('DietVals').child(formattedDate).child('Low Fat').set(ServerValue.increment(-snapshot.value['fat'])),
                               ref.child('User').child('DietVals').child(formattedDate).child('Saturated Fat').set(ServerValue.increment(-snapshot.value['Saturated Fat'])),
+                              ref.child('User').child('DietVals').child(formattedDate).child('Trans Fat').set(ServerValue.increment(-snapshot.value['Trans Fat'])),
                                 _callLettersRef.child(snapshot.key).remove(),}),
                             title: new Text(snapshot.key
                             ),

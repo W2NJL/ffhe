@@ -28,10 +28,12 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   static int calorieSum;
   static int totalSodium;
   static int totalSatFat;
+  static int totalTransFat;
   static int remainingSodium;
   static int remainingSatFat;
   static int totalCarbs;
   static int remainingCarbs;
+  static int remainingTransFat;
   static int sodiumSum;
   static int carbSum;
   static int fatSum;
@@ -413,12 +415,14 @@ class NewNutritionixListState extends State<NewNutritionixList> {
             ref.child('DietVals').child(formattedDate).child('Low Fat').set(ServerValue.increment(user['nf_total_fat'].toInt()));
             ref.child('DietVals').child(formattedDate).child('Low Cholesterol').set(ServerValue.increment(user['nf_cholesterol']));
             ref.child('DietVals').child(formattedDate).child('Saturated Fat').set(ServerValue.increment(user['nf_saturated_fat'].toInt()));
+            ref.child('DietVals').child(formattedDate).child('Trans Fat').set(ServerValue.increment(user['nf_trans_fatty_acid'].toInt()));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('calories').set(ServerValue.increment(user['nf_calories']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('sodium').set(ServerValue.increment(user['nf_sodium']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('carbs').set(ServerValue.increment(user['nf_total_carbohydrate']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('fat').set(ServerValue.increment(user['nf_total_fat'].toInt()));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('cholesterol').set(ServerValue.increment(user['nf_cholesterol']));
-            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Saturated Fat').set(ServerValue.increment(user['nf_saturated_fat']));
+            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Saturated Fat').set(ServerValue.increment(user['nf_saturated_fat'].toInt()));
+            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Trans Fat').set(ServerValue.increment(user['nf_trans_fatty_acid']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Restaurant').set(user['brand_name']);
             Navigator.pushReplacement(
               context,
@@ -442,7 +446,8 @@ class NewNutritionixListState extends State<NewNutritionixList> {
             'Sodium: ' + user['nf_sodium'].toString() + " mg" + '\n\n' +
             'Total Fat: '  + user['nf_total_fat'].toString() + " g" + '\n\n' +
             'Saturated Fat: '  + user['nf_saturated_fat'].toString() + " g" + '\n\n' +
-            'Cholesterol: ' + user['nf_cholesterol'].toString() + " mg" + '\n\n',
+            'Cholesterol: ' + user['nf_cholesterol'].toString() + " mg" + '\n\n' +
+            'Trans Fat: '  + user['nf_trans_fatty_acid'].toString() + " g" + '\n\n' ,
         style: const TextStyle(color: Colors.black87),
         // children: <TextSpan>[
         //   const TextSpan(text: 'The app was developed with '),
@@ -521,6 +526,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
       }));
 
+      await _getTotalNutrients('Trans Fat').then((value) => setState(() {
+
+        totalTransFat = value;
+
+
+      }));
+
     await _getRemainingNutrients('Calories').then((value) => setState((){
       remainingCalories = value;
 
@@ -586,7 +598,18 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
         print("FatSum is: " + fatSum.toString());
       }));
+      await _getRemainingNutrients('Trans Fat').then((value) => setState(() {
+        remainingTransFat = value;
 
+        if (remainingTransFat == null) {
+          transFatSum = totalTransFat;
+        }
+        else {
+          transFatSum = totalTransFat - remainingTransFat;
+        }
+
+
+      }));
 
 
 
