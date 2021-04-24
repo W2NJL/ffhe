@@ -27,7 +27,9 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   static int remainingCalories;
   static int calorieSum;
   static int totalSodium;
+  static int totalSatFat;
   static int remainingSodium;
+  static int remainingSatFat;
   static int totalCarbs;
   static int remainingCarbs;
   static int sodiumSum;
@@ -38,6 +40,8 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   static int totalCholesterol;
   static int remainingCholesterol;
   static int cholesterolSum;
+  static int satFatSum;
+  static int transFatSum;
   static int mealNum = 1;
   static String formattedDate;
   bool done = false;
@@ -408,11 +412,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
             ref.child('DietVals').child(formattedDate).child('Low Carb').set(ServerValue.increment(user['nf_total_carbohydrate']));
             ref.child('DietVals').child(formattedDate).child('Low Fat').set(ServerValue.increment(user['nf_total_fat'].toInt()));
             ref.child('DietVals').child(formattedDate).child('Low Cholesterol').set(ServerValue.increment(user['nf_cholesterol']));
+            ref.child('DietVals').child(formattedDate).child('Saturated Fat').set(ServerValue.increment(user['nf_saturated_fat'].toInt()));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('calories').set(ServerValue.increment(user['nf_calories']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('sodium').set(ServerValue.increment(user['nf_sodium']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('carbs').set(ServerValue.increment(user['nf_total_carbohydrate']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('fat').set(ServerValue.increment(user['nf_total_fat'].toInt()));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('cholesterol').set(ServerValue.increment(user['nf_cholesterol']));
+            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Saturated Fat').set(ServerValue.increment(user['nf_saturated_fat']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Restaurant').set(user['brand_name']);
             Navigator.pushReplacement(
               context,
@@ -435,6 +441,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
             'Total Carbohydrates: ' + user['nf_total_carbohydrate'].toString() + " g" + '\n\n' +
             'Sodium: ' + user['nf_sodium'].toString() + " mg" + '\n\n' +
             'Total Fat: '  + user['nf_total_fat'].toString() + " g" + '\n\n' +
+            'Saturated Fat: '  + user['nf_saturated_fat'].toString() + " g" + '\n\n' +
             'Cholesterol: ' + user['nf_cholesterol'].toString() + " mg" + '\n\n',
         style: const TextStyle(color: Colors.black87),
         // children: <TextSpan>[
@@ -507,6 +514,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         print("Total cholesterol is " + totalCholesterol.toString());
       }));
 
+      await _getTotalNutrients('Saturated Fat').then((value) => setState(() {
+
+        totalSatFat = value;
+
+
+      }));
+
     await _getRemainingNutrients('Calories').then((value) => setState((){
       remainingCalories = value;
 
@@ -533,6 +547,21 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         else{
           sodiumSum = totalSodium-remainingSodium;
         }}));
+
+      await _getRemainingNutrients('Saturated Fat').then((value) => setState((){
+        remainingSatFat = value;
+
+        if (remainingSatFat == null)
+        {
+          satFatSum = totalSatFat;
+        }
+        else{
+          satFatSum = totalSatFat-remainingSatFat;
+        }
+
+
+
+      }));
 
       await _getRemainingNutrients('Low Cholesterol').then((value) => setState((){
         remainingCholesterol = value;
@@ -656,7 +685,9 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         "nf_total_fat",
         "item_type",
         "nf_cholesterol",
-        "nf_total_carbohydrate"
+        "nf_total_carbohydrate",
+            "nf_saturated_fat",
+        "nf_trans_fatty_acid"
       ],
       "offset": page,
       "limit": 50,
@@ -685,7 +716,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         "nf_cholesterol": {
           "from": 0,
           "to": cholesterolSum
-        }
+        },
+        "nf_saturated_fat": {
+          "from": 0,
+          "to": satFatSum
+        },
+
+
       }
     }:{
       "appId": "816cee15",
@@ -701,7 +738,9 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         "nf_total_fat",
         "item_type",
         "nf_cholesterol",
-        "nf_total_carbohydrate"
+        "nf_total_carbohydrate",
+        "nf_saturated_fat",
+        "nf_trans_fatty_acid"
       ],
       "offset": page,
       "limit": 50,

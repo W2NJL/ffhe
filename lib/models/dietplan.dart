@@ -7,7 +7,8 @@ class DietPlan {
   String content2;
   String disclaimer;
   int number;
+  int satFat;
 
   DietPlan(
-      {this.title, this.level, this.indicatorValue, this.price, this.content, this.content2, this.disclaimer, this.number});
+      {this.title, this.level, this.indicatorValue, this.price, this.content, this.content2, this.disclaimer, this.number, this.satFat});
 }

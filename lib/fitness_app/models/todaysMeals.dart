@@ -78,6 +78,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
             'Total Carbohydrates: ' + snapshot.value['carbs'].toString() + " g" + '\n\n' +
             'Sodium: ' + snapshot.value['sodium'].toString() + " mg" + '\n\n' +
             'Total Fat: '  + snapshot.value['fat'].toString() + " g" + '\n\n' +
+            'Saturated Fat: '  + snapshot.value['Saturated Fat'].toString() + " g" + '\n\n' +
             'Cholesterol: ' + snapshot.value['cholesterol'].toString() + " mg" + '\n\n',
         style: const TextStyle(color: Colors.black87),
         // children: <TextSpan>[
@@ -196,6 +197,7 @@ leading: new IconButton(
                               ref.child('User').child('DietVals').child(formattedDate).child('Low Carb').set(ServerValue.increment(-snapshot.value['carbs'])),
                               ref.child('User').child('DietVals').child(formattedDate).child('Low Cholesterol').set(ServerValue.increment(-snapshot.value['cholesterol'])),
                               ref.child('User').child('DietVals').child(formattedDate).child('Low Fat').set(ServerValue.increment(-snapshot.value['fat'])),
+                              ref.child('User').child('DietVals').child(formattedDate).child('Saturated Fat').set(ServerValue.increment(-snapshot.value['Saturated Fat'])),
                                 _callLettersRef.child(snapshot.key).remove(),}),
                             title: new Text(snapshot.key
                             ),

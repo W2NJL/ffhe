@@ -189,18 +189,25 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
     getCholesterol() {
 
+    List<int> cholesterols = <int>[];
+
 
       if (totalCalories == 2000) {
-        return 300;
+        cholesterols.add(300);
+        cholesterols.add(22);
       }
 
       else if (totalCalories == 1500) {
-        return 200;
+        cholesterols.add(200);
+        cholesterols.add(17);
       }
 
       else if (totalCalories == 1200) {
-        return 80;
+        cholesterols.add(80);
+        cholesterols.add(13);
       }
+
+      return cholesterols;
     }
 
   getFat(String plan){
@@ -266,12 +273,17 @@ class _SecondDietPageState extends State<SecondDietPage> {
   }
 
   List getCholesterolPlans(){
+    List<int> cholesterols = getCholesterol();
+    print("Hey YAAAA!" + cholesterols.elementAt(1).toString());
+
+
     return [ DietPlan(
         title: Constants.LOW_CHOLESTEROL,
         level: "Intermediate",
         indicatorValue: 0.33,
         price: 50,
-        number: getCholesterol(),
+        number: cholesterols.elementAt(0),
+        satFat:  cholesterols.elementAt(1),
         content:
         "This diet plan is defined as saturated fat intake less than/equal to 10% of total calories and 0 grams trans fat and no more than 200-300 mg cholesterol per day.",
         content2: "Please also select a corresponding calorie plan.",
@@ -428,6 +440,14 @@ class _SecondDietPageState extends State<SecondDietPage> {
         print("Test! " + lesson.title);
         ref.child(checkDietPlan(lesson.title)).set(lesson.title);
         ref.child('DietVals').child(checkDietPlan(lesson.title)).child('MaxValue').set(lesson.number);
+
+
+        print("Here I am Lord: " + lesson.number.toString());
+
+        if(lesson.satFat !=null){
+          ref.child('DietVals').child('Saturated Fat').child('MaxValue').set(lesson.satFat);
+        }
+
         String result;
         storeDietPlan(lesson.title);
         setState(() {
