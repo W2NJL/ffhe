@@ -47,10 +47,14 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   int sodium;
   int carbs;
   int fat;
+  int cholesterol;
   int calorieMax;
   int carbMax;
   int sodiumMax;
   int fatMax;
+  int cholesterolMax;
+  int numDietTrackers = 0;
+  bool showingCholesterol = false;
   bool done = false;
   String image1;
   String image2;
@@ -75,7 +79,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
 
   void _getMoreData() async {
-    bool cals, sodiums, carbies, fats, calmaxs, rests, sodmaxs, carbmax, fatmax;
+    bool cals, sodiums, carbies, fats, cholesterols, calmaxs, rests, sodmaxs, carbmax, fatmax, cholmax;
 
     await _getCalorieValue('Calories').then((value) =>
         setState(() {
@@ -96,6 +100,11 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
         setState(() {
           fat = value;
           fats = true;
+        }));
+    await _getCalorieValue('Low Cholesterol').then((value) =>
+        setState(() {
+          cholesterol = value;
+          cholesterols = true;
         }));
     await _getMaxValue('Calories').then((value) =>
         setState(() {
@@ -120,6 +129,12 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
           fatmax = true;
 
         }));
+    await _getMaxValue('Low Cholesterol').then((value) =>
+        setState(() {
+          cholesterolMax = value;
+          cholmax = true;
+
+        }));
 
     await _getRestaurantImages().then((value) =>
         setState(() {
@@ -135,8 +150,12 @@ if(restaurants != null){
       }
     }}
 
-    if(cals && sodiums && carbies && fats && calmaxs && rests && sodmaxs && carbmax && fatmax ){
+    if(cals && sodiums && carbies && fats && calmaxs && rests && sodmaxs && carbmax && fatmax && cholmax && cholesterols ){
       done = true;
+    }
+
+    if (sodiumMax == null && cholesterolMax != null){
+      showingCholesterol = true;
     }
 }
 
@@ -225,7 +244,11 @@ if(meals!=null){
     if(result == null) {
       return 0;
     }
-    else return result;
+
+    else {
+      numDietTrackers++;
+      return result;
+    }
 
   }
 
@@ -881,7 +904,7 @@ if(done){
                         child:  Row(
                           children: <Widget>[
                             Expanded(
-                              child:  Column(
+                              child:  sodiumMax != null? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
@@ -909,7 +932,7 @@ if(done){
                                       ),
                                       child: Row(
                                         children: <Widget>[
-                                          sodiumMax != null? Container(
+                                           Container(
                                             width: ((sodium/sodiumMax)*60),
                                             height: 4,
                                             decoration: BoxDecoration(
@@ -921,7 +944,7 @@ if(done){
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(4.0)),
                                             ),
-                                          ): SizedBox(height: 0),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -940,7 +963,69 @@ if(done){
                                       ),
                                     ),
                                   ),
+
                                 ],
+                              ):Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Cholesterol',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: FitnessAppTheme.fontName,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                      letterSpacing: -0.2,
+                                      color: FitnessAppTheme.darkText,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: Container(
+                                      height: 4,
+                                      width: 70,
+                                      decoration: BoxDecoration(
+                                        color:
+                                        HexColor('#87A0E5').withOpacity(0.2),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4.0)),
+                                      ),
+                                      child: Row(
+                                        children: <Widget>[
+                                          cholesterolMax != null? Container(
+                                            width: ((cholesterol/cholesterolMax)*60),
+                                            height: 4,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(colors: [
+                                                HexColor('#87A0E5'),
+                                                HexColor('#87A0E5')
+                                                    .withOpacity(0.5),
+                                              ]),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(4.0)),
+                                            ),
+                                          ): SizedBox(height: 0),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 6),
+                                    child: Text(
+                                      cholesterol.toString() + ' mg',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: FitnessAppTheme.fontName,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12,
+                                        color:
+                                        FitnessAppTheme.grey.withOpacity(0.5),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+
                               ),
                             ),
                             Expanded(
@@ -948,7 +1033,7 @@ if(done){
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Column(
+                                  carbMax != null?  Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
@@ -1009,7 +1094,129 @@ if(done){
                                         ),
                                       ),
                                     ],
-                                  ),
+                                  ): !showingCholesterol ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        'Cholesterol',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: FitnessAppTheme.fontName,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          letterSpacing: -0.2,
+                                          color: FitnessAppTheme.darkText,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 4),
+                                        child: Container(
+                                          height: 4,
+                                          width: 70,
+                                          decoration: BoxDecoration(
+                                            color:
+                                            HexColor('#87A0E5').withOpacity(0.2),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(4.0)),
+                                          ),
+                                          child: Row(
+                                            children: <Widget>[
+                                              cholesterolMax != null? Container(
+                                                width: ((cholesterol/cholesterolMax)*60),
+                                                height: 4,
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(colors: [
+                                                    HexColor('#87A0E5'),
+                                                    HexColor('#87A0E5')
+                                                        .withOpacity(0.5),
+                                                  ]),
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(4.0)),
+                                                ),
+                                              ): SizedBox(height: 0),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 6),
+                                        child: Text(
+                                          cholesterol.toString() + ' mg',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: FitnessAppTheme.fontName,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12,
+                                            color:
+                                            FitnessAppTheme.grey.withOpacity(0.5),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+
+                                  ): Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        'Saturated Fat',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: FitnessAppTheme.fontName,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          letterSpacing: -0.2,
+                                          color: FitnessAppTheme.darkText,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 4),
+                                        child: Container(
+                                          height: 4,
+                                          width: 70,
+                                          decoration: BoxDecoration(
+                                            color:
+                                            HexColor('#87A0E5').withOpacity(0.2),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(4.0)),
+                                          ),
+                                          child: Row(
+                                            children: <Widget>[
+                                              cholesterolMax != null? Container(
+                                                width: ((cholesterol/cholesterolMax)*60),
+                                                height: 4,
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(colors: [
+                                                    HexColor('#87A0E5'),
+                                                    HexColor('#87A0E5')
+                                                        .withOpacity(0.5),
+                                                  ]),
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(4.0)),
+                                                ),
+                                              ): SizedBox(height: 0),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 6),
+                                        child: Text(
+                                          cholesterol.toString() + ' mg',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: FitnessAppTheme.fontName,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12,
+                                            color:
+                                            FitnessAppTheme.grey.withOpacity(0.5),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+
+                                  )
                                 ],
                               ),
                             ),

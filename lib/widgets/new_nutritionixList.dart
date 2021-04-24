@@ -47,6 +47,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   static int mealNum = 1;
   static String formattedDate;
   bool done = false;
+
   bool listingLimit;
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
@@ -422,7 +423,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('fat').set(ServerValue.increment(user['nf_total_fat'].toInt()));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('cholesterol').set(ServerValue.increment(user['nf_cholesterol']));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Saturated Fat').set(ServerValue.increment(user['nf_saturated_fat'].toInt()));
-            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Trans Fat').set(ServerValue.increment(user['nf_trans_fatty_acid']));
+            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Trans Fat').set(ServerValue.increment(user['nf_trans_fatty_acid'].toInt()));
             ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Restaurant').set(user['brand_name']);
             Navigator.pushReplacement(
               context,
