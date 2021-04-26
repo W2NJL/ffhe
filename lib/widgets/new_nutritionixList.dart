@@ -23,7 +23,7 @@ class NewNutritionixList extends StatefulWidget {
 class NewNutritionixListState extends State<NewNutritionixList> {
   final String restaurant;
   final String category;
-  static int page = 0;
+   static int page = 0;
   static int totalCalories;
   static int remainingCalories;
   static int calorieSum;
@@ -49,10 +49,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   static String formattedDate;
   bool done = false;
 
-  final nutrientData = {
 
-    "FAT": {"amount": 342.1, "unit": "g"},
-  }  ;
 
   bool listingLimit;
   var now = new DateTime.now();
@@ -404,6 +401,8 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     final referenceDatabase = FirebaseDatabase.instance;
     final ref = referenceDatabase.reference().child('User');
 
+
+
     return new AlertDialog(
       title: Text(user['item_name']),
       content: new Column(
@@ -446,6 +445,18 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   }
 
   Widget _buildAboutText2(user){
+    final nutrientData = {
+
+      "FAT": {"amount": user['nf_total_fat'], "unit": "g"},
+      "CARBS": {"amount": user['nf_total_carbohydrate'], "unit": "g"},
+      "CHOLESTEROL": {"amount": user['nf_cholesterol'], "unit": "mg"},
+      "SODIUM": {"amount": user['nf_sodium'], "unit": "mg"},
+      "SATFAT": {"amount": user['nf_saturated_fat'], "unit": "g"},
+      "TRANSFAT": {"amount": user['nf_trans_fatty_acid'], "unit": "g"},
+
+    }  ;
+
+
     return Container(
       padding: EdgeInsets.all(1.0),
       decoration:
@@ -455,7 +466,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         color: Colors.white,
         child: Column(
           children: <Widget>[
-            nutriHeader(calories: 23, servings: 3, servingSize: "8 oz."),
+            nutriHeader(calories: user['nf_calories'], servingSize: user['nf_serving_weight_grams']),
             nutrientValues(nutrientData: nutrientData),
             vitaminValues(nutrientData: nutrientData),
             footerCalories(),
@@ -468,25 +479,49 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   Widget nutrientValues({nutrientData}) {
     //final n = (1.3456).toStringAsFixed(2);
     //final s = double.parse("1.2345");
+
+    initNutrients();
+
     final nutrientTypes = MetaDataNutrient.macroNutrientTypes;
 
+
+
+
     return Column(
+
       crossAxisAlignment: CrossAxisAlignment.start,
       children: nutrientTypes
           .map((d) => nutrientLiner(
         nutrientName: d["name"],
         qty: nutrientData["${d["nutrient"]}"]["amount"],
-        ptg: d["dly"]["male"] != null
+           ptg: checkNutrientCondx(d)  ? d["dly"]["male"] != null
             ? ((nutrientData["${d["nutrient"]}"]["amount"] * 100) /
             d["dly"]["male"])
             .toStringAsFixed(2)
-            : "-",
+            : "-": null,
         sub: d["sub"],
         unit: nutrientData["${d["nutrient"]}"]["unit"],
         showp: d["dly"]["male"] != null ? true : false,
       ))
           .toList(),
     );
+
+
+  }
+
+  bool checkNutrientCondx(Map<String, dynamic> d) => d["name"] != "Trans Fat" && d["dly"]["male"] != 999999999;
+
+  void initNutrients() {
+    print("Garfield is a fat cat: " + totalCarbs.toString());
+
+
+    MetaDataNutrient.fatValue = totalFat;
+    MetaDataNutrient.carbValue = totalCarbs;
+    MetaDataNutrient.sodiumValue = totalSodium;
+    MetaDataNutrient.cholesterolValue = totalCholesterol;
+    MetaDataNutrient.satFatValue = totalSatFat;
+
+
   }
 
   Widget vitaminValues({nutrientData}) {
@@ -528,16 +563,12 @@ class NewNutritionixListState extends State<NewNutritionixList> {
           style: TextStyle(
               color: Colors.black, fontSize: 40.0, fontWeight: FontWeight.w700),
         ),
-        Text(
-          "Serving Size $servingSize",
+
+        servings !=null? Text(
+          "Weight $servings g",
           style: TextStyle(
               fontSize: 14.0, color: Colors.black, fontWeight: FontWeight.w400),
-        ),
-        Text(
-          "Servings Per Container $servings",
-          style: TextStyle(
-              fontSize: 14.0, color: Colors.black, fontWeight: FontWeight.w400),
-        ),
+        ): SizedBox(height: 0),
         Container(
           margin: EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
           height: 5.0,
@@ -691,7 +722,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
             color: Colors.black,
           ),
           Text(
-            "*Percent Daily Values are based on a ${caloriesNum} calories diet.",
+            "*Percent Daily Values are based on a ${totalCalories} calories diet.",
             style: TextStyle(
                 fontSize: 10.0, color: Colors.black, fontWeight: FontWeight.w400),
           )
@@ -970,7 +1001,13 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         "nf_cholesterol",
         "nf_total_carbohydrate",
             "nf_saturated_fat",
-        "nf_trans_fatty_acid"
+        "nf_trans_fatty_acid",
+        "nf_serving_size_qty",
+        "nf_serving_size_unit",
+        "nf_servings_per_container",
+        "nf_serving_weight_grams",
+        "images_front_full_url"
+
       ],
       "offset": page,
       "limit": 50,
@@ -1023,7 +1060,12 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         "nf_cholesterol",
         "nf_total_carbohydrate",
         "nf_saturated_fat",
-        "nf_trans_fatty_acid"
+        "nf_trans_fatty_acid",
+        "nf_serving_size_qty",
+        "nf_serving_size_unit",
+        "nf_servings_per_container",
+        "nf_serving_weight_grams",
+        "images_front_full_url"
       ],
       "offset": page,
       "limit": 50,
@@ -1033,6 +1075,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
       },
 
     };
+
     return params;
   }
 
