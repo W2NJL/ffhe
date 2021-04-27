@@ -1,8 +1,11 @@
+import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
+import 'package:fast_food_health_e/utils/nutrientList.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:fast_food_health_e/utils/nutrientLabel.dart';
 
 class TodaysMeals extends StatefulWidget {
   TodaysMeals({this.app});
@@ -25,6 +28,8 @@ class _TodaysMealsState extends State<TodaysMeals> {
   var formatter = new DateFormat('yyyy-MM-dd');
   String currDate;
   int sodiumVal;
+  int totalCalories;
+  List<int> nutrientList = <int>[];
 
 
   DatabaseReference _callLettersRef;
@@ -40,7 +45,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
 
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
     _callLettersRef = database.reference().child('User').child('DietVals').child(formattedDate).child('Meals');
-
+   this._getMoreData();
     super.initState();
   }
 
@@ -102,7 +107,74 @@ class _TodaysMealsState extends State<TodaysMeals> {
     );
   }
 
+  Future <int> _getTotalNutrients(String diet) async {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    formattedDate = formatter.format(now);
+
+    int result;
+    int maxValue;
+
+    final referenceDatabase3 = await FirebaseDatabase.instance
+        .reference()
+        .child('User')
+        .child('DietVals')
+        .child(diet)
+        .child('MaxValue')
+        .once()
+        .then((snapshot) {
+      maxValue = snapshot.value;
+    });
+
+    if (maxValue == null)
+    {
+      return 999999999;
+    }
+
+
+    return maxValue;
+  }
+
+
+   void _getMoreData() async{
+
+    final
+
+    FirebaseFunctions joe = new FirebaseFunctions();
+
+    await joe.getTotalNutrients('Calories').then((value) => setState(() {
+
+      nutrientList = value;
+
+
+    }));
+
+  }
+
   Widget _buildAboutDialog(BuildContext context, DataSnapshot snapshot) {
+
+
+
+
+
+
+  initNutrients(snapshot);
+
+
+    // nutrientList.add(int.parse());
+    // nutrientList.add(ref.child('User').child('DietVals').child('Low Carb'));
+    // nutrientList.add(ref.child('User').child('DietVals').child('Sodium'));
+    // nutrientList.add(ref.child('User').child('DietVals').child('Low Cholesterol'));
+    // nutrientList.add(ref.child('User').child('DietVals').child('Saturated Fat'));
+
+     print("test!" + nutrientList.elementAt(0).toString());
+
+ final nutrientTypes = NutrientList.listOfNutrients;
+
+print(nutrientList.toString());
+
+
+
 
 
     return new AlertDialog(
@@ -111,7 +183,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildAboutText(snapshot),
+          NutrientLabel(nutrientTypes, nutrientList),
         ],
       ),
       actions: <Widget>[
@@ -262,5 +334,20 @@ leading: new IconButton(
 
 
     }
+
+
+
+  void initNutrients(DataSnapshot snapshot) {
+   NutrientList.nf_calories = snapshot.value['calories'];
+   NutrientList.nf_sodium = snapshot.value['sodium'];
+   NutrientList.nf_total_fat = snapshot.value['fat'];
+   NutrientList.nf_cholesterol = snapshot.value['cholesterol'];
+   NutrientList.nf_saturated_fat = snapshot.value['Saturated Fat'];
+   NutrientList.nf_trans_fatty_acid = snapshot.value['Trans Fat'];
+   NutrientList.total_carbohydrate = snapshot.value['carbs'];
+
+
+
+  }
   }
 

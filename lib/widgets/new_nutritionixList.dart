@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/utils/metanutrient.dart';
+import 'package:fast_food_health_e/utils/nutrientLabel.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -400,7 +401,19 @@ class NewNutritionixListState extends State<NewNutritionixList> {
  Widget _buildAboutDialog(BuildContext context, user) {
     final referenceDatabase = FirebaseDatabase.instance;
     final ref = referenceDatabase.reference().child('User');
+    final List<int> nutrientList = <int>[];
+    Map<String, dynamic> nutrientMap = Map<String, dynamic>.from(user);
+    print(nutrientMap.remove('item_name'));
+    nutrientMap.remove('brand_name');
 
+    nutrientList.add(totalCalories);
+    nutrientList.add(totalCarbs);
+    nutrientList.add(totalSodium);
+    nutrientList.add(totalCholesterol);
+    nutrientList.add(totalFat);
+    nutrientList.add(totalSatFat);
+
+    print(user.runtimeType);
 
 
     return new AlertDialog(
@@ -409,7 +422,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildAboutText2(user),
+          NutrientLabel(nutrientMap, nutrientList),
         ],
       ),
       actions: <Widget>[
@@ -444,321 +457,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     );
   }
 
-  Widget _buildAboutText2(user){
-    final nutrientData = {
 
-      "FAT": {"amount": user['nf_total_fat'], "unit": "g"},
-      "CARBS": {"amount": user['nf_total_carbohydrate'], "unit": "g"},
-      "CHOLESTEROL": {"amount": user['nf_cholesterol'], "unit": "mg"},
-      "SODIUM": {"amount": user['nf_sodium'], "unit": "mg"},
-      "SATFAT": {"amount": user['nf_saturated_fat'], "unit": "g"},
-      "TRANSFAT": {"amount": user['nf_trans_fatty_acid'], "unit": "g"},
-
-    }  ;
-
-
-    return Container(
-      padding: EdgeInsets.all(1.0),
-      decoration:
-      BoxDecoration(border: new Border.all(color: Colors.black, width: 2.0)),
-      child: Container(
-        padding: EdgeInsets.all(2.0),
-        color: Colors.white,
-        child: Column(
-          children: <Widget>[
-            nutriHeader(calories: user['nf_calories'], servingSize: user['nf_serving_weight_grams']),
-            nutrientValues(nutrientData: nutrientData),
-            vitaminValues(nutrientData: nutrientData),
-            footerCalories(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget nutrientValues({nutrientData}) {
-    //final n = (1.3456).toStringAsFixed(2);
-    //final s = double.parse("1.2345");
-
-    initNutrients();
-
-    final nutrientTypes = MetaDataNutrient.macroNutrientTypes;
-
-
-
-
-    return Column(
-
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: nutrientTypes
-          .map((d) => nutrientLiner(
-        nutrientName: d["name"],
-        qty: nutrientData["${d["nutrient"]}"]["amount"],
-           ptg: checkNutrientCondx(d)  ? d["dly"]["male"] != null
-            ? ((nutrientData["${d["nutrient"]}"]["amount"] * 100) /
-            d["dly"]["male"])
-            .toStringAsFixed(2)
-            : "-": null,
-        sub: d["sub"],
-        unit: nutrientData["${d["nutrient"]}"]["unit"],
-        showp: d["dly"]["male"] != null ? true : false,
-      ))
-          .toList(),
-    );
-
-
-  }
-
-  bool checkNutrientCondx(Map<String, dynamic> d) => d["name"] != "Trans Fat" && d["dly"]["male"] != 999999999;
-
-  void initNutrients() {
-    print("Garfield is a fat cat: " + totalCarbs.toString());
-
-
-    MetaDataNutrient.fatValue = totalFat;
-    MetaDataNutrient.carbValue = totalCarbs;
-    MetaDataNutrient.sodiumValue = totalSodium;
-    MetaDataNutrient.cholesterolValue = totalCholesterol;
-    MetaDataNutrient.satFatValue = totalSatFat;
-
-
-  }
-
-  Widget vitaminValues({nutrientData}) {
-    //final n = (1.3456).toStringAsFixed(2);
-    //final s = double.parse("1.2345");
-    final nutrientTypes = MetaDataNutrient.vitaminTypes;
-    final vitaminLine = Container(
-        margin: EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-        height: 4.0,
-        color: Colors.black);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[vitaminLine] +
-          nutrientTypes
-              .map((d) => vitaminLiner(
-            nutrientName: d["name"],
-            qty: nutrientData["${d["nutrient"]}"]["amount"],
-            ptg: (d["dly"] as Map<String, num>)["male"] != null
-                ? ((nutrientData["${d["nutrient"]}"]["amount"] * 100) /
-                (d["dly"] as Map<String, num>)["male"])
-                .toStringAsFixed(2)
-                : "-",
-            unit: nutrientData["${d["nutrient"]}"]["unit"],
-            showp: (d["dly"] as Map<String, num>)["male"] != null
-                ? true
-                : false,
-          ))
-              .toList(),
-    );
-  }
-
-  Widget nutriHeader({calories, servingSize, servings}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          "Nutrition Facts",
-          textAlign: TextAlign.left,
-          style: TextStyle(
-              color: Colors.black, fontSize: 40.0, fontWeight: FontWeight.w700),
-        ),
-
-        servings !=null? Text(
-          "Weight $servings g",
-          style: TextStyle(
-              fontSize: 14.0, color: Colors.black, fontWeight: FontWeight.w400),
-        ): SizedBox(height: 0),
-        Container(
-          margin: EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-          height: 5.0,
-          color: Colors.black,
-        ),
-        Text(
-          "Ammount Per Serving",
-          style: TextStyle(
-              fontSize: 10.0, color: Colors.black, fontWeight: FontWeight.w800),
-        ),
-        Container(
-          margin: EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-          height: 1.0,
-          color: Colors.black,
-        ),
-        Row(children: <Widget>[
-          Text(
-            "Calories",
-            style: TextStyle(
-                fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.w900),
-          ),
-          Text(
-            " $calories",
-            style: TextStyle(
-                fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.w500),
-          ),
-        ]),
-        Container(
-            margin: EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-            height: 3.0,
-            color: Colors.black),
-        Container(
-          alignment: Alignment.topRight,
-          child: Text(
-            "% Daily Value*",
-            textAlign: TextAlign.right,
-            style: TextStyle(
-                fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.w600),
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget nutrientLiner({
-    @required nutrientName,
-    @required qty,
-    ptg,
-    sub: false,
-    unit: "g",
-    showp: true,
-  }) {
-    final textSize = 15.0;
-    final textWeight1 = FontWeight.w900;
-    final textWeight2 = FontWeight.w500;
-    return Container(
-        padding: (sub)
-            ? EdgeInsetsDirectional.only(start: 26.0, end: 1.0)
-            : EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-        child: Column(children: <Widget>[
-          Container(
-              margin: EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-              height: 1.0,
-              color: Colors.black),
-          Row(
-            children: <Widget>[
-              Text(
-                nutrientName,
-                style: TextStyle(
-                    fontSize: textSize,
-                    color: Colors.black,
-                    fontWeight: (sub) ? textWeight2 : textWeight1),
-              ),
-              Text(
-                "  ${qty}${unit}",
-                style: TextStyle(
-                    fontSize: textSize,
-                    color: Colors.black,
-                    fontWeight: textWeight2),
-              ),
-              Expanded(
-                  child: Text(
-                    (((ptg == null) || !showp) ? "" : "${ptg}%"),
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      fontSize: textSize,
-                      color: Colors.black,
-                      fontWeight: textWeight1,
-                    ),
-                  )),
-            ],
-          )
-        ]));
-  }
-
-  Widget vitaminLiner({
-    @required nutrientName,
-    @required qty,
-    ptg,
-    showQty: false,
-    unit: "g",
-    showp: true,
-  }) {
-    final textSize = 15.0;
-    final textWeight = FontWeight.w500;
-    return Container(
-        padding: EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-        child: Column(children: <Widget>[
-          Container(
-              margin: EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-              height: 1.0,
-              color: Colors.black),
-          Row(
-            children: <Widget>[
-              Text(
-                nutrientName,
-                style: TextStyle(
-                    fontSize: textSize,
-                    color: Colors.black,
-                    fontWeight: textWeight),
-              ),
-              Text(
-                (showQty) ? "  ${qty}${unit}" : "",
-                style: TextStyle(
-                    fontSize: textSize,
-                    color: Colors.black,
-                    fontWeight: textWeight),
-              ),
-              Expanded(
-                  child: Text(
-                    (((ptg == null) || !showp) ? "" : "${ptg}%"),
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      fontSize: textSize,
-                      color: Colors.black,
-                      fontWeight: textWeight,
-                    ),
-                  )),
-            ],
-          )
-        ]));
-  }
-
-  Widget footerCalories({caloriesNum: 2000}) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-            height: 5.0,
-            color: Colors.black,
-          ),
-          Text(
-            "*Percent Daily Values are based on a ${totalCalories} calories diet.",
-            style: TextStyle(
-                fontSize: 10.0, color: Colors.black, fontWeight: FontWeight.w400),
-          )
-        ]);
-  }
-
-  static Widget _buildAboutText(user) {
-    return new RichText(
-      text: new TextSpan(
-        text: 'Calories: ' + user['nf_calories'].toString() + " calories" + '\n\n' +
-            'Total Carbohydrates: ' + user['nf_total_carbohydrate'].toString() + " g" + '\n\n' +
-            'Sodium: ' + user['nf_sodium'].toString() + " mg" + '\n\n' +
-            'Total Fat: '  + user['nf_total_fat'].toString() + " g" + '\n\n' +
-            'Saturated Fat: '  + user['nf_saturated_fat'].toString() + " g" + '\n\n' +
-            'Cholesterol: ' + user['nf_cholesterol'].toString() + " mg" + '\n\n' +
-            'Trans Fat: '  + user['nf_trans_fatty_acid'].toString() + " g" + '\n\n' ,
-        style: const TextStyle(color: Colors.black87),
-        // children: <TextSpan>[
-        //   const TextSpan(text: 'The app was developed with '),
-        //   new TextSpan(
-        //     text: 'Flutter',
-        //
-        //   ),
-        //   const TextSpan(
-        //     text: ' and it\'s open source; check out the source '
-        //         'code yourself from ',
-        //   ),
-        //   new TextSpan(
-        //     text: 'www.codesnippettalk.com',
-        //
-        //   ),
-        //   const TextSpan(text: '.'),
-        // ],
-      ),
-    );
-  }
 
   void _getMoreData(int index, String restaurant, String category) async {
     int totalCalories2;
@@ -1213,3 +912,4 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   }
 
 }
+
