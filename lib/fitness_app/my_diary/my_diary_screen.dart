@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fast_food_health_e/fitness_app/ui_view/body_measurement.dart';
 import 'package:fast_food_health_e/fitness_app/ui_view/glass_view.dart';
 import 'package:fast_food_health_e/fitness_app/ui_view/mediterranesn_diet_view.dart';
@@ -166,6 +168,45 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
         animationController: widget.animationController,
       ),
     );
+
+    listViews.add(
+      Padding(
+        padding: const EdgeInsets.only(top: 4, bottom: 10, left: 4, right: 4),
+        child: Text(
+          "Nutrition Tip Of The Day",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: FitnessAppTheme.fontName,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            letterSpacing: -0.2,
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+
+    listViews.add(
+      Card(
+color: Colors.deepOrange,
+        margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+        child: FutureBuilder(
+            future: _getNutritionTip(),
+            initialData: "Loading text..",
+            builder: (BuildContext context, AsyncSnapshot<String> text) {
+              return Text(
+                text.data.toLowerCase(),
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+              );}
+        ),
+
+      ),);
     listViews.add(
       TitleView(
         titleTxt: 'Ask A Nutritionist',
@@ -416,6 +457,24 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 void storeDietPlan(String dietPlan) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("dietPlan", dietPlan);
+}
+
+Future <String> _getNutritionTip() async {
+  String result;
+
+  Random random = new Random();
+  int randomNumber = random.nextInt(7)+1;
+
+  final referenceDatabase = await FirebaseDatabase.instance
+      .reference()
+      .child('NutritionFacts')
+      .child(randomNumber.toString())
+      .once()
+      .then((snapshot) {
+    result = snapshot.value;
+  });
+
+  return result;
 }
 
 Future <String> _getDietPlan() async {
