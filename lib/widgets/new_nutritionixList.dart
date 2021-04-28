@@ -571,7 +571,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
   }
     else
-      return Center(child: CircularProgressIndicator());
+      return SizedBox(height: 0);
   }
 
 
