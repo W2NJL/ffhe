@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
+import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:fast_food_health_e/utils/metanutrient.dart';
 import 'package:fast_food_health_e/utils/nutrientLabel.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -64,6 +65,8 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   bool isLoading = false;
   List users = new List();
   final dio = new Dio();
+  List<int> nutrientList = <int>[];
+  final noNutrientLimit = 999999999;
 
 
 
@@ -175,7 +178,8 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
     if (maxValue == null)
       {
-        return 999999999;
+
+        return noNutrientLimit;
       }
 
 
@@ -189,6 +193,8 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     String formattedDate = formatter.format(now);
     this._getMoreData(page, this.restaurant, this.category);
     super.initState();
+
+
 
 
 
@@ -220,7 +226,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
       body: Column(children:
           [
             Container(
-              child: _showTitle(),
+              child: _showDietValues(),
             ),
             Container(
               child: _buildList(),
@@ -233,95 +239,342 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   }
 
 
-  Widget _showTitle(){
-    return FutureBuilder(
-        future: _getDietPlan(),
-        initialData: "Loading text..",
-        builder: (BuildContext context, AsyncSnapshot<String> text) {
-          return Text(
-            "Diet plan: " + text.data,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontFamily: FitnessAppTheme.fontName,
-              fontWeight: FontWeight.normal,
-              fontSize: 18,
-              letterSpacing: -0.2,
-              color: FitnessAppTheme.darkerText,
-            ),
-          );
-        }
+  Widget _showDietValues(){
+    if (done){
+    return Container(
+
+          color: Colors.green,
+      child: Column(
+
+          children:[
+            Row(
+              children:[
+                Padding(
+                  padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+                ),
+                Text(
+                  "Calories:",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontFamily: FitnessAppTheme.fontName,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 18,
+                    letterSpacing: -0.2,
+                    color: Colors.deepPurple,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+                ),
+                Text(
+                  calorieSum.toString(),
+      textAlign: TextAlign.left,
+      style: TextStyle(
+      fontFamily: FitnessAppTheme.fontName,
+      fontWeight: FontWeight.bold,
+      fontSize: 18,
+      letterSpacing: -0.2,
+      color: Colors.black,
+      ),
+      ),
+                Text(
+                  " of ",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontFamily: FitnessAppTheme.fontName,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 18,
+                    letterSpacing: -0.2,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  totalCalories.toString(),
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontFamily: FitnessAppTheme.fontName,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    letterSpacing: -0.2,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  " kCal",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontFamily: FitnessAppTheme.fontName,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 18,
+                    letterSpacing: -0.2,
+                    color: Colors.black,
+                  ),
+                ),
+              ]
+        ),
+            totalCholesterol != noNutrientLimit? Row( children:[
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+              ),
+              Text(
+                "Cholesterol:",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.green[900],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+              ),
+              Text(
+                cholesterolSum.toString(),
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                " of ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                totalCholesterol.toString(),
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                " mg",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+            ]):SizedBox(height: 0),
+            totalSodium != noNutrientLimit? Row( children:[
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+              ),
+              Text(
+                "Sodium:",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.blue[900],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+              ),
+              Text(
+                sodiumSum.toString(),
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                " of ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                totalSodium.toString(),
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                " mg",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+            ]):SizedBox(height: 0),
+            totalCarbs != noNutrientLimit? Row( children:[
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+              ),
+              Text(
+                "Total Carbs:",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.blue[900],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+              ),
+              Text(
+                carbSum.toString(),
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                " of ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                totalCarbs.toString(),
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                " g",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+            ]):SizedBox(height: 0),
+            totalFat != noNutrientLimit? Row( children:[
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+              ),
+              Text(
+                "Total Fat:",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.blue[900],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+              ),
+              Text(
+                fatSum.toString(),
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                " of ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                totalFat.toString(),
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                " mg",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  letterSpacing: -0.2,
+                  color: Colors.black,
+                ),
+              ),
+            ]):SizedBox(height: 0),
+          ])
     );
+
+
+
+  }
+    else
+      return Center(child: CircularProgressIndicator());
   }
 
-  Future <String> _getDietPlan() async {
-    String result;
-    String result2;
-    String result3;
-    String result4;
-    String result5;
-    List<String> resultList = <String>[];
 
-    final referenceDatabase = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child('DietPlan')
-        .once()
-        .then((snapshot){result = snapshot.value;});
-
-    result = result += "(" + calorieSum.toString() + " cals remaining)";
-
-    resultList.add(result);
-
-
-    final referenceDatabase2 = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child('Low Carb')
-        .once()
-        .then((snapshot){result2 = snapshot.value;});
-
-    result2 = result2 += "(" + carbSum.toString() + " g carbs remaining)";
-
-    resultList.add(result2);
-
-
-    final referenceDatabase3 = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child('Sodium')
-        .once()
-        .then((snapshot){result3 = snapshot.value;});
-
-    result3 = result3 += "(" + sodiumSum.toString() + " mg sodium remaining)";
-
-    resultList.add(result3);
-
-
-    final referenceDatabase4 = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child('Low Fat')
-        .once()
-        .then((snapshot){result4 = snapshot.value;});
-
-    result4 = result4 += "(" + fatSum.toString() + " mg total fat remaining)";
-    resultList.add(result4);
-
-    final referenceDatabase5 = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child('Low Cholesterol')
-        .once()
-        .then((snapshot){result5 = snapshot.value;});
-
-    result5 = result5 += "(" + cholesterolSum.toString() + " mg cholesterol remaining)";
-    resultList.add(result5);
-
-
-
-
-    return analyzeResult(resultList);
-  }
 
   String analyzeResult(List<String> result){
     String returnValue;
@@ -467,6 +720,15 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         isLoading = true;
       });
 
+      FirebaseFunctions joe = new FirebaseFunctions();
+
+      await joe.getTotalNutrients('Calories').then((value) => setState(() {
+
+        nutrientList = value;
+
+
+      }));
+
       await _getLimitPref().then((value) => setState(() {
 
         listingLimit = value;
@@ -608,12 +870,16 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
         if (remainingCarbs == null) {
           carbSum = totalCarbs;
+          done = true;
         }
         else {
           carbSum = totalCarbs - remainingCarbs;
+          done = true;
         }
 
         print("CarbSum is: " + carbSum.toString());
+
+
         }));
 
       List tList = new List();
