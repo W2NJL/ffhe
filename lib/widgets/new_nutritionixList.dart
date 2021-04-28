@@ -624,7 +624,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         params = generateParams(params, restaurant);
         Response<dynamic> response = await responseCall(url, params);
 
-        while (tList.length < 10 && response.data['hits'] != null) {
+        while (tList.length < 10 && response.data['hits']?.isEmpty == false) {
 
 
 
@@ -635,16 +635,16 @@ class NewNutritionixListState extends State<NewNutritionixList> {
           List<String> foodList = <String>[];
 
           int orig = tList.length;
+          print("Response is: " + response.data['hits'].toString());
 
 
           for (int i = 0; i < response.data['hits'].length; i++) {
             addFoodtoTList(response, i, category, foodList, tList);
             print("Length of list is: " + tList.length.toString());
+
           }
 
-          if (tList.length == orig){
-            break;
-          }
+
 
 
           setState(() {
@@ -791,7 +791,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   void addFoodtoTList(Response<dynamic> response, int i, String category, List<String> foodList, List<dynamic> tList) {
      if (determineFood(
         response.data['hits'][i]['fields']['item_name']) ==
-        category && !foodList.contains(
+        category && !badWords(response.data['hits'][i]['fields']['item_name'].toString()) && !foodList.contains(
         response.data['hits'][i]['fields']['item_name']
             .toString()
             .toLowerCase())) {
@@ -843,10 +843,10 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
     String categoryWord;
     const int categories = 3;
-    final beverageReg =  RegExp("(?:coke|tea|dr. pepper|pepsi|sprite|orange juice|coffee|milk|root beer|latte|cola|mocha|americano|frappe|shake|milk)", caseSensitive: false);
-    final entreeReg =  RegExp("(?:salad|bowl|sandwich|soup|burger|pasta|gyro|hoagie|buffalo|sandwich|nuggets|filet|strips|pounder|tenders|mac|chicken|tacos|quesadilla|waffle|toast|pancake|omelette|omelet|sausage|breakfast|bagel|egg|muffin|hotcakes|steak|burrito|pie|fritter)", caseSensitive: false);
+    final beverageReg =  RegExp("(?:coke|iced tea|dr. pepper|pepsi|sprite|orange juice|coffee|milk|root beer|latte|mocha|americano|frappe|shake|milk|lemonade|brisk raspberry|caffeine|cappuccino|cold brew|fresca|fruit punch|gold peak|green tea|hot chocolate|iced caramel|limonata|macchiato|mccafe|mcflurry|mist twist|mountain dew|orange soda|pibb|powerade|sierra mist|slushie|smoothie|sobe|tropicana)", caseSensitive: false);
+    final entreeReg =  RegExp("(?:salad|wrap|smash|bowl|bbq|patty|sandwich|soup|burger|pasta|gyro|hoagie|buffalo|sandwich|nuggets|filet|strips|pounder|tenders|chicken|tacos|quesadilla|waffle|toast|pancake|omelette|omelet|sausage|breakfast|bagel|egg|hotcakes|steak|burrito|pie|fritter|alfredo|beef|bibimbap|big mac|brioche|buffalo|burrito|carbonara|cheeseburger|chili|ciabatta|eggplant|filet|flatbread|focaccia|gnocchi|gyro|hamburger|hoagie|korean|kung pao|lasagna|lo mein|lobster|mac|marsala|marinara|mcgriddles|meatballs|miche|minestrone|oatmeal|pad thai|panini|parmigana|pork|pounder|prawns|ravioli|ribeye|rigatoni|rontini|salmon|scampi|sea bass|shrimp|sirloin|souffle|spaghetti|spareribs|stew|stir-fried|stuffed shells|stuffed ziti fritta|surf & turf|tempura|tenders|thai curry|tofu|noodles|tortellini|tortelloni|udon|waffle|ziti|zuppa)", caseSensitive: false);
 
-    final sideReg =  RegExp("(?:dressing|mustard|jelly|peanuts|coleslaw|sauce|lemonade|fries|potato|corn|rice|balsamic|beans|blue cheese)", caseSensitive: false);
+    final sideReg =  RegExp("(?:artichoke|asparagus|avocado rolls|baguette|banana|breadstick|brownie|california roll|california rolls|cinnamon roll|cookie|crab wonton|dessert|dipping sauce|dragon roll|dumplings|egg rolls|fried mozzarella|fruit cup|green beans|hash browns|kimchi|lahvash|mac & cheese|muffin|pastry|peanuts|pickle|potstickers|scone|spread|spring roll|tuna roll|wonton|yogurt|dressing|mustard|jelly|peanuts|coleslaw|sauce|fries|potato|rice|balsamic|beans|blue cheese)", caseSensitive: false);
 
 
 
@@ -909,6 +909,16 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getBool("listings");
+  }
+
+  bool badWords(String string) {
+
+
+    print("String is " + string);
+    final ignoreReg =  RegExp("(?:kids|children|combo|catering|gallon|build|create|family|bundle|serves|whole|tray|kid|party)", caseSensitive: false);
+
+    print("Truth is " + ignoreReg.hasMatch(string).toString());
+    return ignoreReg.hasMatch(string);
   }
 
 }
