@@ -987,7 +987,7 @@ if(done){
                                       width: 70,
                                       decoration: BoxDecoration(
                                         color:
-                                        HexColor('#87A0E5').withOpacity(0.2),
+                                        HexColor('#E6E91B').withOpacity(0.2),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(4.0)),
                                       ),
@@ -998,8 +998,8 @@ if(done){
                                             height: 4,
                                             decoration: BoxDecoration(
                                               gradient: LinearGradient(colors: [
-                                                HexColor('#87A0E5'),
-                                                HexColor('#87A0E5')
+                                                HexColor('#E6E91B'),
+                                                HexColor('#E6E91B')
                                                     .withOpacity(0.5),
                                               ]),
                                               borderRadius: BorderRadius.all(
@@ -1116,7 +1116,7 @@ if(done){
                                           width: 70,
                                           decoration: BoxDecoration(
                                             color:
-                                            HexColor('#87A0E5').withOpacity(0.2),
+                                            HexColor('#E6E91B').withOpacity(0.2),
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(4.0)),
                                           ),
@@ -1127,8 +1127,8 @@ if(done){
                                                 height: 4,
                                                 decoration: BoxDecoration(
                                                   gradient: LinearGradient(colors: [
-                                                    HexColor('#87A0E5'),
-                                                    HexColor('#87A0E5')
+                                                    HexColor('#E6E91B'),
+                                                    HexColor('#E6E91B')
                                                         .withOpacity(0.5),
                                                   ]),
                                                   borderRadius: BorderRadius.all(
