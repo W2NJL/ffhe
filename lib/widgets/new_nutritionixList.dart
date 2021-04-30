@@ -267,14 +267,14 @@ class NewNutritionixListState extends State<NewNutritionixList> {
                   padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
                 ),
                 Text(
-                  calorieSum.toString(),
+                  remainingCalories.toString(),
       textAlign: TextAlign.left,
       style: TextStyle(
       fontFamily: FitnessAppTheme.fontName,
       fontWeight: FontWeight.bold,
       fontSize: 18,
       letterSpacing: -0.2,
-      color: Colors.black,
+      color: remainingCalories > totalCalories?  Colors.red[500]: Colors.black,
       ),
       ),
                 Text(
@@ -331,14 +331,14 @@ class NewNutritionixListState extends State<NewNutritionixList> {
                 padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
               ),
               Text(
-                cholesterolSum.toString(),
+                remainingCholesterol.toString(),
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontFamily: FitnessAppTheme.fontName,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   letterSpacing: -0.2,
-                  color: Colors.black,
+                  color: remainingCholesterol > totalCholesterol?  Colors.red[500]: Colors.black,
                 ),
               ),
               Text(
@@ -394,14 +394,14 @@ class NewNutritionixListState extends State<NewNutritionixList> {
                 padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
               ),
               Text(
-                sodiumSum.toString(),
+                remainingSodium.toString(),
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontFamily: FitnessAppTheme.fontName,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   letterSpacing: -0.2,
-                  color: Colors.black,
+                  color: remainingSodium > totalSodium?  Colors.red[500]: Colors.black,
                 ),
               ),
               Text(
@@ -457,14 +457,14 @@ class NewNutritionixListState extends State<NewNutritionixList> {
                 padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
               ),
               Text(
-                carbSum.toString(),
+                remainingCarbs.toString(),
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontFamily: FitnessAppTheme.fontName,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   letterSpacing: -0.2,
-                  color: Colors.black,
+                  color: remainingCarbs > totalCarbs?  Colors.red[500]: Colors.black,
                 ),
               ),
               Text(
@@ -520,14 +520,14 @@ class NewNutritionixListState extends State<NewNutritionixList> {
                 padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
               ),
               Text(
-                fatSum.toString(),
+                remainingFat.toString(),
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontFamily: FitnessAppTheme.fontName,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   letterSpacing: -0.2,
-                  color: Colors.black,
+                  color: remainingFat > totalFat?  Colors.red[500]: Colors.black,
                 ),
               ),
               Text(
