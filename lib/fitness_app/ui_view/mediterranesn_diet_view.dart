@@ -1,5 +1,6 @@
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/main.dart';
+import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -47,16 +48,13 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   int sodium;
   int carbs;
   int fat;
-  int satFat;
   int cholesterol;
   int calorieMax;
   int carbMax;
   int sodiumMax;
   int fatMax;
-  int satFatMax;
   int cholesterolMax;
   int numDietTrackers = 0;
-  bool showingCholesterol = false;
   bool done = false;
   String image1;
   String image2;
@@ -65,6 +63,11 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   String image5;
   List<String> restaurants = <String>[];
   List<String> imageArray = <String>[];
+  String graphPlan1;
+  String graphPlan2;
+  String graphPlan3;
+  bool graph1Bool = true, graph2Bool = true, graph3Bool = true;
+  int graph1Multiplier, graph1Divide, graph1Divisor, graph2Multiplier, graph2Divide, graph2Divisor, graph3Multiplier, graph3Divide, graph3Divisor;
 
   _DrillDownScreenState(){
 
@@ -81,7 +84,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
 
   void _getMoreData() async {
-    bool cals, sodiums, carbies, fats, sats, cholesterols, calmaxs, rests, sodmaxs, carbmax, fatmax, cholmax, satmax;
+    bool cals, sodiums, carbies, fats, cholesterols, calmaxs, rests, sodmaxs, carbmax, fatmax, cholmax, graphVals;
 
     await _getCalorieValue('Calories').then((value) =>
         setState(() {
@@ -107,11 +110,6 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
         setState(() {
           cholesterol = value;
           cholesterols = true;
-        }));
-    await _getCalorieValue('Saturated Fat').then((value) =>
-        setState(() {
-          satFat = value;
-          sats = true;
         }));
     await _getMaxValue('Calories').then((value) =>
         setState(() {
@@ -142,12 +140,6 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
           cholmax = true;
 
         }));
-    await _getMaxValue('Low Cholesterol').then((value) =>
-        setState(() {
-          satFatMax = value;
-          satmax = true;
-
-        }));
 
     await _getRestaurantImages().then((value) =>
         setState(() {
@@ -163,13 +155,16 @@ if(restaurants != null){
       }
     }}
 
-    if(cals && sodiums && carbies && fats && calmaxs && rests && sodmaxs && carbmax && fatmax && cholmax && cholesterols  && satmax & sats ){
+
+setGraphVars();
+
+    if(cals && sodiums && carbies && fats && calmaxs && rests && sodmaxs && carbmax && fatmax && cholmax && cholesterols ){
       done = true;
     }
 
-    if (sodiumMax == null && cholesterolMax != null){
-      showingCholesterol = true;
-    }
+    // if (sodiumMax == null && cholesterolMax != null){
+    //   showingCholesterol = true;
+    // }
 }
 
   Future <int> _getMaxValue(String diet) async {
@@ -191,9 +186,6 @@ if(restaurants != null){
       maxValue = snapshot.value;
     });
 
-    if (maxValue = null){
-      return 2000;
-    }
 
       return maxValue;
   }
@@ -920,12 +912,12 @@ if(done){
                         child:  Row(
                           children: <Widget>[
                             Expanded(
-                              child:  sodiumMax != null? Column(
+                              child:  Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    'Sodium',
+                                    graphPlan1,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontFamily: FitnessAppTheme.fontName,
@@ -948,8 +940,8 @@ if(done){
                                       ),
                                       child: Row(
                                         children: <Widget>[
-                                          sodium <= sodiumMax? Container(
-                                            width: ((sodium/sodiumMax)*60),
+                                          graph1Bool? Container(
+                                            width: ((graph1Divide/graph1Divisor)*graph1Multiplier),
                                             height: 4,
                                             decoration: BoxDecoration(
                                               gradient: LinearGradient(colors: [
@@ -960,19 +952,7 @@ if(done){
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(4.0)),
                                             ),
-                                          ):Container(
-                                            width: ((sodiumMax/sodiumMax)*70),
-                                            height: 4,
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(colors: [
-                                                HexColor('#87A0E5'),
-                                                HexColor('#87A0E5')
-                                                    .withOpacity(0.5),
-                                              ]),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(4.0)),
-                                            ),
-                                          ),
+                                          ):SizedBox(height: 0),
                                         ],
                                       ),
                                     ),
@@ -980,7 +960,7 @@ if(done){
                                   Padding(
                                     padding: const EdgeInsets.only(top: 6),
                                     child: Text(
-                                      sodium.toString() + ' mg',
+                                      graph1Divide.toString() + ' mg',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
@@ -993,79 +973,6 @@ if(done){
                                   ),
 
                                 ],
-                              ):Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    'Cholesterol',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: FitnessAppTheme.fontName,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                      letterSpacing: -0.2,
-                                      color: FitnessAppTheme.darkText,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 4),
-                                    child: Container(
-                                      height: 4,
-                                      width: 70,
-                                      decoration: BoxDecoration(
-                                        color:
-                                        HexColor('#E6E91B').withOpacity(0.2),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4.0)),
-                                      ),
-                                      child: Row(
-                                        children: <Widget>[
-                                          cholesterol <= cholesterolMax? Container(
-                                            width: ((cholesterol/cholesterolMax)*60),
-                                            height: 4,
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(colors: [
-                                                HexColor('#E6E91B'),
-                                                HexColor('#E6E91B')
-                                                    .withOpacity(0.5),
-                                              ]),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(4.0)),
-                                            ),
-                                          ): Container(
-                                            width: ((cholesterolMax/cholesterolMax)*70),
-                                            height: 4,
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(colors: [
-                                                HexColor('#E6E91B'),
-                                                HexColor('#E6E91B')
-                                                    .withOpacity(0.5),
-                                              ]),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(4.0)),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 6),
-                                    child: Text(
-                                      cholesterol.toString() + ' mg',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: FitnessAppTheme.fontName,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12,
-                                        color:
-                                        FitnessAppTheme.grey.withOpacity(0.5),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-
                               ),
                             ),
                             Expanded(
@@ -1073,12 +980,12 @@ if(done){
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  carbMax != null?  Column(
+                                  Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        'Carbs',
+                                        graphPlan2,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
@@ -1101,8 +1008,8 @@ if(done){
                                           ),
                                           child: Row(
                                             children: <Widget>[
-                                              carbs <= carbMax? Container(
-                                                width: ((carbs/carbMax)*70),
+                                              graph2Bool? Container(
+                                                width: ((graph2Divide/graph2Divisor)*graph2Multiplier),
                                                 height: 4,
                                                 decoration: BoxDecoration(
                                                   gradient:
@@ -1110,152 +1017,6 @@ if(done){
                                                     HexColor('#F56E98')
                                                         .withOpacity(0.1),
                                                     HexColor('#F56E98'),
-                                                  ]),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(4.0)),
-                                                ),
-                                              ): Container(
-                                                width: ((carbMax/carbMax)*70),
-                                                height: 4,
-                                                decoration: BoxDecoration(
-                                                  gradient:
-                                                  LinearGradient(colors: [
-                                                    HexColor('#F56E98')
-                                                        .withOpacity(0.1),
-                                                    HexColor('#F56E98'),
-                                                  ]),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(4.0)),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 6),
-                                        child: Text(
-                                          carbs.toString() + 'g',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: FitnessAppTheme.fontName,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 12,
-                                            color: FitnessAppTheme.grey
-                                                .withOpacity(0.5),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ): !showingCholesterol ? Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'Cholesterol',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: FitnessAppTheme.fontName,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                          letterSpacing: -0.2,
-                                          color: FitnessAppTheme.darkText,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Container(
-                                          height: 4,
-                                          width: 70,
-                                          decoration: BoxDecoration(
-                                            color:
-                                            HexColor('#E6E91B').withOpacity(0.2),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(4.0)),
-                                          ),
-                                          child: Row(
-                                            children: <Widget>[
-                                              cholesterol >= cholesterolMax? Container(
-                                                width: ((cholesterol/cholesterolMax)*60),
-                                                height: 4,
-                                                decoration: BoxDecoration(
-                                                  gradient: LinearGradient(colors: [
-                                                    HexColor('#E6E91B'),
-                                                    HexColor('#E6E91B')
-                                                        .withOpacity(0.5),
-                                                  ]),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(4.0)),
-                                                ),
-                                              ): Container(
-                                                width: ((cholesterolMax/cholesterolMax)*70),
-                                                height: 4,
-                                                decoration: BoxDecoration(
-                                                  gradient: LinearGradient(colors: [
-                                                    HexColor('#E6E91B'),
-                                                    HexColor('#E6E91B')
-                                                        .withOpacity(0.5),
-                                                  ]),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(4.0)),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 6),
-                                        child: Text(
-                                          cholesterol.toString() + ' mg',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: FitnessAppTheme.fontName,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 12,
-                                            color:
-                                            FitnessAppTheme.grey.withOpacity(0.5),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-
-                                  ): Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'Saturated Fat',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: FitnessAppTheme.fontName,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                          letterSpacing: -0.2,
-                                          color: FitnessAppTheme.darkText,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Container(
-                                          height: 4,
-                                          width: 70,
-                                          decoration: BoxDecoration(
-                                            color:
-                                            HexColor('#87A0E5').withOpacity(0.2),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(4.0)),
-                                          ),
-                                          child: Row(
-                                            children: <Widget>[
-                                              satFatMax != null? Container(
-                                                width: ((satFat/satFatMax)*60),
-                                                height: 4,
-                                                decoration: BoxDecoration(
-                                                  gradient: LinearGradient(colors: [
-                                                    HexColor('#87A0E5'),
-                                                    HexColor('#87A0E5')
-                                                        .withOpacity(0.5),
                                                   ]),
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(4.0)),
@@ -1268,23 +1029,22 @@ if(done){
                                       Padding(
                                         padding: const EdgeInsets.only(top: 6),
                                         child: Text(
-                                          satFat.toString() + ' mg',
+                                          graph2Divide.toString() + 'g',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontFamily: FitnessAppTheme.fontName,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 12,
-                                            color:
-                                            FitnessAppTheme.grey.withOpacity(0.5),
+                                            color: FitnessAppTheme.grey
+                                                .withOpacity(0.5),
                                           ),
                                         ),
                                       ),
-                                    ],
 
-                                  )
-                                ],
+                                    ],
                               ),
-                            ),
+                            ]),
+            ),
                             Expanded(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -1295,7 +1055,7 @@ if(done){
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        'Fat',
+                                        graphPlan3,
                                         style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
                                           fontWeight: FontWeight.w500,
@@ -1318,8 +1078,8 @@ if(done){
                                           ),
                                           child: Row(
                                             children: <Widget>[
-                                              fat <= fatMax? Container(
-                                                width: ((fat/fatMax)*70),
+                                              graph3Bool? Container(
+                                                width: ((graph3Divide/graph3Divisor)*graph3Multiplier),
                                                 height: 4,
                                                 decoration: BoxDecoration(
                                                   gradient:
@@ -1331,20 +1091,7 @@ if(done){
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(4.0)),
                                                 ),
-                                              ): Container(
-                                                width: ((fatMax/fatMax)*70),
-                                                height: 4,
-                                                decoration: BoxDecoration(
-                                                  gradient:
-                                                  LinearGradient(colors: [
-                                                    HexColor('#F1B440')
-                                                        .withOpacity(0.1),
-                                                    HexColor('#F1B440'),
-                                                  ]),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(4.0)),
-                                                ),
-                                              ),
+                                              ):SizedBox(height: 0),
                                             ],
                                           ),
                                         ),
@@ -1352,7 +1099,7 @@ if(done){
                                       Padding(
                                         padding: const EdgeInsets.only(top: 6),
                                         child: Text(
-                                          fat.toString() + 'g',
+                                          graph3Divide.toString() + 'g',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontFamily: FitnessAppTheme.fontName,
@@ -1384,6 +1131,16 @@ if(done){
   else
   return Center(child: CircularProgressIndicator());
   }
+
+
+
+
+
+
+
+
+
+
 
   String cleanRestaurant(String restaurant) {
     print("Hmm " + restaurant);
@@ -1425,6 +1182,258 @@ if(done){
     }
 
 
+
+  }
+
+  void setGraphVars() async{
+
+
+
+
+
+
+    if (sodiumMax == null && carbMax == null && cholesterolMax == null && fatMax == null){
+      graphPlan1 = "Carbs";
+      graph1Multiplier = 70;
+      graph1Divide = carbs;
+      graph1Divisor = 1;
+      graph1Bool = false;
+
+      graphPlan2 = "Sodium";
+      graph2Multiplier = 70;
+      graph2Divide = sodium;
+      graph2Divisor = 1;
+      graph2Bool = false;
+
+      graphPlan3 = "Cholesterol";
+      graph3Multiplier = 70;
+      graph3Divide = cholesterol;
+      graph3Divisor = 1;
+      graph3Bool = false;
+    }
+
+    if (sodiumMax == null && carbMax == null && cholesterolMax == null && fatMax != null){
+      graphPlan1 = "Fat";
+      graph1Multiplier = 70;
+
+      if(fat <= fatMax) {
+        graph1Divide = fat;
+        graph1Divisor = fatMax;
+      }
+      else{
+        graph1Divide = fatMax;
+        graph1Divisor = fatMax;
+      }
+
+      graphPlan2 = "Carbs";
+      graph2Multiplier = 70;
+      graph2Divide = carbs;
+      graph2Divisor = 1;
+      graph2Bool = false;
+
+      graphPlan3 = "Sodium";
+      graph3Multiplier = 70;
+      graph3Divide = sodium;
+      graph3Divisor = 1;
+      graph3Bool = false;
+
+
+    }
+
+    if (sodiumMax != null && carbMax == null && cholesterolMax == null && fatMax == null){
+      graphPlan1 = "Sodium";
+      graph1Multiplier = 60;
+
+      if(sodium <= sodiumMax) {
+        graph1Divide = sodium;
+        graph1Divisor = sodiumMax;
+      }
+      else{
+        graph1Divide = sodiumMax;
+        graph1Divisor = sodiumMax;
+      }
+
+
+
+      graphPlan2 = "Carbs";
+      graph2Multiplier = 70;
+      graph2Divide = carbs;
+      graph2Divisor = 1;
+
+
+
+      graphPlan3 = "Fat";
+      graph3Multiplier = 70;
+      graph3Divide = fat;
+      graph3Divisor = fatMax;
+      graph3Bool = false;
+    }
+
+    if (sodiumMax != null && carbMax != null && cholesterolMax == null && fatMax == null){
+
+        graphPlan1 = "Carbs";
+        graph1Multiplier = 60;
+
+        if(carbs <= carbMax) {
+          graph1Divide = carbs;
+          graph1Divisor = carbMax;
+        }
+        else{
+          graph1Divide = carbMax;
+          graph1Divisor = carbMax;
+        }
+
+
+
+        graphPlan2 = "Sodium";
+        graph2Multiplier = 60;
+
+        if(sodium <= sodiumMax) {
+          graph2Divide = sodium;
+          graph2Divisor = sodiumMax;
+        }
+        else{
+          graph2Divide = sodiumMax;
+          graph2Divisor = sodiumMax;
+        }
+
+
+
+
+
+
+
+      graphPlan3 = "Fat";
+      graph3Multiplier = 70;
+      graph3Divide = fat;
+      graph3Divisor = fatMax;
+      graph3Bool = false;
+    }
+
+    if (sodiumMax != null && carbMax != null && cholesterolMax != null && fatMax == null){
+
+      graphPlan1 = "Carbs";
+      graph1Multiplier = 60;
+
+      if(carbs <= carbMax) {
+        graph1Divide = carbs;
+        graph1Divisor = carbMax;
+      }
+      else{
+        graph1Divide = carbMax;
+        graph1Divisor = carbMax;
+      }
+
+
+
+      graphPlan2 = "Sodium";
+      graph2Multiplier = 60;
+
+      if(sodium <= sodiumMax) {
+        graph2Divide = sodium;
+        graph2Divisor = sodiumMax;
+      }
+      else{
+        graph2Divide = sodiumMax;
+        graph2Divisor = sodiumMax;
+      }
+
+
+
+
+
+
+
+      graphPlan3 = "Cholesterol";
+      graph3Multiplier = 60;
+
+      if(cholesterol <= cholesterolMax) {
+        graph3Divide = cholesterol;
+        graph3Divisor = cholesterolMax;
+      }
+      else{
+        graph3Divide = cholesterolMax;
+        graph3Divisor = cholesterolMax;
+      }
+    }
+
+    if (sodiumMax == null && carbMax != null && cholesterolMax != null && fatMax == null){
+
+      graphPlan1 = "Carbs";
+      graph1Multiplier = 60;
+
+      if(carbs <= carbMax) {
+        graph1Divide = carbs;
+        graph1Divisor = carbMax;
+      }
+      else{
+        graph1Divide = carbMax;
+        graph1Divisor = carbMax;
+      }
+
+      graphPlan2 = "Cholesterol";
+      graph2Multiplier = 60;
+
+      if(cholesterol <= cholesterolMax) {
+        graph2Divide = cholesterol;
+        graph2Divisor = cholesterolMax;
+      }
+      else{
+        graph2Divide = cholesterolMax;
+        graph2Divisor = cholesterolMax;
+      }
+
+      graphPlan3 = "Sodium";
+      graph3Multiplier = 70;
+      graph3Divide = sodium;
+      graph3Bool = false;
+      graph3Divisor = 1;
+
+
+
+
+
+
+
+
+    }
+
+    if (sodiumMax == null && carbMax == null && cholesterolMax != null && fatMax == null){
+
+      graphPlan1 = "Cholesterol";
+      graph1Multiplier = 60;
+
+      if(cholesterol <= cholesterolMax) {
+        graph1Divide = cholesterol;
+        graph1Divisor = cholesterolMax;
+      }
+      else{
+        graph1Divide = cholesterolMax;
+        graph1Divisor = cholesterolMax;
+      }
+
+
+
+      graphPlan2 = "Carbs";
+      graph2Multiplier = 70;
+      graph2Divide = carbs;
+      graph2Bool = false;
+      graph2Divisor = 1;
+
+      graphPlan3 = "Sodium";
+      graph3Multiplier = 70;
+      graph3Divide = sodium;
+      graph3Bool = false;
+      graph3Divisor = 1;
+
+
+
+
+
+
+
+
+    }
 
   }
 }

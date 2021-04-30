@@ -50,6 +50,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   static int mealNum = 1;
   static String formattedDate;
   bool done = false;
+  bool passThrough = false;
 
 
 
@@ -681,27 +682,19 @@ class NewNutritionixListState extends State<NewNutritionixList> {
       actions: <Widget>[
         new FlatButton(
           onPressed: () {
-            ref.child('DietVals').child(formattedDate).child('Calories').set(ServerValue.increment(user['nf_calories']));
-            ref.child('DietVals').child(formattedDate).child('Sodium').set(ServerValue.increment(user['nf_sodium']));
-            ref.child('DietVals').child(formattedDate).child('Low Carb').set(ServerValue.increment(user['nf_total_carbohydrate']));
-            ref.child('DietVals').child(formattedDate).child('Low Fat').set(ServerValue.increment(user['nf_total_fat'].toInt()));
-            ref.child('DietVals').child(formattedDate).child('Low Cholesterol').set(ServerValue.increment(user['nf_cholesterol']));
-            ref.child('DietVals').child(formattedDate).child('Saturated Fat').set(ServerValue.increment(user['nf_saturated_fat'].toInt()));
-            ref.child('DietVals').child(formattedDate).child('Trans Fat').set(ServerValue.increment(user['nf_trans_fatty_acid'].toInt()));
-            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('calories').set(ServerValue.increment(user['nf_calories']));
-            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('sodium').set(ServerValue.increment(user['nf_sodium']));
-            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('carbs').set(ServerValue.increment(user['nf_total_carbohydrate']));
-            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('fat').set(ServerValue.increment(user['nf_total_fat'].toInt()));
-            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('cholesterol').set(ServerValue.increment(user['nf_cholesterol']));
-            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Saturated Fat').set(ServerValue.increment(user['nf_saturated_fat'].toInt()));
-            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Trans Fat').set(ServerValue.increment(user['nf_trans_fatty_acid'].toInt()));
-            ref.child('DietVals').child(formattedDate).child('Meals').child(user['item_name']).child('Restaurant').set(user['brand_name']);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => NewNutritionixList(restaurant: restaurant, mealCategory: category),
-              ),
-            );
+
+            checkPercentageOfDay(ref, user);
+
+            if(passThrough) {
+              addToMyDay(ref, user);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewNutritionixList(
+                      restaurant: restaurant, mealCategory: category),
+                ),
+              );
+            }
           },
           textColor: Theme.of(context).primaryColor,
           child: const Text('Add to My Day'),
@@ -709,6 +702,49 @@ class NewNutritionixListState extends State<NewNutritionixList> {
       ],
     );
   }
+
+ void addToMyDay(DatabaseReference ref, user) {
+    ref.child('DietVals').child(formattedDate).child('Calories').set(
+       ServerValue.increment(user['nf_calories']));
+   ref.child('DietVals').child(formattedDate).child('Sodium').set(
+       ServerValue.increment(user['nf_sodium']));
+   ref.child('DietVals').child(formattedDate).child('Low Carb').set(
+       ServerValue.increment(user['nf_total_carbohydrate']));
+   ref.child('DietVals').child(formattedDate).child('Low Fat').set(
+       ServerValue.increment(user['nf_total_fat'].toInt()));
+   ref.child('DietVals').child(formattedDate).child(
+       'Low Cholesterol').set(
+       ServerValue.increment(user['nf_cholesterol']));
+   ref.child('DietVals').child(formattedDate)
+       .child('Saturated Fat')
+       .set(ServerValue.increment(user['nf_saturated_fat'].toInt()));
+   ref.child('DietVals').child(formattedDate).child('Trans Fat').set(
+       ServerValue.increment(user['nf_trans_fatty_acid'].toInt()));
+   ref.child('DietVals').child(formattedDate).child('Meals').child(
+       user['item_name']).child('calories').set(
+       ServerValue.increment(user['nf_calories']));
+   ref.child('DietVals').child(formattedDate).child('Meals').child(
+       user['item_name']).child('sodium').set(
+       ServerValue.increment(user['nf_sodium']));
+   ref.child('DietVals').child(formattedDate).child('Meals').child(
+       user['item_name']).child('carbs').set(
+       ServerValue.increment(user['nf_total_carbohydrate']));
+   ref.child('DietVals').child(formattedDate).child('Meals').child(
+       user['item_name']).child('fat').set(
+       ServerValue.increment(user['nf_total_fat'].toInt()));
+   ref.child('DietVals').child(formattedDate).child('Meals').child(
+       user['item_name']).child('cholesterol').set(
+       ServerValue.increment(user['nf_cholesterol']));
+   ref.child('DietVals').child(formattedDate).child('Meals').child(
+       user['item_name']).child('Saturated Fat').set(
+       ServerValue.increment(user['nf_saturated_fat'].toInt()));
+   ref.child('DietVals').child(formattedDate).child('Meals').child(
+       user['item_name']).child('Trans Fat').set(
+       ServerValue.increment(user['nf_trans_fatty_acid'].toInt()));
+   ref.child('DietVals').child(formattedDate).child('Meals').child(
+       user['item_name']).child('Restaurant').set(
+       user['brand_name']);
+ }
 
 
 
@@ -1192,6 +1228,68 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
     print("Truth is " + ignoreReg.hasMatch(string).toString());
     return ignoreReg.hasMatch(string);
+  }
+
+  void checkPercentageOfDay(ref, user) {
+    if (percentageOf(user['nf_calories'].toInt())){
+      passThrough = true;
+      return;
+    }
+
+    else
+      {
+_showDialog(ref, user);
+
+      }
+
+
+  }
+
+  void _showDialog(ref, user) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Large meal alert"),
+          content: new Text("This meal item will consume more than 30% of your recommended daily calorie intake!"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Continue anyway"),
+              onPressed: () {
+                passThrough = true;
+                addToMyDay(ref, user);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewNutritionixList(
+                        restaurant: restaurant, mealCategory: category),
+                  ),
+                );
+              },
+            ),
+            new FlatButton(
+              child: new Text("Don't add"),
+              onPressed: () {
+                int count = 0;
+                Navigator.of(context).popUntil((_) => count++ >= 2);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  bool percentageOf(int value) {
+
+    if (value/totalCalories >= 0.3) {
+      return false;
+    }
+    return true;
+
   }
 
 }
