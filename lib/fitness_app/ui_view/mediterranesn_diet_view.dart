@@ -47,11 +47,13 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   int sodium;
   int carbs;
   int fat;
+  int satFat;
   int cholesterol;
   int calorieMax;
   int carbMax;
   int sodiumMax;
   int fatMax;
+  int satFatMax;
   int cholesterolMax;
   int numDietTrackers = 0;
   bool showingCholesterol = false;
@@ -79,7 +81,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
 
   void _getMoreData() async {
-    bool cals, sodiums, carbies, fats, cholesterols, calmaxs, rests, sodmaxs, carbmax, fatmax, cholmax;
+    bool cals, sodiums, carbies, fats, sats, cholesterols, calmaxs, rests, sodmaxs, carbmax, fatmax, cholmax, satmax;
 
     await _getCalorieValue('Calories').then((value) =>
         setState(() {
@@ -105,6 +107,11 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
         setState(() {
           cholesterol = value;
           cholesterols = true;
+        }));
+    await _getCalorieValue('Saturated Fat').then((value) =>
+        setState(() {
+          satFat = value;
+          sats = true;
         }));
     await _getMaxValue('Calories').then((value) =>
         setState(() {
@@ -135,6 +142,12 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
           cholmax = true;
 
         }));
+    await _getMaxValue('Low Cholesterol').then((value) =>
+        setState(() {
+          satFatMax = value;
+          satmax = true;
+
+        }));
 
     await _getRestaurantImages().then((value) =>
         setState(() {
@@ -150,7 +163,7 @@ if(restaurants != null){
       }
     }}
 
-    if(cals && sodiums && carbies && fats && calmaxs && rests && sodmaxs && carbmax && fatmax && cholmax && cholesterols ){
+    if(cals && sodiums && carbies && fats && calmaxs && rests && sodmaxs && carbmax && fatmax && cholmax && cholesterols  && satmax & sats ){
       done = true;
     }
 
@@ -178,6 +191,9 @@ if(restaurants != null){
       maxValue = snapshot.value;
     });
 
+    if (maxValue = null){
+      return 2000;
+    }
 
       return maxValue;
   }
@@ -932,8 +948,20 @@ if(done){
                                       ),
                                       child: Row(
                                         children: <Widget>[
-                                           Container(
+                                          sodium <= sodiumMax? Container(
                                             width: ((sodium/sodiumMax)*60),
+                                            height: 4,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(colors: [
+                                                HexColor('#87A0E5'),
+                                                HexColor('#87A0E5')
+                                                    .withOpacity(0.5),
+                                              ]),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(4.0)),
+                                            ),
+                                          ):Container(
+                                            width: ((sodiumMax/sodiumMax)*70),
                                             height: 4,
                                             decoration: BoxDecoration(
                                               gradient: LinearGradient(colors: [
@@ -993,7 +1021,7 @@ if(done){
                                       ),
                                       child: Row(
                                         children: <Widget>[
-                                          cholesterolMax != null? Container(
+                                          cholesterol <= cholesterolMax? Container(
                                             width: ((cholesterol/cholesterolMax)*60),
                                             height: 4,
                                             decoration: BoxDecoration(
@@ -1005,7 +1033,19 @@ if(done){
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(4.0)),
                                             ),
-                                          ): SizedBox(height: 0),
+                                          ): Container(
+                                            width: ((cholesterolMax/cholesterolMax)*70),
+                                            height: 4,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(colors: [
+                                                HexColor('#E6E91B'),
+                                                HexColor('#E6E91B')
+                                                    .withOpacity(0.5),
+                                              ]),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(4.0)),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -1061,7 +1101,7 @@ if(done){
                                           ),
                                           child: Row(
                                             children: <Widget>[
-                                              carbMax != null? Container(
+                                              carbs <= carbMax? Container(
                                                 width: ((carbs/carbMax)*70),
                                                 height: 4,
                                                 decoration: BoxDecoration(
@@ -1074,7 +1114,20 @@ if(done){
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(4.0)),
                                                 ),
-                                              ): SizedBox(height: 0),
+                                              ): Container(
+                                                width: ((carbMax/carbMax)*70),
+                                                height: 4,
+                                                decoration: BoxDecoration(
+                                                  gradient:
+                                                  LinearGradient(colors: [
+                                                    HexColor('#F56E98')
+                                                        .withOpacity(0.1),
+                                                    HexColor('#F56E98'),
+                                                  ]),
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(4.0)),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -1122,7 +1175,7 @@ if(done){
                                           ),
                                           child: Row(
                                             children: <Widget>[
-                                              cholesterolMax != null? Container(
+                                              cholesterol >= cholesterolMax? Container(
                                                 width: ((cholesterol/cholesterolMax)*60),
                                                 height: 4,
                                                 decoration: BoxDecoration(
@@ -1134,7 +1187,19 @@ if(done){
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(4.0)),
                                                 ),
-                                              ): SizedBox(height: 0),
+                                              ): Container(
+                                                width: ((cholesterolMax/cholesterolMax)*70),
+                                                height: 4,
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(colors: [
+                                                    HexColor('#E6E91B'),
+                                                    HexColor('#E6E91B')
+                                                        .withOpacity(0.5),
+                                                  ]),
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(4.0)),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -1183,8 +1248,8 @@ if(done){
                                           ),
                                           child: Row(
                                             children: <Widget>[
-                                              cholesterolMax != null? Container(
-                                                width: ((cholesterol/cholesterolMax)*60),
+                                              satFatMax != null? Container(
+                                                width: ((satFat/satFatMax)*60),
                                                 height: 4,
                                                 decoration: BoxDecoration(
                                                   gradient: LinearGradient(colors: [
@@ -1203,7 +1268,7 @@ if(done){
                                       Padding(
                                         padding: const EdgeInsets.only(top: 6),
                                         child: Text(
-                                          cholesterol.toString() + ' mg',
+                                          satFat.toString() + ' mg',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontFamily: FitnessAppTheme.fontName,
@@ -1253,7 +1318,7 @@ if(done){
                                           ),
                                           child: Row(
                                             children: <Widget>[
-                                              fatMax != null? Container(
+                                              fat <= fatMax? Container(
                                                 width: ((fat/fatMax)*70),
                                                 height: 4,
                                                 decoration: BoxDecoration(
@@ -1266,7 +1331,20 @@ if(done){
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(4.0)),
                                                 ),
-                                              ): SizedBox(height: 0),
+                                              ): Container(
+                                                width: ((fatMax/fatMax)*70),
+                                                height: 4,
+                                                decoration: BoxDecoration(
+                                                  gradient:
+                                                  LinearGradient(colors: [
+                                                    HexColor('#F1B440')
+                                                        .withOpacity(0.1),
+                                                    HexColor('#F1B440'),
+                                                  ]),
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(4.0)),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
