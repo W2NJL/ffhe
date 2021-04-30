@@ -791,6 +791,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
       if (remainingCalories == null)
         {
           calorieSum = totalCalories;
+          remainingCalories = 0;
         }
       else{
         calorieSum = totalCalories-remainingCalories;
@@ -807,6 +808,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         if (remainingSodium == null)
         {
           sodiumSum = totalSodium;
+          remainingSodium = 0;
         }
         else{
           sodiumSum = totalSodium-remainingSodium;
@@ -818,6 +820,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         if (remainingSatFat == null)
         {
           satFatSum = totalSatFat;
+          remainingSatFat = 0;
         }
         else{
           satFatSum = totalSatFat-remainingSatFat;
@@ -833,6 +836,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         if (remainingCholesterol == null)
         {
           cholesterolSum = totalCholesterol;
+          remainingCholesterol = 0;
         }
         else{
           cholesterolSum = totalCholesterol-remainingCholesterol;
@@ -846,6 +850,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         }
         else {
           fatSum = totalFat - remainingFat;
+          remainingFat = 0;
         }
 
         print("FatSum is: " + fatSum.toString());
@@ -855,6 +860,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
         if (remainingTransFat == null) {
           transFatSum = totalTransFat;
+          remainingTransFat = 0;
         }
         else {
           transFatSum = totalTransFat - remainingTransFat;
@@ -870,6 +876,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
         if (remainingCarbs == null) {
           carbSum = totalCarbs;
+          remainingCarbs = 0;
           done = true;
         }
         else {
