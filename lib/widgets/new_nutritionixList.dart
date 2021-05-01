@@ -119,7 +119,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
         return 'chick-fil-a.gif';
     }
-    else if(restaurant.contains('McDonalds\'s')){
+    else if(restaurant.contains('McDonald\'s')){
 
         return
         'mcdonalds.png';

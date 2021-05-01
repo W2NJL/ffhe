@@ -28,7 +28,7 @@ class RestaurantScreen extends StatelessWidget {
           imglink:
           'chick-fil-a.gif'),
       const Choice(
-          title: 'McDonalds\'s',
+          title: 'McDonald\'s',
 
           imglink:
           'mcdonalds.png'),
