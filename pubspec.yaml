@@ -46,6 +46,7 @@ dependencies:
   flutter_animated_button: ^2.0.0
   unsplash_client: ^2.0.0
   mailer: ^3.0.3
+  fluttertoast: ^8.0.6
 
 
 dev_dependencies:

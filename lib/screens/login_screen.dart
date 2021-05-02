@@ -1,12 +1,14 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fast_food_health_e/screens/resetpw_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/widgets/shared_widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 
@@ -76,17 +78,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
 
-                      RaisedButton(
-                          color: Theme.of(context).accentColor,
+                      TextButton(
+
                           child: Text('Sign in'),
+                          onPressed: () => _signIn(_email, _password),
+
+                          ),
+                      TextButton(
+                          
+                          child: Text('Forgot Password?'),
                           onPressed: (){
-                              auth.signInWithEmailAndPassword(email: _email, password: _password);
-                              Navigator.pushReplacementNamed(context, '/home');
-                          }),
-                      RaisedButton(
-                          color: Theme.of(context).accentColor,
-                          child: Text('Forgot Password'),
-                          onPressed: (){})
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ResetScreen()));
+                          })
                     ])
               ]
           ),
@@ -96,6 +99,25 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
   }
+  _signIn(String _email, String _password) async{
+    try{
+      await auth.signInWithEmailAndPassword(email: _email, password: _password);
+
+      //Success
+    Navigator.pushReplacementNamed(context, '/home');
+    } on FirebaseAuthException catch (error){
+      print(error.message);
+     Fluttertoast.showToast(msg: error.message,
+       toastLength: Toast.LENGTH_LONG,
+
+       timeInSecForIosWeb: 1,
+       backgroundColor: Colors.grey,
+       textColor: Colors.white,
+       fontSize: 16.0,);
+    }
+
+  }
+
 }
 
 
