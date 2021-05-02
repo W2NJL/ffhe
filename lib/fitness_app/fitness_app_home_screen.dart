@@ -1,11 +1,10 @@
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/fitness_app/models/tabIcon_data.dart';
 import 'package:fast_food_health_e/fitness_app/traning/training_screen.dart';
-import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/state/vote.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../utilities.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'fintness_app_theme.dart';
 import 'my_diary/my_diary_screen.dart';
@@ -48,20 +47,14 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthenticationState()),
-      ],
-    child:
-    Consumer<AuthenticationState>(builder: (context, authState, child) {
-      return Container(
+    return  Container(
         color: FitnessAppTheme.background,
         child: Scaffold(
           appBar: AppBar(
               automaticallyImplyLeading: false,
             title: Text(kAppName),
         actions: <Widget>[
-          getActions(context, authState),
+          getActions(context),
         ],
       ),
           backgroundColor: Colors.transparent,
@@ -83,12 +76,11 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
         ),
       );
     }
-    )
-    );
+
   }
 
   PopupMenuButton getActions(
-      BuildContext context, AuthenticationState authState) {
+      BuildContext context ){
     return PopupMenuButton<int>(
       itemBuilder: (context) => [
         PopupMenuItem(
@@ -120,13 +112,15 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
         if (value == 3) {
           // logout
           // authState.checkAuthentication();
-          authState.logout();
-          gotoLoginScreen(context, authState);
+final auth = FirebaseAuth.instance;
+auth.signOut();
+Navigator.pushReplacementNamed(context, 'LoginScreen');
+
         }
       },
     );
   }
-}
+
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));

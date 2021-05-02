@@ -1,8 +1,10 @@
 import 'package:fast_food_health_e/fitness_app/models/todaysMeals.dart';
 import 'package:fast_food_health_e/screens/ask_a_nutritionist.dart';
 import 'package:fast_food_health_e/screens/limit_screen.dart';
+import 'package:fast_food_health_e/screens/login_screen.dart';
 import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:fast_food_health_e/screens/restaurant_screen.dart';
+import 'package:fast_food_health_e/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/screens/home_screen.dart';
@@ -13,8 +15,7 @@ import 'package:fast_food_health_e/screens/dietplan_screen.dart';
 import 'package:fast_food_health_e/screens/newdiet_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:fast_food_health_e/state/vote.dart';
-import 'package:fast_food_health_e/state/authentication.dart';
-import 'package:fast_food_health_e/utilities.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,86 +35,94 @@ class FastFoodHealthEApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => VoteState()),
-          ChangeNotifierProvider(create: (_) => AuthenticationState()),
-        ],
-        child:
-        Consumer<AuthenticationState>(builder: (context, authState, child) {
-          return MaterialApp(
+    return MaterialApp(
 
-            initialRoute: '/',
-            routes: {
-              '/': (context) =>
-                Scaffold(
-                    body: LaunchScreen(),
-                  ),
-              'DietScreen': (context) =>  Scaffold(
-                body: DietScreen(),
-              ),
-              'RestaurantScreen': (context) =>  Scaffold(
-                body: RestaurantScreen(),
-              ),
-              'MealScreen': (context) =>  Scaffold(
-                body: MealScreen(),
-              ),
-              'NutritionList': (context) =>  Scaffold(
-                body: NutritionList(),
-              ),
-              'TodaysMeals': (context) =>  Scaffold(
-                body: TodaysMeals(),
-              ),
-              'AskANutritionist': (context) =>  Scaffold(
-                body: AskNutritionist(),
-              ),
-              'LimitScreen': (context) =>  Scaffold(
-                body: LimitScreen(),
-              ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) =>
+            Scaffold(
+              body: LaunchScreen(),
+            ),
+        'DietScreen': (context) =>
+            Scaffold(
+              body: DietScreen(),
+            ),
+        'RestaurantScreen': (context) =>
+            Scaffold(
+              body: RestaurantScreen(),
+            ),
+        'MealScreen': (context) =>
+            Scaffold(
+              body: MealScreen(),
+            ),
+        'NutritionList': (context) =>
+            Scaffold(
+              body: NutritionList(),
+            ),
+        'TodaysMeals': (context) =>
+            Scaffold(
+              body: TodaysMeals(),
+            ),
+        'AskANutritionist': (context) =>
+            Scaffold(
+              body: AskNutritionist(),
+            ),
+        'LimitScreen': (context) =>
+            Scaffold(
+              body: LimitScreen(),
+            ),
+        'LoginScreen': (context) =>
+            Scaffold(
+              body: LoginScreen(),
+            ),
+        'SignUpScreen': (context) =>
+            Scaffold(
+              body: SignUpScreen(),
+            ),
 
-              '/home': (context) => Scaffold(
-                body: FitnessAppHomeScreen(),
-              ),
-              '/result': (context) => Scaffold(
-                appBar: AppBar(
-                  title: Text('Result'),
-                  leading: IconButton(
-                    icon: Icon(Icons.home),
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/home');
-                    },
-                  ),
-                  actions: <Widget>[
-                    getActions(context, authState),
-                  ],
+        '/home': (context) =>
+            Scaffold(
+              body: FitnessAppHomeScreen(),
+            ),
+        '/result': (context) =>
+            Scaffold(
+              appBar: AppBar(
+                title: Text('Result'),
+                leading: IconButton(
+                  icon: Icon(Icons.home),
+                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/home');
+                  },
                 ),
-                body: ResultScreen(),
-              )
-            },
-          );
-        }));
-  }
 
-  PopupMenuButton getActions(
-      BuildContext context, AuthenticationState authState) {
-    return PopupMenuButton<int>(
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          value: 1,
-          child: Text('Logout'),
-        )
-      ],
-      onSelected: (value) {
-        if (value == 1) {
-          // logout
-          authState.logout();
-          gotoLoginScreen(context, authState);
-        }
+              ),
+              body: ResultScreen(),
+            )
       },
     );
-  }
-}
+  }}
+
+
+//   PopupMenuButton getActions(
+//       BuildContext context, AuthenticationState authState) {
+//     return PopupMenuButton<int>(
+//       itemBuilder: (context) => [
+//         PopupMenuItem(
+//           value: 1,
+//           child: Text('Logout'),
+//         )
+//       ],
+//       onSelected: (value) {
+//         if (value == 1) {
+//           // logout
+//           authState.logout();
+//           gotoLoginScreen(context, authState);
+//         }
+//       },
+//     );
+//   }
+// }
 
 class HexColor extends Color {
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
