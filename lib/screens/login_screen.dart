@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fast_food_health_e/screens/resetpw_screen.dart';
+import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -101,7 +102,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   _signIn(String _email, String _password) async{
     try{
-      await auth.signInWithEmailAndPassword(email: _email, password: _password);
+      await context.read<AuthenticationProvider>().signIn(
+        email: _email,
+        password: _password,
+
+
+      );
 
       //Success
     Navigator.pushReplacementNamed(context, '/home');

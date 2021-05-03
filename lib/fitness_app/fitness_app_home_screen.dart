@@ -1,6 +1,7 @@
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/fitness_app/models/tabIcon_data.dart';
 import 'package:fast_food_health_e/fitness_app/traning/training_screen.dart';
+import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/state/vote.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -112,8 +113,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
         if (value == 3) {
           // logout
           // authState.checkAuthentication();
-final auth = FirebaseAuth.instance;
-auth.signOut();
+          context.read<AuthenticationProvider>().signOut();
 Navigator.pushReplacementNamed(context, 'LoginScreen');
 
         }

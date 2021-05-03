@@ -5,6 +5,9 @@ import 'package:fast_food_health_e/screens/login_screen.dart';
 import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:fast_food_health_e/screens/restaurant_screen.dart';
 import 'package:fast_food_health_e/screens/signup_screen.dart';
+import 'package:fast_food_health_e/state/authentication.dart';
+import 'package:fast_food_health_e/utils/authenticate.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/screens/home_screen.dart';
@@ -35,71 +38,80 @@ class FastFoodHealthEApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiProvider(
+        providers: [
+    Provider<AuthenticationProvider>(
+    create: (_) => AuthenticationProvider(FirebaseAuth.instance),
+    ),
+    StreamProvider(
+    create: (context) => context.read<AuthenticationProvider>().authState,
+    )],
+      child: MaterialApp(
 
-      initialRoute: '/',
-      routes: {
-        '/': (context) =>
-            Scaffold(
-              body: LaunchScreen(),
-            ),
-        'DietScreen': (context) =>
-            Scaffold(
-              body: DietScreen(),
-            ),
-        'RestaurantScreen': (context) =>
-            Scaffold(
-              body: RestaurantScreen(),
-            ),
-        'MealScreen': (context) =>
-            Scaffold(
-              body: MealScreen(),
-            ),
-        'NutritionList': (context) =>
-            Scaffold(
-              body: NutritionList(),
-            ),
-        'TodaysMeals': (context) =>
-            Scaffold(
-              body: TodaysMeals(),
-            ),
-        'AskANutritionist': (context) =>
-            Scaffold(
-              body: AskNutritionist(),
-            ),
-        'LimitScreen': (context) =>
-            Scaffold(
-              body: LimitScreen(),
-            ),
-        'LoginScreen': (context) =>
-            Scaffold(
-              body: LoginScreen(),
-            ),
-        'SignUpScreen': (context) =>
-            Scaffold(
-              body: SignUpScreen(),
-            ),
-
-        '/home': (context) =>
-            Scaffold(
-              body: FitnessAppHomeScreen(),
-            ),
-        '/result': (context) =>
-            Scaffold(
-              appBar: AppBar(
-                title: Text('Result'),
-                leading: IconButton(
-                  icon: Icon(Icons.home),
-                  color: Colors.white,
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/home');
-                  },
-                ),
-
+        initialRoute: '/',
+        routes: {
+          '/': (context) =>
+              Scaffold(
+                body: Authenticate(),
               ),
-              body: ResultScreen(),
-            )
-      },
+          'DietScreen': (context) =>
+              Scaffold(
+                body: DietScreen(),
+              ),
+          'RestaurantScreen': (context) =>
+              Scaffold(
+                body: RestaurantScreen(),
+              ),
+          'MealScreen': (context) =>
+              Scaffold(
+                body: MealScreen(),
+              ),
+          'NutritionList': (context) =>
+              Scaffold(
+                body: NutritionList(),
+              ),
+          'TodaysMeals': (context) =>
+              Scaffold(
+                body: TodaysMeals(),
+              ),
+          'AskANutritionist': (context) =>
+              Scaffold(
+                body: AskNutritionist(),
+              ),
+          'LimitScreen': (context) =>
+              Scaffold(
+                body: LimitScreen(),
+              ),
+          'LoginScreen': (context) =>
+              Scaffold(
+                body: LoginScreen(),
+              ),
+          'SignUpScreen': (context) =>
+              Scaffold(
+                body: SignUpScreen(),
+              ),
+
+          '/home': (context) =>
+              Scaffold(
+                body: FitnessAppHomeScreen(),
+              ),
+          '/result': (context) =>
+              Scaffold(
+                appBar: AppBar(
+                  title: Text('Result'),
+                  leading: IconButton(
+                    icon: Icon(Icons.home),
+                    color: Colors.white,
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/home');
+                    },
+                  ),
+
+                ),
+                body: ResultScreen(),
+              )
+        },
+      ),
     );
   }}
 
