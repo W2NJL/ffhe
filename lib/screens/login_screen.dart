@@ -101,30 +101,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
   }
   _signIn(String _email, String _password) async{
-    try{
-      await context.read<AuthenticationProvider>().signIn(
+
+      String test = await context.read<AuthenticationProvider>().signIn(
         email: _email,
         password: _password,
 
 
       );
 
-      //Success
-    Navigator.pushReplacementNamed(context, '/home');
-    } on FirebaseAuthException catch (error){
-      print(error.message);
-     Fluttertoast.showToast(msg: error.message,
-       toastLength: Toast.LENGTH_LONG,
+      if (test == "Signed in!"){
+        Navigator.pushReplacementNamed(context, '/home');
+      }
 
-       timeInSecForIosWeb: 1,
-       backgroundColor: Colors.grey,
-       textColor: Colors.white,
-       fontSize: 16.0,);
-    }
+      else {
+        Fluttertoast.showToast(msg: test,
+          toastLength: Toast.LENGTH_LONG,
 
-  }
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,);
+      }
 
-}
+}}
 
 
 

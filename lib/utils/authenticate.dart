@@ -11,6 +11,7 @@ class Authenticate extends StatelessWidget {
     final firebaseUser = context.watch<User>();
 
     if (firebaseUser != null) {
+      print("Nick you are fucking genius");
       //Means that the user is logged in already and hence navigate to HomePage
       return FitnessAppHomeScreen();
     }
