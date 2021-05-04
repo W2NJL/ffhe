@@ -35,6 +35,17 @@ class AuthenticationProvider {
     }
   }
 
+  //Reset Password Method
+  Future<String> resetPassword({String email}) async {
+    try {
+      await firebaseAuth.sendPasswordResetEmail(
+          email: email);
+      return "Password reset!";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
+
   //SIGN OUT METHOD
   Future<void> signOut() async {
     await firebaseAuth.signOut();

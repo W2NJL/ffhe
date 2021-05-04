@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fast_food_health_e/screens/verify_email.dart';
+import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -92,14 +93,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   _signUp(String _email, String _password) async {
-    try {
-      await auth.createUserWithEmailAndPassword(
-          email: _email, password: _password);
+    String test = await context.read<AuthenticationProvider>().signUp(
+      email: _email,
+      password: _password,
 
-      //Success
+
+    );
+
+    if (test == "Signed in!"){
       Navigator.pushReplacementNamed(context, '/home');
-    } on FirebaseAuthException catch (error) {
-      Fluttertoast.showToast(msg: error.message, gravity: ToastGravity.TOP);
+    }
+
+else {
+      Fluttertoast.showToast(msg: test,
+        toastLength: Toast.LENGTH_LONG,
+
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0,);
     }
   }
 }

@@ -1,12 +1,14 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/widgets/shared_widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 
@@ -67,8 +69,7 @@ class _ResetScreenState extends State<ResetScreen> {
 
                           child: Text('Send Request'),
                           onPressed: (){
-                            auth.sendPasswordResetEmail(email: _email);
-                            Navigator.of(context).pop();
+                            _resetPW(_email);
 
 
                           }),
@@ -80,6 +81,30 @@ class _ResetScreenState extends State<ResetScreen> {
 
 
     );
+
+  }
+
+  _resetPW(String _email) async{
+
+    String test = await context.read<AuthenticationProvider>().resetPassword(
+      email: _email,
+
+
+    );
+
+    if (test == "Password reset!"){
+      Navigator.of(context).pop();
+    }
+
+    else {
+      Fluttertoast.showToast(msg: test,
+        toastLength: Toast.LENGTH_LONG,
+
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0,);
+    }
 
   }
 }
