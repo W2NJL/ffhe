@@ -71,6 +71,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     listViews.add(
         Container(
           child: Row(
+
             children:[
               Padding(
                 padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
@@ -122,7 +123,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
           color: Color(0xFF69F0AE),
           child: Text('Add A Meal', style: new TextStyle(fontSize: 24.0, color: Colors.blueAccent)),
 
-          onPressed: () { Navigator.pushNamedAndRemoveUntil(context, "RestaurantScreen", (_) => false);},
+          onPressed: () { Navigator.pushNamed(context, 'RestaurantScreen');},
         ),
       ),
     );

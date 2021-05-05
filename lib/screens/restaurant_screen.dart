@@ -1,4 +1,5 @@
 import 'package:fast_food_health_e/screens/meal_screen.dart';
+import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
 
@@ -69,12 +70,12 @@ class RestaurantScreen extends StatelessWidget {
           'wawa.jpg'),];
 
     return Scaffold(
-        appBar: AppBar(
-          leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: (){Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);}
-          ),
+        appBar: MyAppBar(
+
+            route: '/home',
+
         title: Text(title),
+          context: context,
     ),
 
             body: new ListView(

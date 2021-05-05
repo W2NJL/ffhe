@@ -1,3 +1,4 @@
+import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:fast_food_health_e/widgets/new_nutritionixList.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
@@ -35,12 +36,12 @@ class MealScreen extends StatelessWidget {
 
     return Scaffold(
 
-        appBar: AppBar(
-          leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: (){Navigator.pushNamedAndRemoveUntil(context, "RestaurantScreen", (_) => false);}
-          ),
+        appBar: MyAppBar(
+
+          route: 'pop',
+
           title: Text(title),
+          context: context,
         ),
 
         body: new ListView(

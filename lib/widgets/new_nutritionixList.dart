@@ -12,6 +12,8 @@ import 'package:intl/intl.dart';
 import 'package:fast_food_health_e/services/FirebaseCalls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'appbar.dart';
+
 class NewNutritionixList extends StatefulWidget {
   final String restaurant;
   final String mealCategory;
@@ -216,11 +218,9 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
-            onPressed: (){Navigator.pushNamedAndRemoveUntil(context, "RestaurantScreen", (_) => false);}
-        ),
+      appBar: MyAppBar(
+        route: 'RestaurantScreen',
+        context: context,
         title:  Text(restaurant),
       ),
 

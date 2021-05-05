@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       );
 
-      if (test == "Signed up!"){
+      if (test == "Signed in!"){
         Navigator.pushReplacementNamed(context, '/home');
       }
 
