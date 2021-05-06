@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
@@ -50,9 +50,11 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   static int satFatSum;
   static int transFatSum;
   static int mealNum = 1;
+  static int itemCount;
   static String formattedDate;
   bool done = false;
   bool passThrough = false;
+  bool allDone = false;
 
 
 
@@ -607,48 +609,84 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
   Widget _buildList() {
 
+
+
+    if(!allDone)
+      return Center(child: CircularProgressIndicator());
+
+    else {
       return Expanded(
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: users.length + 1, // Add one more item for progress indicator
-          padding: EdgeInsets.symmetric(vertical: 8.0),
-          itemBuilder: (BuildContext context, int index) {
-            if (index == users.length) {
-              return _buildProgressIndicator();
-            } else {
-              return GestureDetector(
-                onTap: () {
+
+          child: users.length > 0? ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: users.length + 1,
+            // Add one more item for progress indicator
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            itemBuilder: (BuildContext context, int index) {
+
+                return GestureDetector(
+                  onTap: () {
+                    showDialog(
+
+                      context: context,
+                      builder: (BuildContext context) =>
+                          _buildAboutDialog(context, users[index]),
+                    );
+                  },
+                  child: ListTile(
+                    leading: ClipOval(
+
+                      child: Image.asset("images\/" + imgLink(restaurant),
+                        width: 80,
+                        height: 160,
+                        fit: BoxFit.fill,),
+
+                    ),
 
 
-                  showDialog(
+                    title: Text((users[index]['item_name'])),
+                    subtitle: Text(
+                        (users[index]['nf_calories'].toString()) +
+                            ' calories'),
+                  ),
+                );
+              },
 
-                    context: context,
-                    builder: (BuildContext context) =>
-                        _buildAboutDialog(context, users[index]),
-                  );
-                },
-                child: ListTile(
-                  leading: ClipOval(
+            controller: _sc,
+          ):Column(
+            children: [Container(
+              margin: EdgeInsets.only(top: 150, right: 10, left: 10, bottom: 15),
+              child: Center(child: RichText(
 
-                            child: Image.asset("images\/" + imgLink(restaurant),
-                    width: 80,
-                    height: 160,
-                    fit: BoxFit.fill,),
+                text: TextSpan(
 
-                          ),
+                  style: TextStyle(color: Colors.black, fontSize: 36),
+                  children: <TextSpan>[
+                    TextSpan(text: 'No meals available! ', style: TextStyle(color: Colors.blue)),
 
-
-                  title: Text((users[index]['item_name'])),
-                  subtitle: Text(
-                      (users[index]['nf_calories'].toString()) +
-                          ' calories'),
+                  ],
                 ),
-              );
-            }
-          },
-          controller: _sc,
-        ),
+              ),
+
+              ),
+            ),
+              Container(
+                margin: EdgeInsets.only(top: 2, right: 20, left: 20, bottom: 15),
+                child: Center(child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                    children: <TextSpan>[
+                      TextSpan(text: 'Please change your diet plan or turn off listing limits to see meal items.', style: TextStyle(color: Colors.black)),
+
+                    ],
+                  ),
+                ),
+
+                ),
+              )],
+          ),
       );
+    }
     }
 
 
@@ -971,6 +1009,8 @@ class NewNutritionixListState extends State<NewNutritionixList> {
              response = await responseCall(url, params);
            }
         }
+
+
       }
 
 
@@ -988,6 +1028,10 @@ class NewNutritionixListState extends State<NewNutritionixList> {
         });
       }
     }
+
+    setState(() {
+      allDone = true;
+    });
     }
 
   generateParams(params, String restaurant) {
@@ -1106,7 +1150,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
             .toLowerCase())) {
 
       tList.add(response.data['hits'][i]['fields']);
-      foodList.add(response.data['hits'][i]['fields']['item_name']
+            foodList.add(response.data['hits'][i]['fields']['item_name']
           .toString()
           .toLowerCase());
     }

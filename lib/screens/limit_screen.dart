@@ -1,3 +1,4 @@
+import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/email_screen.dart';
@@ -9,8 +10,10 @@ class LimitScreen extends StatelessWidget {
     final appTitle = 'Toggle Restaurant results limiting';
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: MyAppBar(
         title: Text(appTitle),
+        context: context,
+        route: '/home',
       ),
       body: LimitToggle(),
     );

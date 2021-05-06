@@ -2,6 +2,7 @@ import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/my_diary_screen.dart';
 import 'package:fast_food_health_e/models/dietplan.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
+import 'package:fast_food_health_e/widgets/dietappbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -604,16 +605,11 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
 
 
-    final topAppBar = AppBar(
-      elevation: 0.1,
-      backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+    final topAppBar = DietAppBar(
+
       title: Text(widget.title),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.list),
-          onPressed: () {},
-        )
-      ],
+      context: context,
+
     );
 
     return Scaffold(

@@ -1,6 +1,8 @@
 import 'package:fast_food_health_e/models/dietplan.dart';
 import 'package:fast_food_health_e/screens/seconddiet_screen.dart';
+import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
+import 'package:fast_food_health_e/widgets/dietappbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,7 @@ import 'package:fast_food_health_e/screens/detail_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import '../utils/email_screen.dart';
-
+import 'package:provider/provider.dart';
 
 class DietScreen extends StatelessWidget {
 
@@ -271,16 +273,14 @@ class _DietPageState extends State<DietPage> {
 
 
 
-    final topAppBar = AppBar(
-      elevation: 0.1,
-      backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+    final topAppBar = DietAppBar(
+
       title: Text(widget.title),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.list),
-          onPressed: () {},
-        )
-      ],
+      context: context,
+
+
+
+
     );
 
     return Scaffold(
@@ -307,6 +307,7 @@ print("I got here!");
 
   return false;
 }
+
 
 
 
