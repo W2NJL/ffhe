@@ -47,6 +47,7 @@ dependencies:
   unsplash_client: ^2.0.0
   mailer: ^3.0.3
   fluttertoast: ^8.0.6
+  flutter_svg: ^0.19.1
 
 
 dev_dependencies:
@@ -73,6 +74,9 @@ flutter:
   assets:
     - images/
     - images/fitness_app/
+    - assets/
+    - assets/icons/
+    - assets/images/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

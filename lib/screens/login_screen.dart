@@ -13,12 +13,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 
-class LoginScreen extends StatefulWidget {
+class OldLoginScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _OldLoginScreenState createState() => _OldLoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _OldLoginScreenState extends State<OldLoginScreen> {
   String _email, _password;
   final auth = FirebaseAuth.instance;
 
