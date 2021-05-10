@@ -9,8 +9,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/widgets/shared_widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+
+import 'Login/background.dart';
+import 'Login/rounded_button.dart';
+import 'Login/rounded_input_field.dart';
+import 'Login/rounded_password_field.dart';
 
 
 
@@ -23,73 +29,76 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _email, _password;
   final auth = FirebaseAuth.instance;
 
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
-      height: MediaQuery
-          .of(context)
-          .size
-          .height,
 
 
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(title: Text('Create Your Fast Food Health-E Account')),
-        body: Card(
-          child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          hintText: 'Email'
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          _email = value.trim();
-                        });
-                      }
-                  ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            hintText: 'Password'
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            _password = value.trim();
-                          });
-                        })
-                ),
 
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
 
-                      RaisedButton(
-                        color: Theme
-                            .of(context)
-                            .accentColor,
-                        child: Text('Create Account'),
-                        onPressed: () => _signUp(_email, _password),
 
-                      ),
 
-                    ])
-              ]
-          ),
+
+
+    final auth = FirebaseAuth.instance;
+    Size size = MediaQuery.of(context).size;
+    return Background(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "SIGN UP",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: size.height * 0.03),
+            SvgPicture.asset(
+              "assets/icons/login.svg",
+              height: size.height * 0.35,
+            ),
+            SizedBox(height: size.height * 0.03),
+            RoundedInputField(
+              hintText: "Your Email",
+              onChanged: (value) {
+
+                setState(() {
+                  _email = value.trim();
+                });
+
+              },
+            ),
+
+            RoundedPasswordField(
+
+              onChanged: (value) {
+                setState(() {
+                  _password = value.trim();
+                });
+
+              },
+            ),
+
+            RoundedButton(
+              text: "SIGN UP",
+              press: () {
+
+                  _signUp(_email, _password);
+                }
+
+
+
+            ),
+
+
+
+
+          ],
         ),
       ),
-
     );
+
+
+
   }
 
   _signUp(String _email, String _password) async {
@@ -100,7 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     );
 
-    if (test == "Signed in!"){
+    if (test == "Signed up!"){
       Navigator.pushReplacementNamed(context, '/home');
     }
 
