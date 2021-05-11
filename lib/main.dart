@@ -4,6 +4,7 @@ import 'package:fast_food_health_e/screens/ask_a_nutritionist.dart';
 import 'package:fast_food_health_e/screens/limit_screen.dart';
 import 'package:fast_food_health_e/screens/login_screen.dart';
 import 'package:fast_food_health_e/screens/meal_screen.dart';
+import 'package:fast_food_health_e/screens/resetpw_screen.dart';
 import 'package:fast_food_health_e/screens/restaurant_screen.dart';
 import 'package:fast_food_health_e/screens/signup_screen.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
@@ -90,6 +91,10 @@ class FastFoodHealthEApp extends StatelessWidget {
           'SignUpScreen': (context) =>
               Scaffold(
                 body: SignUpScreen(),
+              ),
+          'ResetPWScreen': (context) =>
+              Scaffold(
+                body: ResetScreen(),
               ),
 
           '/home': (context) =>

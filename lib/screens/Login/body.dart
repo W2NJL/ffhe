@@ -160,6 +160,17 @@ class _BodyState extends State<Body> {
               ], //<Widget>[]
             ), //Row,
             SizedBox(height: size.height * 0.03),
+            GestureDetector(
+              onTap: (){ Navigator.pushNamed(context, 'ResetPWScreen');},
+              child: Text(
+                "Forgot Password?",
+                style: TextStyle(
+                  color: kPrimaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ), //
+            SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(
               press: () {
                 Navigator.pushNamed(context, 'SignUpScreen');
