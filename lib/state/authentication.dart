@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthenticationProvider {
@@ -23,6 +24,15 @@ class AuthenticationProvider {
       return e.message;
     }
   }
+
+  getCurrentUser()  {
+    final User user = firebaseAuth.currentUser;
+
+
+
+    return user.email;
+  }
+
 
   //SIGN IN METHOD
   Future<String> signIn({String email, String password}) async {

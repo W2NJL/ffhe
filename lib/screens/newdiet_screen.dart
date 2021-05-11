@@ -3,6 +3,7 @@ import 'package:fast_food_health_e/screens/seconddiet_screen.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
 import 'package:fast_food_health_e/widgets/dietappbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -44,25 +45,45 @@ class _DietPageState extends State<DietPage> {
   final referenceDatabase = FirebaseDatabase.instance;
 
   final dietPlan = 'DietPlan';
+  String user;
   DatabaseReference _dietPlanRef;
+
 
 
 
   @override
   void initState() {
 
+    _getUser().then((value) => setState((){
+      user = value;
+      print ("User is: " + user);
+    }));
+
     dietPlans = getDietPlans();
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
-    _dietPlanRef = database.reference().child('User');
+
+    _dietPlanRef = database.reference();
     super.initState();
 
   }
 
   _DietPageState(){
+
+
+
+
     _getDietPlan().then((value) => setState(() {
       selectedPlan = value;
       _showDialog();
     }));
+  }
+
+  Future <String> _getUser() async {
+    String result;
+
+
+
+    return context.read<AuthenticationProvider>().getCurrentUser();
   }
 
   Future <String> _getDietPlan() async {

@@ -42,12 +42,14 @@ class FastFoodHealthEApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+
     Provider<AuthenticationProvider>(
     create: (_) => AuthenticationProvider(FirebaseAuth.instance),
     ),
     StreamProvider(
     create: (context) => context.read<AuthenticationProvider>().authState,
     )],
+
       child: MaterialApp(
 
         initialRoute: '/',
