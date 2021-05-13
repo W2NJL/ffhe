@@ -7,11 +7,14 @@ import 'package:fast_food_health_e/fitness_app/ui_view/title_view.dart';
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/meals_list_view.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/water_view.dart';
+import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class MyDiaryScreen extends StatefulWidget {
   const MyDiaryScreen({Key key, this.animationController}) : super(key: key);
@@ -29,6 +32,27 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   List<Widget> listViews = <Widget>[];
   final ScrollController scrollController = ScrollController();
   double topBarOpacity = 0.0;
+  var firebaseUser;
+  String userID;
+  FirebaseFunctions joe = new FirebaseFunctions();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (firebaseUser == null) { // or else you end up creating multiple instances in this case.
+
+
+        firebaseUser = context.watch<User>();
+        userID  = firebaseUser.uid;
+        addAllListData();
+
+
+
+
+    }
+
+
+  }
 
   @override
   void initState() {
@@ -37,7 +61,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
         CurvedAnimation(
             parent: widget.animationController,
             curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
-    addAllListData();
+
 
     scrollController.addListener(() {
       if (scrollController.offset >= 24) {
@@ -62,9 +86,12 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
       }
     });
     super.initState();
+
   }
 
+
   void addAllListData () {
+
     const int count = 4;
 
 
@@ -91,21 +118,25 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                 padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
               ),
             FutureBuilder(
-                future: _getDietPlan(),
+                future: joe.getDietPlan(context, userID),
                 initialData: "Loading text..",
                 builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  return Text(
-                    text.data,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontFamily: FitnessAppTheme.fontName,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      letterSpacing: -0.2,
-                      color: FitnessAppTheme.darkerText,
-                    ),
-                  );}
-            ),
+                  if (text.hasData) {
+                    return Text(
+                      text.data,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontFamily: FitnessAppTheme.fontName,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        letterSpacing: -0.2,
+                        color: FitnessAppTheme.darkerText,
+                      ),
+                    );
+                  }
+                  return CircularProgressIndicator();
+                }
+            )
       ]
           ),
         ),

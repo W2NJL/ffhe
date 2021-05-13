@@ -12,6 +12,7 @@ import 'package:fast_food_health_e/widgets/shared_widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Login/background.dart';
 import 'Login/rounded_button.dart';
@@ -110,7 +111,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
 
     if (test == "Signed up!"){
-      Navigator.pushReplacementNamed(context, '/home');
+      _activateFirstRun();
+      Navigator.pushReplacementNamed(context, 'DietScreen');
     }
 
 else {
@@ -123,7 +125,21 @@ else {
         fontSize: 16.0,);
     }
   }
-}
+
+  void _activateFirstRun() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+
+
+      preferences.setBool("FirstRun", true);
+    }
+
+
+
+
+  }
+
+
 
 
 

@@ -202,7 +202,7 @@ _signIn(String _email, String _password, BuildContext context) async {
   );
 
   if (test == "Signed in!") {
-    Navigator.pushReplacementNamed(context, '/home');
+    Navigator.pushReplacementNamed(context, '/');
   }
 
   else {

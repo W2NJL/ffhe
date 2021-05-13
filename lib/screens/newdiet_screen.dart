@@ -2,6 +2,7 @@ import 'package:fast_food_health_e/models/dietplan.dart';
 import 'package:fast_food_health_e/screens/seconddiet_screen.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
+import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:fast_food_health_e/widgets/dietappbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -43,40 +44,67 @@ class _DietPageState extends State<DietPage> {
   String selectedPlan;
   List dietPlans;
   final referenceDatabase = FirebaseDatabase.instance;
+  var firebaseUser;
+  bool firstRun = false;
 
   final dietPlan = 'DietPlan';
   String user;
+  String userID;
   DatabaseReference _dietPlanRef;
 
 
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (firebaseUser == null) { // or else you end up creating multiple instances in this case.
+      firebaseUser = context.watch<User>();
+      userID  = firebaseUser.uid;
+
+
+
+      dietPlans = getDietPlans();
+
+      _getDietPlan().then((value) => setState(() {
+        selectedPlan = value;
+        _showDialog();
+
+      }));
+
+    }
+
+
+  }
 
   @override
   void initState() {
+
+
+
+    FirebaseFunctions joe = new FirebaseFunctions();
+
+   joe.activateFirstRun();
+
+
 
     _getUser().then((value) => setState((){
       user = value;
       print ("User is: " + user);
     }));
 
-    dietPlans = getDietPlans();
+
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
 
     _dietPlanRef = database.reference();
+
+
+
+
     super.initState();
 
   }
 
-  _DietPageState(){
 
-
-
-
-    _getDietPlan().then((value) => setState(() {
-      selectedPlan = value;
-      _showDialog();
-    }));
-  }
 
   Future <String> _getUser() async {
     String result;
@@ -88,14 +116,19 @@ class _DietPageState extends State<DietPage> {
 
   Future <String> _getDietPlan() async {
     String result;
-    final referenceDatabase = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child('DietPlan')
-        .once()
-        .then((snapshot){result=snapshot.value;});
-    print("The result is: " + result);
 
+
+    if(userID != null) {
+      final referenceDatabase = await FirebaseDatabase.instance
+          .reference()
+          .child(userID)
+          .child('DietPlan')
+          .once()
+          .then((snapshot) {
+        result = snapshot.value;
+      });
+
+    }
 
 
     return result;
@@ -108,7 +141,7 @@ class _DietPageState extends State<DietPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Select your Calorie plan"),
+          title: new Text("Welcome to Fast Food Health-E!"),
           content: new Text("First, please choose one of our 3 calorie plans."),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
@@ -184,7 +217,7 @@ class _DietPageState extends State<DietPage> {
 
 
 
-    final ref = referenceDatabase.reference().child('User');
+    final ref = referenceDatabase.reference().child(userID);
 
     ListTile makeListTile(DietPlan lesson) => ListTile(
       contentPadding:
@@ -373,4 +406,38 @@ List getDietPlans() {
 void storeDietPlan(String dietPlan) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("dietPlan", dietPlan);
-}}
+}
+
+  void showPopUp(BuildContext context) {
+   showIt(
+       context: context,
+
+
+
+  );}
+
+  static Widget showIt({BuildContext context}) {
+    return new AlertDialog(
+      title: Text("Holler"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Holler"),
+        ],
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+
+            Navigator.of(context).pop();
+
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('Select this plan'),
+        ),
+      ],
+    );
+
+  }
+}

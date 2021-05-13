@@ -3,6 +3,8 @@ import 'package:fast_food_health_e/fitness_app/my_diary/my_diary_screen.dart';
 import 'package:fast_food_health_e/models/dietplan.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
 import 'package:fast_food_health_e/widgets/dietappbar.dart';
+import 'package:fast_food_health_e/state/authentication.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'newdiet_screen.dart';
+import 'package:provider/provider.dart';
 
 
 class SecondDietScreen extends StatelessWidget {
@@ -39,6 +42,8 @@ class SecondDietPage extends StatefulWidget {
 class _SecondDietPageState extends State<SecondDietPage> {
   String selectedPlan;
   int totalCalories;
+  var firebaseUser;
+  String userID;
 
   List sodiumPlans = [];
   List carbPlans = [];
@@ -50,8 +55,28 @@ class _SecondDietPageState extends State<SecondDietPage> {
   final referenceDatabase = FirebaseDatabase.instance;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (firebaseUser == null) { // or else you end up creating multiple instances in this case.
+      firebaseUser = context.watch<User>();
+      userID  = firebaseUser.uid;
+
+      for(int i =0; i  <diets.length; i++){
+        String key = diets.keys.elementAt(i);
+
+        sodiumPlans = getSodiumPlans();
+        _getDietPlan(key).then((value) => setState(() {
+
+          diets[key] = value;
+        }
+        ));
+
+    }
+  }
+
+  @override
   void initState() {
-    sodiumPlans = getSodiumPlans();
+
 
 
 
@@ -65,21 +90,6 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
 
 
-  _SecondDietPageState(){
-    for(int i =0; i  <diets.length; i++){
-      String key = diets.keys.elementAt(i);
-      print("Hold The Line: " + key);
-    _getDietPlan(key).then((value) => setState(() {
-      print("The value is: " + value);
-      diets[key] = value;
-    }
-
-    ));
-
-
-
-
-  }
     _getMoreData();
   }
 
@@ -109,13 +119,18 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
   Future <String> _getDietPlan(String plan) async {
     String result;
-    final referenceDatabase = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child(plan)
-        .once()
-        .then((snapshot){result=snapshot.value;});
-    print("The result is: " + result);
+
+    if(userID != null) {
+      final referenceDatabase = await FirebaseDatabase.instance
+          .reference()
+          .child(userID)
+          .child(plan)
+          .once()
+          .then((snapshot) {
+        result = snapshot.value;
+      });
+
+    }
 
 
 
@@ -127,17 +142,18 @@ class _SecondDietPageState extends State<SecondDietPage> {
     int result;
     int maxValue;
 
-    final referenceDatabase3 = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child('DietVals')
-        .child(diet)
-        .child('MaxValue')
-        .once()
-        .then((snapshot) {
-      maxValue = snapshot.value;
-    });
-
+    if(userID != null) {
+      final referenceDatabase3 = await FirebaseDatabase.instance
+          .reference()
+          .child(userID)
+          .child('DietVals')
+          .child(diet)
+          .child('MaxValue')
+          .once()
+          .then((snapshot) {
+        maxValue = snapshot.value;
+      });
+    }
 
     return maxValue;
   }
@@ -407,7 +423,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ref = referenceDatabase.reference().child('User');
+    final ref = referenceDatabase.reference().child(userID);
     ListTile makeListTile(DietPlan lesson) => ListTile(
       contentPadding:
       EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),

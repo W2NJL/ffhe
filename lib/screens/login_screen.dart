@@ -110,7 +110,7 @@ class _OldLoginScreenState extends State<OldLoginScreen> {
       );
 
       if (test == "Signed in!"){
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/');
       }
 
       else {
