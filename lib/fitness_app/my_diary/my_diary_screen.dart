@@ -38,32 +38,23 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   FastFoodHealthEUser user;
   String userID;
   FirebaseFunctions joe = new FirebaseFunctions();
+  bool done = false;
 
   @override
   void didChangeDependencies() {
+
+
+  setUpUsers();
+
+
+
     super.didChangeDependencies();
-    if (firebaseUser == null) { // or else you end up creating multiple instances in this case.
-
-
-        firebaseUser = context.watch<User>();
-        userID  = firebaseUser.uid;
-       user = Provider.of<FastFoodHealthEUser>(context);
-
-        addAllListData(user);
-
-
-
-
-
-
-
-    }
-
 
   }
 
   @override
   void initState() {
+
 
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
@@ -97,14 +88,32 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
   }
 
+  void setUpUsers () async {
 
-  void addAllListData (FastFoodHealthEUser user) async {
+    firebaseUser = context.watch<User>();
+    userID  = firebaseUser.uid;
+    user =  Provider.of<FastFoodHealthEUser>(context);
 
-    await Future<dynamic>.delayed(const Duration(seconds: 1));
+    if(user!=null){
+      print("Got here");
+      addAllListData();
+    }
+
+
+
+  }
+
+
+  void addAllListData () async {
+
+
+
+
+
 
     const int count = 4;
 
-
+    print("Done is: " + done.toString());
 
     listViews.add(
 
@@ -285,6 +294,7 @@ color: Colors.deepOrange,
         child: Image.asset("images\/" + "nutritionist.jpg"),
 
       ),
+
     );
 
 
@@ -342,10 +352,12 @@ color: Colors.deepOrange,
     //                   curve: Curves.fastOutSlowIn))),
     //       animationController: widget.animationController),
     // );
+
+
   }
 
   Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(seconds: 1));
+    await Future<dynamic>.delayed(const Duration(milliseconds: 500));
 
     return true;
   }
@@ -354,23 +366,36 @@ color: Colors.deepOrange,
   Widget build(BuildContext context) {
 
 
-    return Container(
-      color: FitnessAppTheme.background,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Stack(
-          children: <Widget>[
-            getMainListViewUI(),
-            SizedBox(
-              height: MediaQuery.of(context).padding.bottom,
-            )
-          ],
-        ),
+if(user != null) {
+
+
+
+
+  return Container(
+    color: FitnessAppTheme.background,
+    child: Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: <Widget>[
+          getMainListViewUI(),
+          SizedBox(
+            height: MediaQuery
+                .of(context)
+                .padding
+                .bottom,
+          )
+        ],
       ),
-    );
+    ),
+  );
+}
+else{
+  return Center(child: CircularProgressIndicator(),);
+}
   }
 
   Widget getMainListViewUI() {
+
     return FutureBuilder<bool>(
       future: getData(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {

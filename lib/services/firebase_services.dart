@@ -15,16 +15,21 @@ class FirebaseServices{
    // var firebaseUser = context.watch<User>();
    // String userID  = firebaseUser.uid;
    Map<String, dynamic> theMap;
+   final FirebaseAuth auth = FirebaseAuth.instance;
+   final User user = auth.currentUser;
+   final uid = user.uid;
+
+
 
    final referenceDatabase = await FirebaseDatabase.instance
        .reference()
-       .child('e2KlCqGLRqTWdEja9f93udfGmFv1')
+       .child(uid)
         .once()
        .then((snapshot){theMap = new Map<String, dynamic>.from(snapshot.value);});
 
+   print('Check the map for ' + uid + " hey ye " + theMap.toString());
 
 
-   print('Check the map: ' + theMap.toString());
 
    return FastFoodHealthEUser.fromJson(theMap);
 

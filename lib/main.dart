@@ -47,16 +47,17 @@ final FirebaseServices firebaseServices = FirebaseServices();
 
     return MultiProvider(
         providers: [
-FutureProvider(create: (context) => firebaseServices.fetchUser(),
-  catchError: (context, error) {
-    print("Crap! " + error.toString());
-  },),
+
     Provider<AuthenticationProvider>(
     create: (_) => AuthenticationProvider(FirebaseAuth.instance),
     ),
     StreamProvider(
     create: (context) => context.read<AuthenticationProvider>().authState,
-    )],
+    ),
+          FutureProvider(create: (context) => firebaseServices.fetchUser(),
+            catchError: (context, error) {
+              print("Crap! " + error.toString());
+            },),],
 
       child: MaterialApp(
 
