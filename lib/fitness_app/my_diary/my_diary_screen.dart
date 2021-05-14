@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:fast_food_health_e/fitness_app/ui_view/body_measurement.dart';
@@ -7,6 +8,7 @@ import 'package:fast_food_health_e/fitness_app/ui_view/title_view.dart';
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/meals_list_view.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/water_view.dart';
+import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
 import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -33,6 +35,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   final ScrollController scrollController = ScrollController();
   double topBarOpacity = 0.0;
   var firebaseUser;
+  FastFoodHealthEUser user;
   String userID;
   FirebaseFunctions joe = new FirebaseFunctions();
 
@@ -44,7 +47,12 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
         firebaseUser = context.watch<User>();
         userID  = firebaseUser.uid;
-        addAllListData();
+       user = Provider.of<FastFoodHealthEUser>(context);
+
+        addAllListData(user);
+
+
+
 
 
 
@@ -90,12 +98,16 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   }
 
 
-  void addAllListData () {
+  void addAllListData (FastFoodHealthEUser user) async {
+
+    await Future<dynamic>.delayed(const Duration(seconds: 1));
 
     const int count = 4;
 
 
+
     listViews.add(
+
         Container(
           child: Row(
 
@@ -251,9 +263,10 @@ color: Colors.deepOrange,
       ),
     );
 
+
     listViews.add(
     Text(
-      "Get fast nutrition advice from our team, which includes a clinical professor and a 30 year nutritionist.",
+      "Get fast nutrition advice from our team, which includes a clinical professor and a 30 year nutritionist." + user.caloriePlan,
       textAlign: TextAlign.left,
       style: TextStyle(
         fontFamily: FitnessAppTheme.fontName,
@@ -332,12 +345,15 @@ color: Colors.deepOrange,
   }
 
   Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 50));
+    await Future<dynamic>.delayed(const Duration(seconds: 1));
+
     return true;
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     return Container(
       color: FitnessAppTheme.background,
       child: Scaffold(
@@ -510,6 +526,8 @@ Future <String> _getNutritionTip() async {
 }
 
 Future <String> _getDietPlan() async {
+
+
   String result;
   String result2;
   String result3;

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fast_food_health_e/fitness_app/models/todaysMeals.dart';
 import 'package:fast_food_health_e/screens/Login/login.dart';
 import 'package:fast_food_health_e/screens/ask_a_nutritionist.dart';
@@ -7,6 +8,7 @@ import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:fast_food_health_e/screens/resetpw_screen.dart';
 import 'package:fast_food_health_e/screens/restaurant_screen.dart';
 import 'package:fast_food_health_e/screens/signup_screen.dart';
+import 'package:fast_food_health_e/services/firebase_services.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/utils/authenticate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,13 +38,19 @@ void main() async {
   runApp(FastFoodHealthEApp());
 }
 class FastFoodHealthEApp extends StatelessWidget {
-
+final FirebaseServices firebaseServices = FirebaseServices();
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return MultiProvider(
         providers: [
-
+FutureProvider(create: (context) => firebaseServices.fetchUser(),
+  catchError: (context, error) {
+    print("Crap! " + error.toString());
+  },),
     Provider<AuthenticationProvider>(
     create: (_) => AuthenticationProvider(FirebaseAuth.instance),
     ),
