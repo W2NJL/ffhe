@@ -57,21 +57,24 @@ class _SecondDietPageState extends State<SecondDietPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (firebaseUser == null) { // or else you end up creating multiple instances in this case.
+    if (firebaseUser ==
+        null) { // or else you end up creating multiple instances in this case.
       firebaseUser = context.watch<User>();
-      userID  = firebaseUser.uid;
+      userID = firebaseUser.uid;
 
-      for(int i =0; i  <diets.length; i++){
+      for (int i = 0; i < diets.length; i++) {
         String key = diets.keys.elementAt(i);
 
         sodiumPlans = getSodiumPlans();
-        _getDietPlan(key).then((value) => setState(() {
-
-          diets[key] = value;
-        }
-        ));
-
+        _getDietPlan(key).then((value) =>
+            setState(() {
+              diets[key] = value;
+            }
+            ));
+      }
     }
+
+    _getMoreData();
   }
 
   @override
@@ -86,11 +89,10 @@ class _SecondDietPageState extends State<SecondDietPage> {
     DatabaseReference _dietPlanRef;
 
     super.initState();
-  }
 
 
 
-    _getMoreData();
+
   }
 
 

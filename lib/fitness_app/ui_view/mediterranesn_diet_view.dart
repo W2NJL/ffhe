@@ -1,11 +1,14 @@
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/main.dart';
+import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
 import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'dart:math' as math;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -68,10 +71,27 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   String graphPlan3;
   bool graph1Bool = true, graph2Bool = true, graph3Bool = true;
   int graph1Multiplier, graph1Divide, graph1Divisor, graph2Multiplier, graph2Divide, graph2Divisor, graph3Multiplier, graph3Divide, graph3Divisor;
+  var firebaseUser;
+  FastFoodHealthEUser fastFoodHealthEUser;
+  String userID;
+  FirebaseFunctions joe = new FirebaseFunctions();
+
+
+  @override
+  void didChangeDependencies() {
+
+
+    setUpUsers();
+
+
+
+    super.didChangeDependencies();
+
+  }
 
   _DrillDownScreenState(){
 
-    this._getMoreData();
+
 
 
 
@@ -82,85 +102,90 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   }
 
 
+  void _newGetMoreData() {
+
+
+  }
+
+  void setUpUsers () async  {
+
+    firebaseUser = context.watch<User>();
+    userID  = firebaseUser.uid;
+    fastFoodHealthEUser =  Provider.of<FastFoodHealthEUser>(context);
+
+
+    this._getMoreData();
+
+
+  }
+
+
 
   void _getMoreData() async {
     bool cals, sodiums, carbies, fats, cholesterols, calmaxs, rests, sodmaxs, carbmax, fatmax, cholmax, graphVals;
 
-    await _getCalorieValue('Calories').then((value) =>
-        setState(() {
-          Calories = value;
-          cals = true;
-        }));
-    await _getCalorieValue('Sodium').then((value) =>
-        setState(() {
-          sodium = value;
-          sodiums = true;
-        }));
-    await _getCalorieValue('Low Carb').then((value) =>
-        setState(() {
-          carbs = value;
-          carbies = true;
-        }));
-    await _getCalorieValue('Low Fat').then((value) =>
-        setState(() {
-          fat = value;
-          fats = true;
-        }));
-    await _getCalorieValue('Low Cholesterol').then((value) =>
-        setState(() {
-          cholesterol = value;
-          cholesterols = true;
-        }));
-    await _getMaxValue('Calories').then((value) =>
-        setState(() {
-          calorieMax = value;
-          calmaxs = true;
-        }));
-    await _getMaxValue('Sodium').then((value) =>
-        setState(() {
-          sodiumMax = value;
-          sodmaxs = true;
-          print("Ava max: " + sodiumMax.toString());
-        }));
-    await _getMaxValue('Low Carb').then((value) =>
-        setState(() {
-          carbMax = value;
-          carbmax = true;
-
-        }));
-    await _getMaxValue('Low Fat').then((value) =>
-        setState(() {
-          fatMax = value;
-          fatmax = true;
-
-        }));
-    await _getMaxValue('Low Cholesterol').then((value) =>
-        setState(() {
-          cholesterolMax = value;
-          cholmax = true;
-
-        }));
-
-    await _getRestaurantImages().then((value) =>
-        setState(() {
-          restaurants = value;
-          rests = true;
-        }));
 
 
-if(restaurants != null){
-    for (String restaurant in restaurants) {
-      if(!imageArray.contains(cleanRestaurant(restaurant))) {
-        imageArray.add(cleanRestaurant(restaurant));
-      }
-    }}
+    if(fastFoodHealthEUser!=null){
+      print("Got here in never never land");
 
 
-setGraphVars();
 
-    if(cals && sodiums && carbies && fats && calmaxs && rests && sodmaxs && carbmax && fatmax && cholmax && cholesterols ){
-      done = true;
+        Calories = fastFoodHealthEUser.todaysCal;
+
+        sodium = fastFoodHealthEUser.todaysSodium;
+
+        carbs = fastFoodHealthEUser.todaysCal;
+
+        fat = fastFoodHealthEUser.todaysFat;
+
+        cholesterol = fastFoodHealthEUser.todaysCholesterol;
+
+        calorieMax = fastFoodHealthEUser.calMaxValue;
+
+        sodiumMax = fastFoodHealthEUser.sodiumMaxValue;
+
+        carbMax = fastFoodHealthEUser.carbsMaxValue;
+
+        fatMax = fastFoodHealthEUser.fatMaxValue;
+
+        cholesterolMax = fastFoodHealthEUser.fatMaxValue;
+
+
+
+      await _getRestaurantImages().then((value) =>
+          setState(() {
+            restaurants = value;
+            rests = true;
+          }));
+
+
+      if(restaurants != null){
+        for (String restaurant in restaurants) {
+          if(!imageArray.contains(cleanRestaurant(restaurant))) {
+            imageArray.add(cleanRestaurant(restaurant));
+          }
+        }}
+
+
+      setGraphVars();
+
+
+
+          done = true;
+
+
+
+      print("Van McCoy is: " + done.toString());
     }
+
+
+
+
+
+
+
+
 
     // if (sodiumMax == null && cholesterolMax != null){
     //   showingCholesterol = true;
@@ -222,43 +247,7 @@ if(meals!=null){
         }
 
 
-  Future <int> _getCalorieValue(String diet) async {
 
-    final referenceDatabase = FirebaseDatabase.instance;
-    final ref = referenceDatabase.reference().child('User').child('DietVals');
-
-    String formattedDate = getDate();
-
-    int result;
-    int maxValue;
-    final referenceDatabase2 = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child('DietVals')
-        .child(formattedDate)
-        .child(diet)
-        .once()
-        .then((snapshot){result=snapshot.value;});
-
-
-    // if(result == null){
-    //
-    //   ref.child(formattedDate).child('Calories').set(2000);
-    //
-    // }
-
-
-
-    if(result == null) {
-      return 0;
-    }
-
-    else {
-      numDietTrackers++;
-      return result;
-    }
-
-  }
 
   String getDate() {
      var now = new DateTime.now();

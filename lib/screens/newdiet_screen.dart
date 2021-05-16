@@ -1,4 +1,5 @@
 import 'package:fast_food_health_e/models/dietplan.dart';
+import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
 import 'package:fast_food_health_e/screens/seconddiet_screen.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
@@ -51,27 +52,20 @@ class _DietPageState extends State<DietPage> {
   String user;
   String userID;
   DatabaseReference _dietPlanRef;
+  FastFoodHealthEUser fastFoodHealthEUser;
 
 
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (firebaseUser == null) { // or else you end up creating multiple instances in this case.
-      firebaseUser = context.watch<User>();
-      userID  = firebaseUser.uid;
+
+    // or else you end up creating multiple instances in this case.
 
 
+      _getDietPlan();
 
-      dietPlans = getDietPlans();
+      super.didChangeDependencies();
 
-      _getDietPlan().then((value) => setState(() {
-        selectedPlan = value;
-        _showDialog();
-
-      }));
-
-    }
 
 
   }
@@ -99,10 +93,12 @@ class _DietPageState extends State<DietPage> {
 
 
 
-
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showDialog());
     super.initState();
 
   }
+
+
 
 
 
@@ -111,27 +107,27 @@ class _DietPageState extends State<DietPage> {
 
 
 
+
     return context.read<AuthenticationProvider>().getCurrentUser();
   }
 
-  Future <String> _getDietPlan() async {
+   _getDietPlan() async {
     String result;
+    firebaseUser = context.watch<User>();
+    userID  = firebaseUser.uid;
+    fastFoodHealthEUser = Provider.of<FastFoodHealthEUser>(context);
 
 
-    if(userID != null) {
-      final referenceDatabase = await FirebaseDatabase.instance
-          .reference()
-          .child(userID)
-          .child('DietPlan')
-          .once()
-          .then((snapshot) {
-        result = snapshot.value;
-      });
+    dietPlans = getDietPlans();
+    if(fastFoodHealthEUser!=null) {
+      selectedPlan = fastFoodHealthEUser.caloriePlan;
 
     }
 
 
-    return result;
+
+
+
   }
 
   void _showDialog() {

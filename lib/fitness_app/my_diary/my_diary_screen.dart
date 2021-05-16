@@ -138,13 +138,8 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
               Padding(
                 padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
               ),
-            FutureBuilder(
-                future: joe.getDietPlan(context, userID),
-                initialData: "Loading text..",
-                builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  if (text.hasData) {
-                    return Text(
-                      text.data,
+            Text(
+                      joe.getDietPlan(user),
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontFamily: FitnessAppTheme.fontName,
@@ -153,11 +148,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                         letterSpacing: -0.2,
                         color: FitnessAppTheme.darkerText,
                       ),
-                    );
-                  }
-                  return CircularProgressIndicator();
-                }
-            )
+                    )
       ]
           ),
         ),
@@ -275,7 +266,7 @@ color: Colors.deepOrange,
 
     listViews.add(
     Text(
-      "Get fast nutrition advice from our team, which includes a clinical professor and a 30 year nutritionist." + user.caloriePlan,
+      "Get fast nutrition advice from our team, which includes a clinical professor and a 30 year nutritionist.",
       textAlign: TextAlign.left,
       style: TextStyle(
         fontFamily: FitnessAppTheme.fontName,
@@ -492,12 +483,8 @@ else{
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(3.0),
-                                child: FutureBuilder(
-                                    future: _getDietPlan(),
-                                    initialData: "Loading text..",
-                                    builder: (BuildContext context, AsyncSnapshot<String> text) {
-                                      return Text(
-                                          text.data,
+                                child:  Text(
+                                          _getDietPlan(user),
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
@@ -506,10 +493,10 @@ else{
                                           letterSpacing: -0.2,
                                           color: FitnessAppTheme.darkerText,
                                       ),
-                                    );}
+                                    ),
                               ),
                             ),
-                            ),
+                            
 
                           ],
                         ),
@@ -550,7 +537,7 @@ Future <String> _getNutritionTip() async {
   return result;
 }
 
-Future <String> _getDietPlan() async {
+ _getDietPlan(FastFoodHealthEUser user)  {
 
 
   String result;
@@ -559,49 +546,14 @@ Future <String> _getDietPlan() async {
   String result4;
   String result5;
   List<String> resultList = <String>[];
-  final referenceDatabase = await FirebaseDatabase.instance
-      .reference()
-      .child('User')
-      .child('DietPlan')
-      .once()
-      .then((snapshot){resultList.add(snapshot.value);});
+  resultList.add(user.caloriePlan);
+  resultList.add(user.carbPlan);
+  resultList.add(user.sodiumPlan);
+  resultList.add(user.fatPlan);
+  resultList.add(user.cholesterolPlan);
+  
+  
 
-
-  final referenceDatabase2 = await FirebaseDatabase.instance
-      .reference()
-      .child('User')
-      .child('Low Carb')
-      .once()
-      .then((snapshot){resultList.add(snapshot.value);});
-  //
-  // if(result2 == 'No Carb Plan'){
-  //   result2 == ''
-  // }
-
-
-  final referenceDatabase3 = await FirebaseDatabase.instance
-      .reference()
-      .child('User')
-      .child('Sodium')
-      .once()
-      .then((snapshot){resultList.add(snapshot.value);});
-
-
-  final referenceDatabase4 = await FirebaseDatabase.instance
-      .reference()
-      .child('User')
-      .child('Low Fat')
-      .once()
-      .then((snapshot){resultList.add(snapshot.value);});
-  print(result);
-
-  final referenceDatabase5 = await FirebaseDatabase.instance
-      .reference()
-      .child('User')
-      .child('Low Cholesterol')
-      .once()
-      .then((snapshot){resultList.add(snapshot.value);});
-  print(result);
 
 
 
