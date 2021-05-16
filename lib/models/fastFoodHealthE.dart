@@ -9,9 +9,10 @@ final String cholesterolPlan;
 final String carbPlan;
 final int calMaxValue, sodiumMaxValue, carbsMaxValue, cholesterolmaxValue, fatMaxValue, saturatedFatMaxValue, transFatMaxValue;
 final int todaysCal, todaysSodium, todaysCarbs, todaysCholesterol, todaysFat, todaysSaturatedFat, todaysTransFat;
+final Map<String, dynamic> restaurantList;
 
 
-FastFoodHealthEUser(this.sodiumMaxValue, this.carbsMaxValue, this.cholesterolmaxValue, this.fatMaxValue, this.saturatedFatMaxValue, this.transFatMaxValue, this.todaysCal, this.todaysSodium, this.todaysCarbs, this.todaysCholesterol, this.todaysFat, this.todaysSaturatedFat, this.todaysTransFat, { this.caloriePlan, this.sodiumPlan, this.fatPlan, this.cholesterolPlan, this.carbPlan, this.calMaxValue});
+FastFoodHealthEUser(this.restaurantList, this.sodiumMaxValue, this.carbsMaxValue, this.cholesterolmaxValue, this.fatMaxValue, this.saturatedFatMaxValue, this.transFatMaxValue, this.todaysCal, this.todaysSodium, this.todaysCarbs, this.todaysCholesterol, this.todaysFat, this.todaysSaturatedFat, this.todaysTransFat, { this.caloriePlan, this.sodiumPlan, this.fatPlan, this.cholesterolPlan, this.carbPlan, this.calMaxValue});
 
 
 
@@ -39,14 +40,8 @@ todaysSodium = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['Diet
 todaysCholesterol = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Low Cholesterol']: 0,
 todaysFat = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Low Fat']: 0,
 todaysSaturatedFat = parsedJson['DietVals'].containsKey(getDate()) ? parsedJson['DietVals'][getDate()]['Saturated Fat']: 0,
-todaysTransFat = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Trans Fat']: 0;
-
-
-
-
-
-
-
+todaysTransFat = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Trans Fat']: 0,
+restaurantList = parsedJson['DietVals'].containsKey(getDate())? new Map<String, dynamic>.from(parsedJson['DietVals'][getDate()]['Meals']): null;
 
 }
 

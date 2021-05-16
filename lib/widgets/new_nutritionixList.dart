@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
@@ -623,7 +624,9 @@ class NewNutritionixListState extends State<NewNutritionixList> {
             // Add one more item for progress indicator
             padding: EdgeInsets.symmetric(vertical: 8.0),
             itemBuilder: (BuildContext context, int index) {
-
+              if (index == users.length) {
+                return _buildProgressIndicator();
+              } else {
                 return GestureDetector(
                   onTap: () {
                     showDialog(
@@ -650,7 +653,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
                             ' calories'),
                   ),
                 );
-              },
+              }},
 
             controller: _sc,
           ):Column(
@@ -692,7 +695,10 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
  Widget _buildAboutDialog(BuildContext context, user) {
     final referenceDatabase = FirebaseDatabase.instance;
-    final ref = referenceDatabase.reference().child('User');
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User user2 = auth.currentUser;
+    final uid = user2.uid;
+    final ref = referenceDatabase.reference().child(uid);
     final List<int> nutrientList = <int>[];
     Map<String, dynamic> nutrientMap = Map<String, dynamic>.from(user);
     print(nutrientMap.remove('item_name'));
@@ -790,8 +796,10 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     int totalCalories2;
     var params;
         if (!isLoading) {
+
       setState(() {
         isLoading = true;
+
       });
 
       FirebaseFunctions joe = new FirebaseFunctions();
