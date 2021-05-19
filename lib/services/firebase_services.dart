@@ -1,5 +1,6 @@
 
 import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
+import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -9,8 +10,11 @@ import 'package:provider/provider.dart';
 
 
 
-class FirebaseServices{
-  Future<FastFoodHealthEUser> fetchUser()
+
+
+
+
+  void fetchUser(BuildContext context)
  async{
    // var firebaseUser = context.watch<User>();
    // String userID  = firebaseUser.uid;
@@ -29,13 +33,8 @@ class FirebaseServices{
 
    print('Check the map for ' + uid + " hey ye " + theMap.toString());
 
-
-
-   return FastFoodHealthEUser.fromJson(theMap);
-
-
+   Provider.of<FastFoodHealthEState>(context, listen: false).activeVote = FastFoodHealthEUser.fromJson(theMap);
 
  }
 
 
-}

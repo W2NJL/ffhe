@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:fast_food_health_e/services/firebase_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
@@ -56,6 +57,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   bool done = false;
   bool passThrough = false;
   bool allDone = false;
+  //final FirebaseServices firebaseServices = FirebaseServices();
 
 
 
@@ -748,6 +750,10 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   }
 
  void addToMyDay(DatabaseReference ref, user) {
+
+
+
+
     ref.child('DietVals').child(formattedDate).child('Calories').set(
        ServerValue.increment(user['nf_calories']));
    ref.child('DietVals').child(formattedDate).child('Sodium').set(
@@ -788,6 +794,9 @@ class NewNutritionixListState extends State<NewNutritionixList> {
    ref.child('DietVals').child(formattedDate).child('Meals').child(
        user['item_name']).child('Restaurant').set(
        user['brand_name']);
+
+
+
  }
 
 

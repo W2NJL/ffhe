@@ -1,6 +1,8 @@
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/main.dart';
 import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
+import 'package:fast_food_health_e/services/firebase_services.dart';
+import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -77,6 +79,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   FirebaseFunctions joe = new FirebaseFunctions();
 
 
+
   @override
   void didChangeDependencies() {
 
@@ -109,9 +112,11 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
   void setUpUsers () async  {
 
+
+
     firebaseUser = context.watch<User>();
     userID  = firebaseUser.uid;
-    fastFoodHealthEUser =  Provider.of<FastFoodHealthEUser>(context);
+    fastFoodHealthEUser =   Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
 
 
     this._getMoreData();
@@ -133,6 +138,9 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
         Calories = fastFoodHealthEUser.todaysCal;
 
+        print("Just testing this: " + Calories.toString());
+
+
         sodium = fastFoodHealthEUser.todaysSodium;
 
         carbs = fastFoodHealthEUser.todaysCal;
@@ -151,13 +159,8 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
         cholesterolMax = fastFoodHealthEUser.fatMaxValue;
 
+        restaurants = _getRestaurantImages();
 
-
-      await _getRestaurantImages().then((value) =>
-          setState(() {
-            restaurants = value;
-            rests = true;
-          }));
 
 
       if(restaurants != null){
@@ -215,22 +218,13 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
       return maxValue;
   }
 
-  Future <List> _getRestaurantImages() async{
+  _getRestaurantImages() {
 
     String formattedDate = getDate();
     Map<dynamic, dynamic> meals;
     List<String> restaurants = <String>[];
 
-    final referenceDatabase2 = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child('DietVals')
-        .child(formattedDate)
-        .child('Meals')
-        .once()
-        .then((snapshot){
-      meals = snapshot.value;
-    });
+    meals = fastFoodHealthEUser.restaurantList;
 
 if(meals!=null){
 //    print(fridgesDs.runtimeType);

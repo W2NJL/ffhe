@@ -43,6 +43,8 @@ todaysSaturatedFat = parsedJson['DietVals'].containsKey(getDate()) ? parsedJson[
 todaysTransFat = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Trans Fat']: 0,
 restaurantList = parsedJson['DietVals'].containsKey(getDate())? new Map<String, dynamic>.from(parsedJson['DietVals'][getDate()]['Meals']): null;
 
+
+
 }
 
 

@@ -9,6 +9,8 @@ import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/meals_list_view.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/water_view.dart';
 import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
+import 'package:fast_food_health_e/services/firebase_services.dart';
+import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -55,6 +57,12 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   @override
   void initState() {
 
+    Future.microtask(() {
+      Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
+      Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
+    }
+    );
+
 
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
@@ -90,9 +98,10 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
   void setUpUsers () async {
 
+
     firebaseUser = context.watch<User>();
     userID  = firebaseUser.uid;
-    user =  Provider.of<FastFoodHealthEUser>(context);
+    user = Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
 
     if(user!=null){
       print("Got here");
