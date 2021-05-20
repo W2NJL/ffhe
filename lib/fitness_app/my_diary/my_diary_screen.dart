@@ -46,7 +46,9 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   void didChangeDependencies() {
 
 
-  setUpUsers();
+    setUpUsers();
+
+
 
 
 
@@ -57,11 +59,17 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   @override
   void initState() {
 
+
+
     Future.microtask(() {
       Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
       Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
     }
     );
+
+
+
+
 
 
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -103,10 +111,16 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     userID  = firebaseUser.uid;
     user = Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
 
-    if(user!=null){
-      print("Got here");
-      addAllListData();
-    }
+
+    if(user!= null){
+
+    addAllListData();
+  }
+
+
+
+
+
 
 
 
@@ -115,6 +129,8 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
   void addAllListData () async {
 
+
+      print("Got here");
 
 
 
@@ -353,7 +369,7 @@ color: Colors.deepOrange,
     //       animationController: widget.animationController),
     // );
 
-
+      done = true;
   }
 
   Future<bool> getData() async {
@@ -366,7 +382,11 @@ color: Colors.deepOrange,
   Widget build(BuildContext context) {
 
 
-if(user != null) {
+
+
+
+
+if(done) {
 
 
 
@@ -396,13 +416,7 @@ else{
 
   Widget getMainListViewUI() {
 
-    return FutureBuilder<bool>(
-      future: getData(),
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (!snapshot.hasData) {
-          return const SizedBox();
-        } else {
-          return LayoutBuilder(
+    return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
             return ListView.builder(
               controller: scrollController,
@@ -423,9 +437,7 @@ else{
             );
 
         }
-      },
-    );
-  }
+
 
   Widget getAppBarUI() {
     var now = new DateTime.now();

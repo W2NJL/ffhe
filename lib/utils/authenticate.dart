@@ -18,8 +18,17 @@ class Authenticate extends StatefulWidget {
 class _AuthenticateState extends State<Authenticate> {
 
   bool firstRun = false;
+  @override
+  void initState() {
+    Future.microtask(() {
+      Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
+      Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(
+          context);
+    }
+    );
 
-
+    super.initState();
+  }
 
 
   _AuthenticateState() {

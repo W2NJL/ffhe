@@ -25,7 +25,7 @@ import 'package:provider/provider.dart';
 
 
 
-   final referenceDatabase = await FirebaseDatabase.instance
+   await FirebaseDatabase.instance
        .reference()
        .child(uid)
         .once()

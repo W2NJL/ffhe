@@ -11,7 +11,60 @@ class FirebaseFunctions {
   SharedPreferences preferences;
 
 
+  Future <int> getRemainingNutrients(String diet, FastFoodHealthEUser fastFoodHealthEUser) async {
 
+    if (diet == "Calories"){
+
+
+      return fastFoodHealthEUser.todaysCal;
+
+    }
+
+    if (diet == "Sodium"){
+
+
+      return fastFoodHealthEUser.todaysSodium;
+
+    }
+
+    if (diet == "Low Fat"){
+
+
+      return fastFoodHealthEUser.todaysFat;
+
+    }
+
+    if (diet == "Low Carb"){
+
+
+      return fastFoodHealthEUser.todaysCarbs;
+
+    }
+
+    if (diet == "Low Cholesterol"){
+
+
+      return fastFoodHealthEUser.todaysCholesterol;
+
+    }
+
+    if (diet == "Saturated Fat"){
+
+
+      return fastFoodHealthEUser.todaysSaturatedFat;
+
+    }
+
+    if (diet == "Saturated Fat"){
+
+
+      return fastFoodHealthEUser.todaysTransFat;
+
+    }
+
+    return null;
+
+  }
 
 
   Future <List<int>> getTotalNutrients(String diet) async {

@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
 import 'package:fast_food_health_e/services/firebase_services.dart';
+import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
@@ -75,8 +78,22 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   final dio = new Dio();
   List<int> nutrientList = <int>[];
   final noNutrientLimit = 999999999;
+  var firebaseUser;
+  FastFoodHealthEUser fastFoodHealthEUser;
+  String userID;
+  FirebaseFunctions firebaseFunctions = new FirebaseFunctions();
+
+  @override
+  void didChangeDependencies() {
 
 
+    setUpUsers();
+
+
+
+    super.didChangeDependencies();
+
+  }
 
 
   NewNutritionixListState({this.restaurant, this.category}){
@@ -88,24 +105,19 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     }
 
 
-  Future <int> _getRemainingNutrients(String diet) async {
 
-    String formattedDate = formatter.format(now);
 
-    int result;
+  void setUpUsers () async  {
 
-    final referenceDatabase2 = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child('DietVals')
-        .child(formattedDate)
-        .child(diet)
-        .once()
-        .then((snapshot) {
-      result = snapshot.value;
-    });
 
-    return result;
+
+    firebaseUser = context.watch<User>();
+    userID  = firebaseUser.uid;
+    fastFoodHealthEUser =   Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
+
+if(fastFoodHealthEUser != null) {
+  this._getMoreData(page, this.restaurant, this.category);
+}
   }
 
   String imgLink(String restaurant){
@@ -173,33 +185,95 @@ class NewNutritionixListState extends State<NewNutritionixList> {
     int result;
     int maxValue;
 
-    final referenceDatabase3 = await FirebaseDatabase.instance
-        .reference()
-        .child('User')
-        .child('DietVals')
-        .child(diet)
-        .child('MaxValue')
-        .once()
-        .then((snapshot) {
-      maxValue = snapshot.value;
-    });
 
-    if (maxValue == null)
-      {
+    if (diet == "Calories"){
 
+
+      return fastFoodHealthEUser.calMaxValue;
+
+    }
+
+    else {
+
+      if(diet == "Sodium"){
+
+      if(fastFoodHealthEUser.sodiumMaxValue == null){
         return noNutrientLimit;
       }
+      else{
 
+      return fastFoodHealthEUser.sodiumMaxValue;}}
 
-    return maxValue;
+      if(diet == "Low Carb"){
+
+        if(fastFoodHealthEUser.carbsMaxValue == null){
+          return noNutrientLimit;
+        }
+        else{
+
+          return fastFoodHealthEUser.carbsMaxValue;}}
+
+      if(diet == "Low Cholesterol"){
+
+        if(fastFoodHealthEUser.cholesterolmaxValue == null){
+          return noNutrientLimit;
+        }
+        else{
+
+          return fastFoodHealthEUser.cholesterolmaxValue;}}
+
+      if(diet == "Saturated Fat"){
+
+        if(fastFoodHealthEUser.saturatedFatMaxValue == null){
+          return noNutrientLimit;
+        }
+        else{
+
+          return fastFoodHealthEUser.saturatedFatMaxValue;}}
+
+      if(diet == "Trans Fat"){
+
+        if(fastFoodHealthEUser.transFatMaxValue == null){
+          return noNutrientLimit;
+        }
+        else{
+
+          return fastFoodHealthEUser.transFatMaxValue;}}
+
+      if(diet == "Low Fat"){
+
+        if(fastFoodHealthEUser.fatMaxValue == null){
+          return noNutrientLimit;
+        }
+        else{
+
+          return fastFoodHealthEUser.fatMaxValue;}}
+
+    }
+
   }
+
+
+
 
 
   @override
   void initState() {
+
+    Future.microtask(() {
+      Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
+      Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
+    }
+    );
+
+
     page = 0;
     String formattedDate = formatter.format(now);
-    this._getMoreData(page, this.restaurant, this.category);
+
+
+
+
+
     super.initState();
 
 
@@ -246,6 +320,8 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
 
   Widget _showDietValues(){
+
+
     if (done){
     return Container(
 
@@ -733,14 +809,17 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
             if(passThrough) {
               addToMyDay(ref, user);
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NewNutritionixList(
-                      restaurant: restaurant, mealCategory: category),
-                ),
-              );
-            }
+
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        NewNutritionixList(
+                            restaurant: restaurant, mealCategory: category),
+                  ),
+                );
+              }
           },
           textColor: Theme.of(context).primaryColor,
           child: const Text('Add to My Day'),
@@ -751,7 +830,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
  void addToMyDay(DatabaseReference ref, user) {
 
-
+   Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
 
 
     ref.child('DietVals').child(formattedDate).child('Calories').set(
@@ -794,6 +873,10 @@ class NewNutritionixListState extends State<NewNutritionixList> {
    ref.child('DietVals').child(formattedDate).child('Meals').child(
        user['item_name']).child('Restaurant').set(
        user['brand_name']);
+
+
+   Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
+
 
 
 
@@ -876,7 +959,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
       }));
 
-    await _getRemainingNutrients('Calories').then((value) => setState((){
+    await firebaseFunctions.getRemainingNutrients('Calories', fastFoodHealthEUser).then((value) => setState((){
       remainingCalories = value;
 
       if (remainingCalories == null)
@@ -893,7 +976,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
     }));
 
-      await _getRemainingNutrients('Sodium').then((value) => setState((){
+      await firebaseFunctions.getRemainingNutrients('Sodium', fastFoodHealthEUser).then((value) => setState((){
         remainingSodium = value;
 
         if (remainingSodium == null)
@@ -905,7 +988,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
           sodiumSum = totalSodium-remainingSodium;
         }}));
 
-      await _getRemainingNutrients('Saturated Fat').then((value) => setState((){
+      await firebaseFunctions.getRemainingNutrients('Saturated Fat', fastFoodHealthEUser).then((value) => setState((){
         remainingSatFat = value;
 
         if (remainingSatFat == null)
@@ -921,7 +1004,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
       }));
 
-      await _getRemainingNutrients('Low Cholesterol').then((value) => setState((){
+      await firebaseFunctions.getRemainingNutrients('Low Cholesterol', fastFoodHealthEUser).then((value) => setState((){
         remainingCholesterol = value;
 
         if (remainingCholesterol == null)
@@ -933,7 +1016,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
           cholesterolSum = totalCholesterol-remainingCholesterol;
         }}));
 
-      await _getRemainingNutrients('Low Fat').then((value) => setState(() {
+      await firebaseFunctions.getRemainingNutrients('Low Fat', fastFoodHealthEUser).then((value) => setState(() {
         remainingFat = value;
 
         if (remainingFat == null) {
@@ -946,7 +1029,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
         print("FatSum is: " + fatSum.toString());
       }));
-      await _getRemainingNutrients('Trans Fat').then((value) => setState(() {
+      await firebaseFunctions.getRemainingNutrients('Trans Fat', fastFoodHealthEUser).then((value) => setState(() {
         remainingTransFat = value;
 
         if (remainingTransFat == null) {
@@ -962,7 +1045,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
 
 
 
-      await _getRemainingNutrients('Low Carb').then((value) => setState(() {
+      await firebaseFunctions.getRemainingNutrients('Low Carb', fastFoodHealthEUser).then((value) => setState(() {
         remainingCarbs = value;
 
         if (remainingCarbs == null) {
@@ -1322,13 +1405,17 @@ _showDialog(ref, user);
               onPressed: () {
                 passThrough = true;
                 addToMyDay(ref, user);
+
+        Future.delayed(Duration(seconds: 1), () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => NewNutritionixList(
                         restaurant: restaurant, mealCategory: category),
                   ),
+
                 );
+        });
               },
             ),
             new FlatButton(

@@ -143,7 +143,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
         sodium = fastFoodHealthEUser.todaysSodium;
 
-        carbs = fastFoodHealthEUser.todaysCal;
+        carbs = fastFoodHealthEUser.todaysCarbs;
 
         fat = fastFoodHealthEUser.todaysFat;
 

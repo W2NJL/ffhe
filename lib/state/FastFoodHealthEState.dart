@@ -15,7 +15,7 @@ class FastFoodHealthEState with ChangeNotifier{
 
   void loadUserList(BuildContext context) async {
     //_voteList = getVoteList();
-    //notifyListeners();
+    notifyListeners();
     fetchUser(context);
   }
 
