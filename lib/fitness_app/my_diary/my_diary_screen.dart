@@ -164,7 +164,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                 padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
               ),
             Text(
-                      joe.getDietPlan(user),
+                      joe.getDietPlanHeader(user),
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontFamily: FitnessAppTheme.fontName,

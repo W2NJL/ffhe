@@ -1,11 +1,14 @@
+import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:fast_food_health_e/utils/nutrientList.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fast_food_health_e/utils/nutrientLabel.dart';
+import 'package:provider/provider.dart';
 
 class TodaysMeals extends StatefulWidget {
   TodaysMeals({this.app});
@@ -30,12 +33,26 @@ class _TodaysMealsState extends State<TodaysMeals> {
   int sodiumVal;
   int totalCalories;
   List<int> nutrientList = <int>[];
-
+  var firebaseUser;
+  String userID;
 
   DatabaseReference _callLettersRef;
 
   @override
-  void initState() {
+  void didChangeDependencies() {
+
+    setUpUsers();
+
+    super.didChangeDependencies();
+  }
+
+  void setUpUsers () async  {
+
+
+
+    firebaseUser = context.watch<User>();
+    userID  = firebaseUser.uid;
+
     formattedDate = formatter.format(now);
     String returnMonth(DateTime date) {
       return new DateFormat.MMMM().format(date);
@@ -44,8 +61,15 @@ class _TodaysMealsState extends State<TodaysMeals> {
     getDate(returnMonth);
 
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
-    _callLettersRef = database.reference().child('User').child('DietVals').child(formattedDate).child('Meals');
-   this._getMoreData();
+    _callLettersRef = database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals');
+    this._getMoreData(userID);
+
+  }
+
+
+  @override
+  void initState() {
+
     super.initState();
   }
 
@@ -136,13 +160,13 @@ class _TodaysMealsState extends State<TodaysMeals> {
   }
 
 
-   void _getMoreData() async{
+   void _getMoreData(String userID) async{
 
     final
 
     FirebaseFunctions joe = new FirebaseFunctions();
 
-    await joe.getTotalNutrients('Calories').then((value) => setState(() {
+    await joe.getTotalNutrients('Calories', userID).then((value) => setState(() {
 
       nutrientList = value;
 

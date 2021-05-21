@@ -67,10 +67,11 @@ class FirebaseFunctions {
   }
 
 
-  Future <List<int>> getTotalNutrients(String diet) async {
+  Future <List<int>> getTotalNutrients(String diet, String userID) async {
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy-MM-dd');
     String formattedDate;
+    print("Testing this shiz: " + userID);
     formattedDate = formatter.format(now);
     List<String> dietList = <String>[];
     dietList.add("Calories");
@@ -88,7 +89,7 @@ class FirebaseFunctions {
 
       final referenceDatabase3 = await FirebaseDatabase.instance
           .reference()
-          .child('User')
+          .child(userID)
           .child('DietVals')
           .child(dietList.elementAt(i))
           .child('MaxValue')
@@ -96,6 +97,8 @@ class FirebaseFunctions {
           .then((snapshot) {
         maxValue = snapshot.value;
       });
+
+      print("The maxvalue for " + dietList.elementAt(i) + "is: " + maxValue.toString());
 
       if (maxValue == null) {
         nutritionList.add(999999999);
@@ -125,7 +128,7 @@ class FirebaseFunctions {
     preferences.setBool("FirstRun", false);
   }
 
-  getDietPlan(FastFoodHealthEUser user)  {
+  getDietPlanHeader(FastFoodHealthEUser user)  {
 
 
     List<String> resultList = <String>[];
@@ -170,6 +173,53 @@ class FirebaseFunctions {
 
 
   }
+
+  Future <String> getDietPlan(String diet, FastFoodHealthEUser fastFoodHealthEUser) async {
+
+
+
+      if (diet == "Calories"){
+
+
+        return fastFoodHealthEUser.caloriePlan;
+
+      }
+
+      if (diet == "Sodium"){
+
+
+        return fastFoodHealthEUser.sodiumPlan;
+
+      }
+
+      if (diet == "Low Fat"){
+
+
+        return fastFoodHealthEUser.fatPlan;
+
+      }
+
+      if (diet == "Low Carb"){
+
+
+        return fastFoodHealthEUser.carbPlan;
+
+      }
+
+      if (diet == "Low Cholesterol"){
+
+
+        return fastFoodHealthEUser.cholesterolPlan;
+
+      }
+
+
+
+      return null;
+
+    }
+
+
 
 
 

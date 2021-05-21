@@ -1,6 +1,7 @@
 import 'package:fast_food_health_e/models/dietplan.dart';
 import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
 import 'package:fast_food_health_e/screens/seconddiet_screen.dart';
+import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
 import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
@@ -81,10 +82,7 @@ class _DietPageState extends State<DietPage> {
 
 
 
-    _getUser().then((value) => setState((){
-      user = value;
-      print ("User is: " + user);
-    }));
+
 
 
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
@@ -102,20 +100,14 @@ class _DietPageState extends State<DietPage> {
 
 
 
-  Future <String> _getUser() async {
-    String result;
 
-
-
-
-    return context.read<AuthenticationProvider>().getCurrentUser();
-  }
 
    _getDietPlan() async {
     String result;
     firebaseUser = context.watch<User>();
     userID  = firebaseUser.uid;
-    fastFoodHealthEUser = Provider.of<FastFoodHealthEUser>(context);
+
+    fastFoodHealthEUser = Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
 
 
     dietPlans = getDietPlans();

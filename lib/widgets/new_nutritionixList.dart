@@ -896,7 +896,7 @@ if(fastFoodHealthEUser != null) {
 
       FirebaseFunctions joe = new FirebaseFunctions();
 
-      await joe.getTotalNutrients('Calories').then((value) => setState(() {
+      await joe.getTotalNutrients('Calories', userID).then((value) => setState(() {
 
         nutrientList = value;
 

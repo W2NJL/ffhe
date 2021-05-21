@@ -1,7 +1,10 @@
 import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/my_diary_screen.dart';
 import 'package:fast_food_health_e/models/dietplan.dart';
+import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
+import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
+import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:fast_food_health_e/widgets/dietappbar.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,6 +56,8 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
   List<String> dietResults = [];
   final referenceDatabase = FirebaseDatabase.instance;
+  FirebaseFunctions firebaseFunctions  = new FirebaseFunctions();
+  FastFoodHealthEUser fastFoodHealthEUser;
 
   @override
   void didChangeDependencies() {
@@ -61,12 +66,13 @@ class _SecondDietPageState extends State<SecondDietPage> {
         null) { // or else you end up creating multiple instances in this case.
       firebaseUser = context.watch<User>();
       userID = firebaseUser.uid;
+      fastFoodHealthEUser =   Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
 
       for (int i = 0; i < diets.length; i++) {
         String key = diets.keys.elementAt(i);
 
         sodiumPlans = getSodiumPlans();
-        _getDietPlan(key).then((value) =>
+        _getDietPlan(key, fastFoodHealthEUser).then((value) =>
             setState(() {
               diets[key] = value;
             }
@@ -98,10 +104,10 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
   void _getMoreData() async {
 
-    await _getTotalNutrients('Calories').then((value) => setState(() {
+    await firebaseFunctions.getTotalNutrients('Calories', userID).then((value) => setState(() {
 
 
-      totalCalories = value;
+      totalCalories = value.elementAt(0);
 
 
       print("Benatar: " + totalCalories.toString());
@@ -119,24 +125,15 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
   }
 
-  Future <String> _getDietPlan(String plan) async {
+  Future <String> _getDietPlan(String diet, FastFoodHealthEUser fastFoodHealthEUser) async {
     String result;
 
     if(userID != null) {
-      final referenceDatabase = await FirebaseDatabase.instance
-          .reference()
-          .child(userID)
-          .child(plan)
-          .once()
-          .then((snapshot) {
-        result = snapshot.value;
-      });
-
+      print("Got a Steve.");
+return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
     }
 
-
-
-    return result;
+    return null;
   }
 
   Future <int> _getTotalNutrients(String diet) async {
