@@ -45,8 +45,9 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   @override
   void didChangeDependencies() {
 
-
-    setUpUsers();
+if(firebaseUser ==null) {
+  setUpUsers();
+}
 
 
 
@@ -61,11 +62,11 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
 
 
-    Future.microtask(() {
-      Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
-      Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
-    }
-    );
+    // Future.microtask(() {
+    //   Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
+    //   Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
+    // }
+    // );
 
 
 
@@ -107,15 +108,19 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   void setUpUsers () async {
 
 
-    firebaseUser = context.watch<User>();
-    userID  = firebaseUser.uid;
-    user = Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
 
 
-    if(user!= null){
+      firebaseUser = context.watch<User>();
+      userID  = firebaseUser.uid;
+      user = Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
 
-    addAllListData();
-  }
+
+      if(user!= null){
+
+        addAllListData();
+      }
+
+
 
 
 

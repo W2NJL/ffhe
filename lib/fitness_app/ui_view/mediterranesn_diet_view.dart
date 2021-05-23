@@ -83,8 +83,9 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   @override
   void didChangeDependencies() {
 
-
-    setUpUsers();
+    if(firebaseUser ==null) {
+      setUpUsers();
+    }
 
 
 
@@ -1242,6 +1243,9 @@ if(done){
       graph2Multiplier = 70;
       graph2Divide = carbs;
       graph2Divisor = 1;
+      graph2Bool = false;
+
+      print("Here nick. " + carbs.toString());
 
 
 
