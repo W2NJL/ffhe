@@ -510,7 +510,17 @@ return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
               child: ElevatedButton(
 
                 onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
+                  Future.microtask(() {
+                    Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
+                    Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
+                  }
+                  );
+
+                  Future.delayed(Duration(milliseconds: 50), () {
+                    Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
+                  });
+
+
                 },
 
                 child: Row(

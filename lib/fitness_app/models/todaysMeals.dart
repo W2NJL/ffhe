@@ -289,14 +289,21 @@ leading: new IconButton(
                             ),
 
                             trailing: IconButton(icon: Icon(Icons.delete), onPressed: () =>{
-                                ref.child('User').child('DietVals').child(formattedDate).child('Calories').set(ServerValue.increment(-snapshot.value['calories'])),
-                              ref.child('User').child('DietVals').child(formattedDate).child('Sodium').set(ServerValue.increment(-snapshot.value['sodium'])),
-                              ref.child('User').child('DietVals').child(formattedDate).child('Low Carb').set(ServerValue.increment(-snapshot.value['carbs'])),
-                              ref.child('User').child('DietVals').child(formattedDate).child('Low Cholesterol').set(ServerValue.increment(-snapshot.value['cholesterol'])),
-                              ref.child('User').child('DietVals').child(formattedDate).child('Low Fat').set(ServerValue.increment(-snapshot.value['fat'])),
-                              ref.child('User').child('DietVals').child(formattedDate).child('Saturated Fat').set(ServerValue.increment(-snapshot.value['Saturated Fat'])),
-                              ref.child('User').child('DietVals').child(formattedDate).child('Trans Fat').set(ServerValue.increment(-snapshot.value['Trans Fat'])),
-                                _callLettersRef.child(snapshot.key).remove(),}),
+                                ref.child(userID).child('DietVals').child(formattedDate).child('Calories').set(ServerValue.increment(-snapshot.value['calories'])),
+                              ref.child(userID).child('DietVals').child(formattedDate).child('Sodium').set(ServerValue.increment(-snapshot.value['sodium'])),
+                              ref.child(userID).child('DietVals').child(formattedDate).child('Low Carb').set(ServerValue.increment(-snapshot.value['carbs'])),
+                              ref.child(userID).child('DietVals').child(formattedDate).child('Low Cholesterol').set(ServerValue.increment(-snapshot.value['cholesterol'])),
+                              ref.child(userID).child('DietVals').child(formattedDate).child('Low Fat').set(ServerValue.increment(-snapshot.value['fat'])),
+                              ref.child(userID).child('DietVals').child(formattedDate).child('Saturated Fat').set(ServerValue.increment(-snapshot.value['Saturated Fat'])),
+                              ref.child(userID).child('DietVals').child(formattedDate).child('Trans Fat').set(ServerValue.increment(-snapshot.value['Trans Fat'])),
+                                _callLettersRef.child(snapshot.key).remove(),
+                            Future.microtask(() {
+                            Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
+                            Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
+                            }
+                            ),
+
+                            }),
                             title: new Text(snapshot.key
                             ),
                             subtitle: new Text("(Calories: " + snapshot.value['calories'].toString() + " Sodium: " + snapshot.value['sodium'].toString() + ")"),

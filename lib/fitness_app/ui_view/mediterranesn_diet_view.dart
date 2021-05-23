@@ -1358,8 +1358,7 @@ if(done){
         graph1Divisor = carbMax;
       }
 
-      graphPlan2 = "Cholesterol";
-      graph2Multiplier = 60;
+
 
       if(cholesterol <= cholesterolMax) {
         graph2Divide = cholesterol;
@@ -1369,6 +1368,41 @@ if(done){
         graph2Divide = cholesterolMax;
         graph2Divisor = cholesterolMax;
       }
+
+      graphPlan3 = "Sodium";
+      graph3Multiplier = 70;
+      graph3Divide = sodium;
+      graph3Bool = false;
+      graph3Divisor = 1;
+
+
+
+
+
+
+
+
+    }
+
+    if (sodiumMax == null && carbMax != null && cholesterolMax == null && fatMax == null){
+
+      graphPlan1 = "Carbs";
+      graph1Multiplier = 60;
+
+      if(carbs <= carbMax) {
+        graph1Divide = carbs;
+        graph1Divisor = carbMax;
+      }
+      else{
+        graph1Divide = carbMax;
+        graph1Divisor = carbMax;
+      }
+
+      graphPlan2 = "Cholesterol";
+      graph2Multiplier = 60;
+graph2Divisor = 1;
+      graph2Divide = cholesterol;
+      graph2Bool = false;
 
       graphPlan3 = "Sodium";
       graph3Multiplier = 70;

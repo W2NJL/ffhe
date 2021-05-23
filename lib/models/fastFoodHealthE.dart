@@ -41,7 +41,7 @@ todaysCholesterol = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson[
 todaysFat = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Low Fat']: 0,
 todaysSaturatedFat = parsedJson['DietVals'].containsKey(getDate()) ? parsedJson['DietVals'][getDate()]['Saturated Fat']: 0,
 todaysTransFat = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Trans Fat']: 0,
-restaurantList = parsedJson['DietVals'].containsKey(getDate())? new Map<String, dynamic>.from(parsedJson['DietVals'][getDate()]['Meals']): null;
+restaurantList = parsedJson['DietVals'].containsKey(getDate()) ? parsedJson['DietVals'][getDate()].containsKey('Meals')  ? new Map<String, dynamic>.from(parsedJson['DietVals'][getDate()]['Meals']): null: null;
 
 
 
