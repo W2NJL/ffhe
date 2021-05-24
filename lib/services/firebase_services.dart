@@ -33,7 +33,7 @@ import 'package:provider/provider.dart';
 
    print('Check the map for ' + uid + " hey ye " + theMap.toString());
 
-   Provider.of<FastFoodHealthEState>(context, listen: false).activeVote = FastFoodHealthEUser.fromJson(theMap);
+   Provider.of<FastFoodHealthEState>(context, listen: false).activeVote = FastFoodHealthEUser.fromJson(theMap, context);
 
  }
 

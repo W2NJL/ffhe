@@ -1,4 +1,9 @@
+
+
+import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class FastFoodHealthEUser {
 
@@ -17,7 +22,7 @@ FastFoodHealthEUser(this.restaurantList, this.sodiumMaxValue, this.carbsMaxValue
 
 
 
-FastFoodHealthEUser.fromJson(Map<String, dynamic> parsedJson)
+FastFoodHealthEUser.fromJson(Map<String, dynamic> parsedJson, BuildContext context)
   :
       caloriePlan = parsedJson['DietPlan'],
       sodiumPlan = parsedJson['Sodium'],
@@ -34,22 +39,23 @@ sodiumMaxValue = parsedJson['DietVals'].containsKey('Sodium') ? parsedJson['Diet
 
 
 
-todaysCal = parsedJson['DietVals'].containsKey(getDate()) ? parsedJson['DietVals'][getDate()]['Calories']: 0,
-todaysCarbs = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Low Carb']: 0,
-todaysSodium = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Sodium']: 0,
-todaysCholesterol = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Low Cholesterol']: 0,
-todaysFat = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Low Fat']: 0,
-todaysSaturatedFat = parsedJson['DietVals'].containsKey(getDate()) ? parsedJson['DietVals'][getDate()]['Saturated Fat']: 0,
-todaysTransFat = parsedJson['DietVals'].containsKey(getDate())  ? parsedJson['DietVals'][getDate()]['Trans Fat']: 0,
-restaurantList = parsedJson['DietVals'].containsKey(getDate()) ? parsedJson['DietVals'][getDate()].containsKey('Meals')  ? new Map<String, dynamic>.from(parsedJson['DietVals'][getDate()]['Meals']): null: null;
+todaysCal = parsedJson['DietVals'].containsKey(getDate(context)) ? parsedJson['DietVals'][getDate(context)]['Calories']: 0,
+todaysCarbs = parsedJson['DietVals'].containsKey(getDate(context))  ? parsedJson['DietVals'][getDate(context)]['Low Carb']: 0,
+todaysSodium = parsedJson['DietVals'].containsKey(getDate(context))  ? parsedJson['DietVals'][getDate(context)]['Sodium']: 0,
+todaysCholesterol = parsedJson['DietVals'].containsKey(getDate(context))  ? parsedJson['DietVals'][getDate(context)]['Low Cholesterol']: 0,
+todaysFat = parsedJson['DietVals'].containsKey(getDate(context))  ? parsedJson['DietVals'][getDate(context)]['Low Fat']: 0,
+todaysSaturatedFat = parsedJson['DietVals'].containsKey(getDate(context)) ? parsedJson['DietVals'][getDate(context)]['Saturated Fat']: 0,
+todaysTransFat = parsedJson['DietVals'].containsKey(getDate(context))  ? parsedJson['DietVals'][getDate(context)]['Trans Fat']: 0,
+restaurantList = parsedJson['DietVals'].containsKey(getDate(context)) ? parsedJson['DietVals'][getDate(context)].containsKey('Meals')  ? new Map<String, dynamic>.from(parsedJson['DietVals'][getDate(context)]['Meals']): null: null;
 
 
 
 }
 
 
-String getDate() {
-  var now = new DateTime.now();
+String getDate(BuildContext context) {
+  var now = Provider.of<FastFoodHealthEState>(context, listen: false).date;
+
   var formatter = new DateFormat('yyyy-MM-dd');
   String formattedDate = formatter.format(now);
   return formattedDate;

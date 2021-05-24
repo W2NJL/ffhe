@@ -6,6 +6,7 @@ import 'package:fast_food_health_e/state/vote.dart';
 import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'fintness_app_theme.dart';
@@ -23,6 +24,13 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
   AnimationController animationController;
 
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
+  static String formattedDate;
+  String month;
+  int day;
+  int year;
+  var now = new DateTime.now();
+  var formatter = new DateFormat('yyyy-MM-dd');
+  String currDate;
 
   Widget tabBody = Container(
     color: FitnessAppTheme.background,
@@ -30,6 +38,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
   @override
   void initState() {
+
     tabIconsList.forEach((TabIconData tab) {
       tab.isSelected = false;
     });

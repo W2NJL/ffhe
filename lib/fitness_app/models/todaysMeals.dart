@@ -1,3 +1,4 @@
+import 'package:calendar_appbar/calendar_appbar.dart';
 import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:fast_food_health_e/utils/nutrientList.dart';
@@ -30,11 +31,14 @@ class _TodaysMealsState extends State<TodaysMeals> {
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
   String currDate;
+  DateTime selectedDate;
   int sodiumVal;
   int totalCalories;
   List<int> nutrientList = <int>[];
   var firebaseUser;
   String userID;
+  bool done = true;
+
 
   DatabaseReference _callLettersRef;
 
@@ -50,15 +54,13 @@ class _TodaysMealsState extends State<TodaysMeals> {
 
 
 
+
     firebaseUser = context.watch<User>();
     userID  = firebaseUser.uid;
 
-    formattedDate = formatter.format(now);
-    String returnMonth(DateTime date) {
-      return new DateFormat.MMMM().format(date);
-    }
 
-    getDate(returnMonth);
+
+
 
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
     _callLettersRef = database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals');
@@ -67,21 +69,57 @@ class _TodaysMealsState extends State<TodaysMeals> {
   }
 
 
+  void updateDate(DateTime date, BuildContext context) {
+
+
+
+    print("Date is: " + date.day.toString());
+
+    setState(() {
+
+      done = false;
+      selectedDate = date;
+      formattedDate = formatter.format(date);
+      final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
+      _callLettersRef = database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals');
+      callTheFunction();
+
+
+
+    });
+
+
+
+
+
+
+
+
+
+  }
+
+
   @override
   void initState() {
+
+
+      selectedDate = now;
+      formattedDate = formatter.format(now);
+      done = true;
+
 
     super.initState();
   }
 
-  void getDate (String returnMonth(DateTime date)) async {
-     String month = returnMonth(now);
-    day = now.day;
-    year = now.year;
-
-    currDate = month + " " + day.toString() + ", " + year.toString();
-
-    print("Hi :" + currDate);
-  }
+  // void getDate (String returnMonth(DateTime date)) async {
+  //    String month = returnMonth(now);
+  //   day = now.day;
+  //   year = now.year;
+  //
+  //   currDate = month + " " + day.toString() + ", " + year.toString();
+  //
+  //   print("Hi :" + currDate);
+  // }
 
   Future <String> _getNutrientAmount(String mealName, String diet) async {
     String result;
@@ -228,17 +266,16 @@ print(nutrientList.toString());
     final ref = referenceDatabase.reference();
     return Scaffold(
       appBar:
-      AppBar(
-leading: new IconButton(
-  icon: new Icon(Icons.arrow_back),
-    onPressed: (){Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);}
-),
-        title: Text('Meal selections today'),
-
+      CalendarAppBar(
+        onDateChanged: (value) => setState(() => updateDate(value, context),
 
       ),
+        firstDate: DateTime.now().subtract(Duration(days: 140)),
+        lastDate: DateTime.now(),
+      ),
 
-      body: SingleChildScrollView(
+
+      body: done? SingleChildScrollView(
         child: Column(
           children:[
             Center(
@@ -248,11 +285,7 @@ leading: new IconButton(
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   children: [
-                    Text(
-                      currDate,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
-                    ),
+
 
                     Flexible(
                         child: new FirebaseAnimatedList(
@@ -316,7 +349,7 @@ leading: new IconButton(
             ),
           ],
         ),
-      ),
+      ):CircularProgressIndicator(),
 
     );
   }
@@ -379,6 +412,14 @@ leading: new IconButton(
 
 
 
+  }
+
+  void callTheFunction() {
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        done = true;
+      });
+    });
   }
   }
 

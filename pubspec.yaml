@@ -48,6 +48,7 @@ dependencies:
   mailer: ^3.0.3
   fluttertoast: ^8.0.6
   flutter_svg: ^0.19.1
+  calendar_appbar: ^0.0.1
 
 
 dev_dependencies:

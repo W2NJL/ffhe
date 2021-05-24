@@ -6,10 +6,12 @@ class FastFoodHealthEState with ChangeNotifier{
 
   List <FastFoodHealthEUser> _voteList = <FastFoodHealthEUser>[];
   FastFoodHealthEUser _activeVote;
+  DateTime _date;
 
   void clearState(){
     _voteList = null;
     _activeVote = null;
+    _date = DateTime.now();
 
   }
 
@@ -21,10 +23,18 @@ class FastFoodHealthEState with ChangeNotifier{
 
   FastFoodHealthEUser get activeVote => _activeVote;
 
+  DateTime get date => _date;
+
 
   set activeVote(newValue){
     _activeVote = newValue;
     notifyListeners();
+  }
+
+  set date(newValue){
+    _date = newValue;
+    notifyListeners();
+
   }
 
 
