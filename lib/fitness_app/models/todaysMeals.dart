@@ -349,7 +349,7 @@ print(nutrientList.toString());
             ),
           ],
         ),
-      ):CircularProgressIndicator(),
+      ):Center(child: CircularProgressIndicator()),
 
     );
   }
