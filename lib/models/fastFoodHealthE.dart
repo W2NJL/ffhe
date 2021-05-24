@@ -15,9 +15,10 @@ final String carbPlan;
 final int calMaxValue, sodiumMaxValue, carbsMaxValue, cholesterolmaxValue, fatMaxValue, saturatedFatMaxValue, transFatMaxValue;
 final int todaysCal, todaysSodium, todaysCarbs, todaysCholesterol, todaysFat, todaysSaturatedFat, todaysTransFat;
 final Map<String, dynamic> restaurantList;
+final Map<String, dynamic> favsList;
 
 
-FastFoodHealthEUser(this.restaurantList, this.sodiumMaxValue, this.carbsMaxValue, this.cholesterolmaxValue, this.fatMaxValue, this.saturatedFatMaxValue, this.transFatMaxValue, this.todaysCal, this.todaysSodium, this.todaysCarbs, this.todaysCholesterol, this.todaysFat, this.todaysSaturatedFat, this.todaysTransFat, { this.caloriePlan, this.sodiumPlan, this.fatPlan, this.cholesterolPlan, this.carbPlan, this.calMaxValue});
+FastFoodHealthEUser(this.restaurantList, this.sodiumMaxValue, this.carbsMaxValue, this.cholesterolmaxValue, this.fatMaxValue, this.saturatedFatMaxValue, this.transFatMaxValue, this.todaysCal, this.todaysSodium, this.todaysCarbs, this.todaysCholesterol, this.todaysFat, this.todaysSaturatedFat, this.todaysTransFat, this.favsList, { this.caloriePlan, this.sodiumPlan, this.fatPlan, this.cholesterolPlan, this.carbPlan, this.calMaxValue});
 
 
 
@@ -46,8 +47,8 @@ todaysCholesterol = parsedJson['DietVals'].containsKey(getDate(context))  ? pars
 todaysFat = parsedJson['DietVals'].containsKey(getDate(context))  ? parsedJson['DietVals'][getDate(context)]['Low Fat']: 0,
 todaysSaturatedFat = parsedJson['DietVals'].containsKey(getDate(context)) ? parsedJson['DietVals'][getDate(context)]['Saturated Fat']: 0,
 todaysTransFat = parsedJson['DietVals'].containsKey(getDate(context))  ? parsedJson['DietVals'][getDate(context)]['Trans Fat']: 0,
-restaurantList = parsedJson['DietVals'].containsKey(getDate(context)) ? parsedJson['DietVals'][getDate(context)].containsKey('Meals')  ? new Map<String, dynamic>.from(parsedJson['DietVals'][getDate(context)]['Meals']): null: null;
-
+restaurantList = parsedJson['DietVals'].containsKey(getDate(context)) ? parsedJson['DietVals'][getDate(context)].containsKey('Meals')  ? new Map<String, dynamic>.from(parsedJson['DietVals'][getDate(context)]['Meals']): null: null,
+favsList = parsedJson.containsKey('Favorites') ? new Map<String, dynamic>.from(parsedJson['Favorites']): null;
 
 
 }

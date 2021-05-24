@@ -752,9 +752,7 @@ if(fastFoodHealthEUser != null) {
                       },
                       child: ClipOval(
 
-                        child: Icon(Icons.favorite_outline_sharp)
-
-                      ),
+                        child: favListContains(users[index]['item_name'].toString(), ref)? Icon(Icons.favorite_sharp): Icon(Icons.favorite_outline_sharp)),
                     ),
 
 
@@ -1471,6 +1469,15 @@ _showDialog(ref, user);
     }
     return true;
 
+  }
+
+  favListContains(String meal, DatabaseReference ref) {
+
+    if(fastFoodHealthEUser.favsList.containsKey(meal)){
+      return true;
+    }
+
+    return false;
   }
 
 }
