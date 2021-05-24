@@ -13,6 +13,7 @@ import 'package:fast_food_health_e/services/firebase_services.dart';
 import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/utils/authenticate.dart';
+import 'package:fast_food_health_e/widgets/favoritesList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
@@ -70,6 +71,10 @@ class FastFoodHealthEApp extends StatelessWidget {
           'DietScreen': (context) =>
               Scaffold(
                 body: DietScreen(),
+              ),
+          'FavoritesListScreen': (context) =>
+              Scaffold(
+                body: FavoritesList(),
               ),
           'RestaurantScreen': (context) =>
               Scaffold(

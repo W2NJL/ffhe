@@ -688,7 +688,11 @@ if(fastFoodHealthEUser != null) {
 
   Widget _buildList() {
 
-
+    final referenceDatabase = FirebaseDatabase.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User user2 = auth.currentUser;
+    final uid = user2.uid;
+    final ref = referenceDatabase.reference().child(uid);
 
     if(!allDone)
       return Center(child: CircularProgressIndicator());
@@ -722,6 +726,35 @@ if(fastFoodHealthEUser != null) {
                         height: 160,
                         fit: BoxFit.fill,),
 
+                    ),
+
+                    trailing: GestureDetector(
+                      onTap: () {print("Got here");
+
+                      ref.child('Favorites').child(users[index]['item_name']).child('Calories').set(
+                          ServerValue.increment(users[index]['nf_calories']));
+                      ref.child('Favorites').child(users[index]['item_name']).child('Sodium').set(
+                          ServerValue.increment(users[index]['nf_sodium']));
+                      ref.child('Favorites').child(users[index]['item_name']).child('Low Carb').set(
+                          ServerValue.increment(users[index]['nf_total_carbohydrate']));
+                      ref.child('Favorites').child(users[index]['item_name']).child('Low Fat').set(
+                          ServerValue.increment(users[index]['nf_total_fat']));
+                      ref.child('Favorites').child(users[index]['item_name']).child('Low Cholesterol').set(
+                          ServerValue.increment(users[index]['nf_cholesterol']));
+                      ref.child('Favorites').child(users[index]['item_name']).child('Saturated Fat').set(
+                          ServerValue.increment(users[index]['nf_saturated_fat']));
+                      ref.child('Favorites').child(users[index]['item_name']).child('Trans Fat').set(
+                          ServerValue.increment(users[index]['nf_trans_fatty_acid'].toInt()));
+                      ref.child('Favorites').child(users[index]['item_name']).child('Restaurant').set(users[index]['brand_name']);
+
+
+
+                      },
+                      child: ClipOval(
+
+                        child: Icon(Icons.favorite_outline_sharp)
+
+                      ),
                     ),
 
 

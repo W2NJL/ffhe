@@ -26,10 +26,16 @@ PopupMenuButton getActions(
       ),
       PopupMenuItem(
         value: 2,
+        child: Text('Favorite Foods'),
+      ),
+
+
+      PopupMenuItem(
+        value: 3,
         child: Text('Limit Listings'),
       ),
       PopupMenuItem(
-        value: 3,
+        value: 4,
         child: Text('Logout'),
       )
 
@@ -42,11 +48,16 @@ PopupMenuButton getActions(
 
       if (value == 2) {
         // logout
+        Navigator.pushNamed(context, 'FavoritesListScreen');
+      }
+
+      if (value == 3) {
+        // logout
         Navigator.pushNamed(context, 'LimitScreen');
       }
 
 
-      if (value == 3) {
+      if (value == 4) {
         // logout
         // authState.checkAuthentication();
         context.read<AuthenticationProvider>().signOut();
