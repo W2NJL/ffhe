@@ -72,7 +72,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
   String graphPlan2;
   String graphPlan3;
   bool graph1Bool = true, graph2Bool = true, graph3Bool = true;
-  int graph1Multiplier, graph1Divide, graph1Divisor, graph2Multiplier, graph2Divide, graph2Divisor, graph3Multiplier, graph3Divide, graph3Divisor;
+  int graph1Multiplier, graph1Divide, graph1Divisor, graph1Num, graph2Multiplier, graph2Divide, graph2Divisor, graph3Multiplier, graph3Divide, graph3Divisor;
   var firebaseUser;
   FastFoodHealthEUser fastFoodHealthEUser;
   String userID;
@@ -145,6 +145,8 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
         sodium = fastFoodHealthEUser.todaysSodium;
 
         carbs = fastFoodHealthEUser.todaysCarbs;
+
+      print("Just testing this2: " + carbs.toString());
 
         fat = fastFoodHealthEUser.todaysFat;
 
@@ -944,7 +946,7 @@ if(done){
                                   Padding(
                                     padding: const EdgeInsets.only(top: 6),
                                     child: Text(
-                                      graph1Divide.toString() + ' mg',
+                                      graph1Num.toString() + ' mg',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
@@ -1182,6 +1184,7 @@ if(done){
       graph1Divide = carbs;
       graph1Divisor = 1;
       graph1Bool = false;
+      graph1Num = carbs;
 
       graphPlan2 = "Sodium";
       graph2Multiplier = 70;
@@ -1199,6 +1202,7 @@ if(done){
     if (sodiumMax == null && carbMax == null && cholesterolMax == null && fatMax != null){
       graphPlan1 = "Fat";
       graph1Multiplier = 70;
+      graph1Num = fat;
 
       if(fat <= fatMax) {
         graph1Divide = fat;
@@ -1227,6 +1231,7 @@ if(done){
     if (sodiumMax != null && carbMax == null && cholesterolMax == null && fatMax == null){
       graphPlan1 = "Sodium";
       graph1Multiplier = 60;
+      graph1Num = sodium;
 
       if(sodium <= sodiumMax) {
         graph1Divide = sodium;
@@ -1260,6 +1265,7 @@ if(done){
 
         graphPlan1 = "Carbs";
         graph1Multiplier = 60;
+        graph1Num = carbs;
 
         if(carbs <= carbMax) {
           graph1Divide = carbs;
@@ -1301,6 +1307,7 @@ if(done){
 
       graphPlan1 = "Carbs";
       graph1Multiplier = 60;
+      graph1Num = carbs;
 
       if(carbs <= carbMax) {
         graph1Divide = carbs;
@@ -1348,6 +1355,7 @@ if(done){
 
       graphPlan1 = "Carbs";
       graph1Multiplier = 60;
+      graph1Num = carbs;
 
       if(carbs <= carbMax) {
         graph1Divide = carbs;
@@ -1387,7 +1395,8 @@ if(done){
     if (sodiumMax == null && carbMax != null && cholesterolMax == null && fatMax == null){
 
       graphPlan1 = "Carbs";
-      graph1Multiplier = 60;
+      graph1Multiplier = 70;
+      graph1Num = carbs;
 
       if(carbs <= carbMax) {
         graph1Divide = carbs;
@@ -1396,6 +1405,7 @@ if(done){
       else{
         graph1Divide = carbMax;
         graph1Divisor = carbMax;
+
       }
 
       graphPlan2 = "Cholesterol";
@@ -1423,6 +1433,7 @@ graph2Divisor = 1;
 
       graphPlan1 = "Cholesterol";
       graph1Multiplier = 60;
+      graph1Num = cholesterol;
 
       if(cholesterol <= cholesterolMax) {
         graph1Divide = cholesterol;

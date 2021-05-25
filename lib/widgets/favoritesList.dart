@@ -1,4 +1,5 @@
 import 'package:calendar_appbar/calendar_appbar.dart';
+import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
 import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:fast_food_health_e/utils/nutrientList.dart';
@@ -39,6 +40,8 @@ class _FavoritesListState extends State<FavoritesList> {
   var firebaseUser;
   String userID;
   bool done = true;
+  FirebaseFunctions firebaseFunctions = new FirebaseFunctions();
+  FastFoodHealthEUser fastFoodHealthEUser;
 
 
   DatabaseReference _callLettersRef;
@@ -55,7 +58,7 @@ class _FavoritesListState extends State<FavoritesList> {
 
 
 
-
+    fastFoodHealthEUser =   Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
     firebaseUser = context.watch<User>();
     userID  = firebaseUser.uid;
 
@@ -216,7 +219,11 @@ class _FavoritesListState extends State<FavoritesList> {
 
   Widget _buildAboutDialog(BuildContext context, DataSnapshot snapshot) {
 
-
+    final referenceDatabase = FirebaseDatabase.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User user2 = auth.currentUser;
+    final uid = user2.uid;
+    final ref = referenceDatabase.reference().child(uid);
 
 
 
@@ -250,6 +257,16 @@ class _FavoritesListState extends State<FavoritesList> {
         ],
       ),
       actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+
+            if(firebaseFunctions.checkPercentageOfDay(snapshot.key, ref, fastFoodHealthEUser, context))
+
+            firebaseFunctions.addToMyDay(snapshot.key, ref, fastFoodHealthEUser, context);
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('Add To My Day'),
+        ),
         new FlatButton(
           onPressed: () {
 

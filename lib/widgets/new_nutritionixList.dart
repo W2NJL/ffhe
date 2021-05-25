@@ -731,21 +731,73 @@ if(fastFoodHealthEUser != null) {
                     trailing: GestureDetector(
                       onTap: () {print("Got here");
 
-                      ref.child('Favorites').child(users[index]['item_name']).child('Calories').set(
-                          ServerValue.increment(users[index]['nf_calories']));
-                      ref.child('Favorites').child(users[index]['item_name']).child('Sodium').set(
-                          ServerValue.increment(users[index]['nf_sodium']));
-                      ref.child('Favorites').child(users[index]['item_name']).child('Low Carb').set(
-                          ServerValue.increment(users[index]['nf_total_carbohydrate']));
-                      ref.child('Favorites').child(users[index]['item_name']).child('Low Fat').set(
-                          ServerValue.increment(users[index]['nf_total_fat']));
-                      ref.child('Favorites').child(users[index]['item_name']).child('Low Cholesterol').set(
-                          ServerValue.increment(users[index]['nf_cholesterol']));
-                      ref.child('Favorites').child(users[index]['item_name']).child('Saturated Fat').set(
-                          ServerValue.increment(users[index]['nf_saturated_fat']));
-                      ref.child('Favorites').child(users[index]['item_name']).child('Trans Fat').set(
-                          ServerValue.increment(users[index]['nf_trans_fatty_acid'].toInt()));
-                      ref.child('Favorites').child(users[index]['item_name']).child('Restaurant').set(users[index]['brand_name']);
+                      Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
+
+
+                      if(!favListContains(users[index]['item_name'].toString(), ref)) {
+                        ref.child('Favorites')
+                            .child(users[index]['item_name'])
+                            .child('Calories')
+                            .set(
+                            ServerValue.increment(users[index]['nf_calories']));
+                        ref.child('Favorites')
+                            .child(users[index]['item_name'])
+                            .child('Sodium')
+                            .set(
+                            ServerValue.increment(users[index]['nf_sodium']));
+                        ref.child('Favorites')
+                            .child(users[index]['item_name'])
+                            .child('Low Carb')
+                            .set(
+                            ServerValue.increment(
+                                users[index]['nf_total_carbohydrate']));
+                        ref.child('Favorites')
+                            .child(users[index]['item_name'])
+                            .child('Low Fat')
+                            .set(
+                            ServerValue.increment(
+                                users[index]['nf_total_fat']));
+                        ref.child('Favorites')
+                            .child(users[index]['item_name'])
+                            .child('Low Cholesterol')
+                            .set(
+                            ServerValue.increment(
+                                users[index]['nf_cholesterol']));
+                        ref.child('Favorites')
+                            .child(users[index]['item_name'])
+                            .child('Saturated Fat')
+                            .set(
+                            ServerValue.increment(
+                                users[index]['nf_saturated_fat']));
+                        ref.child('Favorites')
+                            .child(users[index]['item_name'])
+                            .child('Trans Fat')
+                            .set(
+                            ServerValue.increment(
+                                users[index]['nf_trans_fatty_acid'].toInt()));
+                        ref.child('Favorites')
+                            .child(users[index]['item_name'])
+                            .child('Restaurant')
+                            .set(users[index]['brand_name']);
+                      }
+                      else
+                        {
+                          ref.child('Favorites').child(users[index]['item_name']).remove();
+
+                        }
+
+                      Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
+
+                      Future.delayed(Duration(milliseconds: 100), () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewNutritionixList(
+                                restaurant: restaurant, mealCategory: category),
+                          ),
+
+                        );
+                      });
 
 
 
@@ -813,12 +865,17 @@ if(fastFoodHealthEUser != null) {
     print(nutrientMap.remove('item_name'));
     nutrientMap.remove('brand_name');
 
+
+
+
+
     nutrientList.add(totalCalories);
     nutrientList.add(totalCarbs);
     nutrientList.add(totalSodium);
     nutrientList.add(totalCholesterol);
     nutrientList.add(totalFat);
     nutrientList.add(totalSatFat);
+    nutrientList.add(totalTransFat);
 
     print(user.runtimeType);
 
