@@ -4,6 +4,7 @@ import 'package:fast_food_health_e/fitness_app/traning/training_screen.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/state/vote.dart';
 import 'package:fast_food_health_e/widgets/appbar.dart';
+import 'package:fast_food_health_e/widgets/navdrawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -61,9 +62,11 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     return  Container(
         color: FitnessAppTheme.background,
         child: Scaffold(
-          appBar: MyAppBar(
+          drawer: NavDrawer(),
+          appBar: DrawerAppBar(
             title: Text(kAppName),
             context: context,
+
 
       ),
           backgroundColor: Colors.transparent,

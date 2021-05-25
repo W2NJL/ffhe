@@ -1,5 +1,6 @@
 import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:fast_food_health_e/widgets/appbar.dart';
+import 'package:fast_food_health_e/widgets/navdrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
 
@@ -70,6 +71,7 @@ class RestaurantScreen extends StatelessWidget {
           'wawa.jpg'),];
 
     return Scaffold(
+      drawer: NavDrawer(),
         appBar: MyAppBar(
 
             route: '/home',

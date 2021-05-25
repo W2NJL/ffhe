@@ -309,11 +309,16 @@ color: Colors.deepOrange,
     );
 
     listViews.add(
-      Card(
+      GestureDetector(
+        onTap: (){
+          Navigator.pushNamed(context, 'AskANutritionist');
+        },
+        child: Card(
 
-        margin: EdgeInsets.only(top: 20, bottom: 4, left: 20, right: 20),
-        child: Image.asset("images\/" + "nutritionist.jpg"),
+          margin: EdgeInsets.only(top: 20, bottom: 4, left: 20, right: 20),
+          child: Image.asset("images\/" + "nutritionist.jpg"),
 
+        ),
       ),
 
     );
