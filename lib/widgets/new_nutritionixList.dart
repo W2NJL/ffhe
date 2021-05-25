@@ -719,14 +719,17 @@ if(fastFoodHealthEUser != null) {
                     );
                   },
                   child: ListTile(
-                    leading: ClipOval(
 
-                      child: Image.asset("images\/" + imgLink(restaurant),
-                        width: 80,
-                        height: 160,
-                        fit: BoxFit.fill,),
+                    leading:  ConstrainedBox(
+                        constraints:
+                        BoxConstraints(minWidth: 10, minHeight: 10),
+                        child:
+                          Image.asset("images\/" + imgLink(restaurant),
+                          width: 70,
+                          height: 70,
 
-                    ),
+                        ),
+                      ),
 
                     trailing: GestureDetector(
                       onTap: () {print("Got here");
