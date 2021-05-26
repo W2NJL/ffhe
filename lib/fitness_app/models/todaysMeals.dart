@@ -38,6 +38,9 @@ class _TodaysMealsState extends State<TodaysMeals> {
   var firebaseUser;
   String userID;
   bool done = true;
+  bool empty = false;
+  var data;
+  String nick = "joe";
 
 
   DatabaseReference _callLettersRef;
@@ -64,7 +67,28 @@ class _TodaysMealsState extends State<TodaysMeals> {
 
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
     _callLettersRef = database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals');
+    data = await database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals').once();
+
+
+    if (data.value != null){
+      empty = false;
+    }
+
+
+    done = true;
     this._getMoreData(userID);
+
+  }
+
+  void checkData(DatabaseReference callLettersRef) async{
+    data = await callLettersRef.once();
+    if (data.value != null){
+      empty = false;
+    }
+    else{
+      empty = true;
+    }
+
 
   }
 
@@ -75,13 +99,21 @@ class _TodaysMealsState extends State<TodaysMeals> {
 
     print("Date is: " + date.day.toString());
 
+
+
+
+
     setState(() {
+      final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
+      _callLettersRef = database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals');
+
+
+      checkData(_callLettersRef );
 
       done = false;
       selectedDate = date;
       formattedDate = formatter.format(date);
-      final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
-      _callLettersRef = database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals');
+
       callTheFunction();
 
 
@@ -105,7 +137,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
 
       selectedDate = now;
       formattedDate = formatter.format(now);
-      done = true;
+
 
 
     super.initState();
@@ -288,7 +320,7 @@ print(nutrientList.toString());
 
 
                     Flexible(
-                        child: new FirebaseAnimatedList(
+                        child: !empty? new FirebaseAnimatedList(
                             shrinkWrap: true,
 
                             query: _callLettersRef, itemBuilder: (BuildContext context, DataSnapshot snapshot,
@@ -299,7 +331,7 @@ print(nutrientList.toString());
 
                             leading: GestureDetector(
                               onTap: (){
-
+                                print("Got a Steve");
 
 
                                   showDialog(
@@ -341,7 +373,39 @@ print(nutrientList.toString());
                             ),
                             subtitle: new Text("(Calories: " + snapshot.value['calories'].toString() + " Sodium: " + snapshot.value['sodium'].toString() + ")"),
                           );
-                        })
+                        }):Column(
+
+                          children: [Container(
+                            margin: EdgeInsets.only(top: 150, right: 10, left: 10, bottom: 15),
+                            child: Center(child: RichText(
+
+                              text: TextSpan(
+
+                                style: TextStyle(color: Colors.black, fontSize: 36),
+                                children: <TextSpan>[
+                                  TextSpan(text: 'No meals available! ', style: TextStyle(color: Colors.blue)),
+
+                                ],
+                              ),
+                            ),
+
+                            ),
+                          ),
+                            Container(
+                              margin: EdgeInsets.only(top: 2, right: 20, left: 20, bottom: 15),
+                              child: Center(child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  children: <TextSpan>[
+                                    TextSpan(text: 'There were no meal items entered on this date.', style: TextStyle(color: Colors.black)),
+
+                                  ],
+                                ),
+                              ),
+
+                              ),
+                            )],
+                        ),
                     ),
                   ],
                 ),

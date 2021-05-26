@@ -902,14 +902,16 @@ if(fastFoodHealthEUser != null) {
               addToMyDay(ref, user);
 
 
-                Navigator.push(
+              Future.delayed(Duration(seconds: 1), () {
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        NewNutritionixList(
-                            restaurant: restaurant, mealCategory: category),
+                    builder: (context) => NewNutritionixList(
+                        restaurant: restaurant, mealCategory: category),
                   ),
+
                 );
+              });
               }
           },
           textColor: Theme.of(context).primaryColor,

@@ -37,6 +37,8 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     color: FitnessAppTheme.background,
   );
 
+
+
   @override
   void initState() {
 

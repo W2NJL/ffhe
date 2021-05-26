@@ -45,7 +45,10 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   @override
   void didChangeDependencies() {
 
-if(firebaseUser ==null) {
+
+
+
+    if(firebaseUser ==null) {
   setUpUsers();
 }
 
@@ -109,16 +112,19 @@ if(firebaseUser ==null) {
 
 
 
+    firebaseUser = context.watch<User>();
+    userID  = firebaseUser.uid;
+    user = Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
 
-      firebaseUser = context.watch<User>();
-      userID  = firebaseUser.uid;
-      user = Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
+
+        if(user!= null) {
+          print("Evaluating!");
+          addAllListData();
+        }
 
 
-      if(user!= null){
 
-        addAllListData();
-      }
+
 
 
 
@@ -138,7 +144,7 @@ if(firebaseUser ==null) {
       print("Got here");
 
 
-
+      done = true;
 
 
     const int count = 4;
@@ -379,7 +385,7 @@ color: Colors.deepOrange,
     //       animationController: widget.animationController),
     // );
 
-      done = true;
+
   }
 
   Future<bool> getData() async {
@@ -425,6 +431,8 @@ else{
   }
 
   Widget getMainListViewUI() {
+
+    print("Work work work work work");
 
     return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
