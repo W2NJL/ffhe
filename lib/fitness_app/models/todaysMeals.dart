@@ -69,10 +69,8 @@ class _TodaysMealsState extends State<TodaysMeals> {
     _callLettersRef = database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals');
     data = await database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals').once();
 
+    checkData(_callLettersRef);
 
-    if (data.value != null){
-      empty = false;
-    }
 
 
     done = true;
@@ -105,15 +103,18 @@ class _TodaysMealsState extends State<TodaysMeals> {
 
     setState(() {
       final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
-      _callLettersRef = database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals');
 
 
-      checkData(_callLettersRef );
+
+
 
       done = false;
       selectedDate = date;
-      formattedDate = formatter.format(date);
 
+      formattedDate = formatter.format(date);
+      print(formattedDate);
+      _callLettersRef = database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals');
+      checkData(_callLettersRef );
       callTheFunction();
 
 
@@ -313,67 +314,70 @@ print(nutrientList.toString());
             Center(
               child: Container(
                 color: Colors.greenAccent,
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
+            constraints: BoxConstraints(
+              maxHeight: double.infinity,
+            ),
                 child: Column(
                   children: [
 
 
-                    Flexible(
-                        child: !empty? new FirebaseAnimatedList(
-                            shrinkWrap: true,
 
-                            query: _callLettersRef, itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                            Animation<double> animation,
-                            int index){
-                          return new ListTile(
-                            contentPadding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+                        !empty?                           new FirebaseAnimatedList(
+                              shrinkWrap: true,
 
-                            leading: GestureDetector(
-                              onTap: (){
-                                print("Got a Steve");
+                            physics: NeverScrollableScrollPhysics(),
+                              query: _callLettersRef, itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                              Animation<double> animation,
+                              int index){
+                            return new ListTile(
+                              contentPadding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+
+                              leading: GestureDetector(
+                                onTap: (){
+                                  print("Got a Steve");
 
 
-                                  showDialog(
+                                    showDialog(
 
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        _buildAboutDialog(context, snapshot),
-                                  );
-                                },
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          _buildAboutDialog(context, snapshot),
+                                    );
+                                  },
 
-                              child: ConstrainedBox(
-                                  constraints:
-                                  BoxConstraints(minWidth: 100, minHeight: 100),
-                                  child: Image.asset(
-                                    getRestaurantIcon(snapshot.value['Restaurant'].toString()),
-                                    width: 100,
-                                    height: 100,
+                                child: ConstrainedBox(
+                                    constraints:
+                                    BoxConstraints(minWidth: 100, minHeight: 100),
+                                    child: Image.asset(
+                                      getRestaurantIcon(snapshot.value['Restaurant'].toString()),
+                                      width: 100,
+                                      height: 100,
 
-                                  )),
-                            ),
+                                    )),
+                              ),
 
-                            trailing: IconButton(icon: Icon(Icons.delete), onPressed: () =>{
-                                ref.child(userID).child('DietVals').child(formattedDate).child('Calories').set(ServerValue.increment(-snapshot.value['calories'])),
-                              ref.child(userID).child('DietVals').child(formattedDate).child('Sodium').set(ServerValue.increment(-snapshot.value['sodium'])),
-                              ref.child(userID).child('DietVals').child(formattedDate).child('Low Carb').set(ServerValue.increment(-snapshot.value['carbs'])),
-                              ref.child(userID).child('DietVals').child(formattedDate).child('Low Cholesterol').set(ServerValue.increment(-snapshot.value['cholesterol'])),
-                              ref.child(userID).child('DietVals').child(formattedDate).child('Low Fat').set(ServerValue.increment(-snapshot.value['fat'])),
-                              ref.child(userID).child('DietVals').child(formattedDate).child('Saturated Fat').set(ServerValue.increment(-snapshot.value['Saturated Fat'])),
-                              ref.child(userID).child('DietVals').child(formattedDate).child('Trans Fat').set(ServerValue.increment(-snapshot.value['Trans Fat'])),
-                                _callLettersRef.child(snapshot.key).remove(),
-                            Future.microtask(() {
-                            Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
-                            Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
-                            }
-                            ),
+                              trailing: IconButton(icon: Icon(Icons.delete), onPressed: () =>{
+                                  ref.child(userID).child('DietVals').child(formattedDate).child('Calories').set(ServerValue.increment(-snapshot.value['calories'])),
+                                ref.child(userID).child('DietVals').child(formattedDate).child('Sodium').set(ServerValue.increment(-snapshot.value['sodium'])),
+                                ref.child(userID).child('DietVals').child(formattedDate).child('Low Carb').set(ServerValue.increment(-snapshot.value['carbs'])),
+                                ref.child(userID).child('DietVals').child(formattedDate).child('Low Cholesterol').set(ServerValue.increment(-snapshot.value['cholesterol'])),
+                                ref.child(userID).child('DietVals').child(formattedDate).child('Low Fat').set(ServerValue.increment(-snapshot.value['fat'])),
+                                ref.child(userID).child('DietVals').child(formattedDate).child('Saturated Fat').set(ServerValue.increment(-snapshot.value['Saturated Fat'])),
+                                ref.child(userID).child('DietVals').child(formattedDate).child('Trans Fat').set(ServerValue.increment(-snapshot.value['Trans Fat'])),
+                                  _callLettersRef.child(snapshot.key).remove(),
+                              Future.microtask(() {
+                              Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
+                              Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
+                              }
+                              ),
 
-                            }),
-                            title: new Text(snapshot.key
-                            ),
-                            subtitle: new Text("(Calories: " + snapshot.value['calories'].toString() + " Sodium: " + snapshot.value['sodium'].toString() + ")"),
-                          );
-                        }):Column(
+                              }),
+                              title: new Text(snapshot.key
+                              ),
+                              subtitle: new Text("(Calories: " + snapshot.value['calories'].toString() + " Sodium: " + snapshot.value['sodium'].toString() + ")"),
+                            );
+                          })
+                      :Column(
 
                           children: [Container(
                             margin: EdgeInsets.only(top: 150, right: 10, left: 10, bottom: 15),
@@ -406,7 +410,7 @@ print(nutrientList.toString());
                               ),
                             )],
                         ),
-                    ),
+
                   ],
                 ),
               ),
