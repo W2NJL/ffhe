@@ -61,6 +61,11 @@ class NavDrawer extends StatelessWidget {
             onTap: () => {Navigator.pushNamed(context, 'AskANutritionist')},
           ),
           ListTile(
+            leading: Icon(Icons.people_sharp),
+            title: Text('About The Team'),
+            onTap: () => {Navigator.pushNamed(context, 'AboutTheTeam')},
+          ),
+          ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () => { context.read<AuthenticationProvider>().signOut(),
