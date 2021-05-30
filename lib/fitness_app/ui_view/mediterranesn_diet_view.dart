@@ -1148,6 +1148,9 @@ if(done){
     else if (restaurant.contains("Donald")){
       return "mcdonalds.png";
     }
+    else if (restaurant.contains("Olive")){
+      return "og.jpg";
+    }
     else if (restaurant.contains("Chang")){
       return "pfchangs.jpg";
     }

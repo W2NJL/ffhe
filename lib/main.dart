@@ -59,7 +59,7 @@ class FastFoodHealthEApp extends StatelessWidget {
     create: (context) => context.read<AuthenticationProvider>().authState,
     ),
     ChangeNotifierProvider(create: (_) => FastFoodHealthEState()),
-       ],
+      ],
 
       child: MaterialApp(
 
