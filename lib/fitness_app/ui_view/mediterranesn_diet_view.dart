@@ -160,7 +160,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
         fatMax = fastFoodHealthEUser.fatMaxValue;
 
-        cholesterolMax = fastFoodHealthEUser.fatMaxValue;
+        cholesterolMax = fastFoodHealthEUser.cholesterolmaxValue;
 
         restaurants = _getRestaurantImages();
 
@@ -168,8 +168,8 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
       if(restaurants != null){
         for (String restaurant in restaurants) {
-          if(!imageArray.contains(cleanRestaurant(restaurant))) {
-            imageArray.add(cleanRestaurant(restaurant));
+          if(!imageArray.contains(joe.getRestaurantIcon(restaurant))) {
+            imageArray.add(joe.getRestaurantIcon(restaurant));
           }
         }}
 
@@ -1128,51 +1128,7 @@ if(done){
 
 
 
-  String cleanRestaurant(String restaurant) {
-    print("Hmm " + restaurant);
 
-
-    if(restaurant.contains("Bob"))
-      {
-        return "bob_evans.png";
-      }
-    else if (restaurant.contains("Apple")){
-      return "applebees.png";
-    }
-    else if (restaurant.contains("King")){
-      return "bk.jpg";
-    }
-    else if (restaurant.contains("Chick")){
-      return "chick-fil-a.gif";
-    }
-    else if (restaurant.contains("Donald")){
-      return "mcdonalds.png";
-    }
-    else if (restaurant.contains("Olive")){
-      return "og.jpg";
-    }
-    else if (restaurant.contains("Chang")){
-      return "pfchangs.jpg";
-    }
-    else if (restaurant.contains("Panera")){
-      return "panera.jpg";
-    }
-    else if (restaurant.contains("Royal")){
-      return "royal_farms.jpg";
-    }
-    else if (restaurant.contains("Smash")){
-      return "smash.png";
-    }
-    else if (restaurant.contains("Taco")){
-      return "taco.png";
-    }
-    else if (restaurant.contains("Wawa")){
-      return "wawa.jpg";
-    }
-
-
-
-  }
 
   void setGraphVars() async{
 
@@ -1306,6 +1262,48 @@ if(done){
       graph3Bool = false;
     }
 
+    if (sodiumMax == null && carbMax != null && cholesterolMax != null && fatMax != null){
+
+      graphPlan1 = "Carbs";
+      graph1Multiplier = 60;
+      graph1Num = carbs;
+
+      if(carbs <= carbMax) {
+        graph1Divide = carbs;
+        graph1Divisor = carbMax;
+      }
+      else{
+        graph1Divide = carbMax;
+        graph1Divisor = carbMax;
+      }
+
+
+
+      graphPlan2 = "Cholesterol";
+      graph2Multiplier = 60;
+
+      if(cholesterol <= cholesterolMax) {
+        graph2Divide = cholesterol;
+        graph2Divisor = cholesterolMax;
+      }
+      else{
+        graph2Divide = cholesterolMax;
+        graph2Divisor = cholesterolMax;
+      }
+
+
+
+
+
+
+
+      graphPlan3 = "Fat";
+      graph3Multiplier = 70;
+      graph3Divide = fat;
+      graph3Divisor = fatMax;
+      graph3Bool = false;
+    }
+
     if (sodiumMax != null && carbMax != null && cholesterolMax != null && fatMax == null){
 
       graphPlan1 = "Carbs";
@@ -1370,6 +1368,99 @@ if(done){
       }
 
 
+
+      if(cholesterol <= cholesterolMax) {
+        graph2Divide = cholesterol;
+        graph2Divisor = cholesterolMax;
+      }
+      else{
+        graph2Divide = cholesterolMax;
+        graph2Divisor = cholesterolMax;
+      }
+
+      graphPlan3 = "Sodium";
+      graph3Multiplier = 70;
+      graph3Divide = sodium;
+      graph3Bool = false;
+      graph3Divisor = 1;
+
+
+
+
+
+
+
+
+    }
+
+    if (sodiumMax != null && carbMax != null && cholesterolMax != null && fatMax != null){
+
+      graphPlan1 = "Carbs";
+      graph1Multiplier = 60;
+      graph1Num = carbs;
+
+      if(carbs <= carbMax) {
+        graph1Divide = carbs;
+        graph1Divisor = carbMax;
+      }
+      else{
+        graph1Divide = carbMax;
+        graph1Divisor = carbMax;
+      }
+
+
+
+      graphPlan2 = "Sodium";
+      graph2Multiplier = 60;
+
+      if(sodium <= sodiumMax) {
+        graph2Divide = sodium;
+        graph2Divisor = sodiumMax;
+      }
+      else{
+        graph2Divide = sodiumMax;
+        graph2Divisor = sodiumMax;
+      }
+
+
+
+
+
+
+
+      graphPlan3 = "Cholesterol";
+      graph3Multiplier = 60;
+
+      if(cholesterol <= cholesterolMax) {
+        graph3Divide = cholesterol;
+        graph3Divisor = cholesterolMax;
+      }
+      else{
+        graph3Divide = cholesterolMax;
+        graph3Divisor = cholesterolMax;
+      }
+    }
+
+    if (sodiumMax == null && carbMax != null && cholesterolMax != null && fatMax != null){
+
+      graphPlan1 = "Carbs";
+      graph1Multiplier = 60;
+      graph1Num = carbs;
+
+      if(carbs <= carbMax) {
+        graph1Divide = carbs;
+        graph1Divisor = carbMax;
+      }
+      else{
+        graph1Divide = carbMax;
+        graph1Divisor = carbMax;
+      }
+
+
+      graphPlan2 = "Cholesterol";
+      graph2Multiplier = 70;
+      graph2Divide = cholesterol;
+        graph2Divisor = 1;
 
       if(cholesterol <= cholesterolMax) {
         graph2Divide = cholesterol;
@@ -1469,6 +1560,70 @@ graph2Divisor = 1;
 
 
     }
+
+    if (sodiumMax == null && carbMax == null && cholesterolMax == null && fatMax != null){
+
+
+
+      graphPlan1 = "Fat";
+      graph1Multiplier = 70;
+      graph1Num = fat;
+
+
+      if(fat <= fatMax) {
+        graph1Divide = fat;
+        graph1Divisor = fatMax;
+      }
+      else{
+        graph1Divide = fatMax;
+        graph1Divisor = fatMax;
+      }
+
+
+
+      graphPlan2 = "Carbs";
+      graph2Multiplier = 70;
+      graph2Divide = carbs;
+      graph2Bool = false;
+      graph2Divisor = 1;
+
+      graphPlan3 = "Sodium";
+      graph3Multiplier = 70;
+      graph3Divide = sodium;
+      graph3Bool = false;
+      graph3Divisor = 1;
+
+
+
+
+
+
+
+
+    }
+
+    else
+
+      {
+        graphPlan1 = "Carbs";
+        graph1Multiplier = 70;
+        graph1Divide = carbs;
+        graph1Divisor = 1;
+        graph1Bool = false;
+        graph1Num = carbs;
+
+        graphPlan2 = "Sodium";
+        graph2Multiplier = 70;
+        graph2Divide = sodium;
+        graph2Divisor = 1;
+        graph2Bool = false;
+
+        graphPlan3 = "Cholesterol";
+        graph3Multiplier = 70;
+        graph3Divide = cholesterol;
+        graph3Divisor = 1;
+        graph3Bool = false;
+      }
 
   }
 }

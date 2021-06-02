@@ -74,6 +74,53 @@ class FirebaseFunctions {
 
   }
 
+  getRestaurantIcon(String restaurant) {
+
+
+    print("Hmm " + restaurant);
+
+
+    if(restaurant.contains("Bob"))
+    {
+      return "images/" + "bob_evans.png";
+    }
+    else if (restaurant.contains("Apple")){
+      return "images/" + "applebees.png";
+    }
+    else if (restaurant.contains("King")){
+      return "images/" + "bk.jpg";
+    }
+    else if (restaurant.contains("Chick")){
+      return "images/" + "chick-fil-a.gif";
+    }
+    else if (restaurant.contains("Donald")){
+      return "images/" + "mcdonalds.png";
+    }
+    else if (restaurant.contains("Olive")){
+      return "images/" + "og.jpg";
+    }
+    else if (restaurant.contains("Chang")){
+      return "images/" + "pfchangs.jpg";
+    }
+    else if (restaurant.contains("Panera")){
+      return "images/" +"panera.jpg";
+    }
+    else if (restaurant.contains("Royal")){
+      return "images/" +"royal_farms.jpg";
+    }
+    else if (restaurant.contains("Smash")){
+      return "images/" +"smash.png";
+    }
+    else if (restaurant.contains("Taco")){
+      return "images/" +"taco.png";
+    }
+    else if (restaurant.contains("Wawa")){
+      return"images/" +"wawa.jpg";
+    }
+
+
+
+  }
 
   Future <List<int>> getTotalNutrients(String diet, String userID) async {
     var now = new DateTime.now();

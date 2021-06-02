@@ -41,6 +41,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
   bool empty = false;
   var data;
   String nick = "joe";
+  FirebaseFunctions joe = new FirebaseFunctions();
 
 
   DatabaseReference _callLettersRef;
@@ -349,7 +350,7 @@ print(nutrientList.toString());
                                     constraints:
                                     BoxConstraints(minWidth: 100, minHeight: 100),
                                     child: Image.asset(
-                                      getRestaurantIcon(snapshot.value['Restaurant'].toString()),
+                                      joe.getRestaurantIcon(snapshot.value['Restaurant'].toString()),
                                       width: 100,
                                       height: 100,
 
@@ -422,50 +423,7 @@ print(nutrientList.toString());
     );
   }
 
-  getRestaurantIcon(String restaurant) {
 
-   
-      print("Hmm " + restaurant);
-
-
-      if(restaurant.contains("Bob"))
-      {
-        return "images/" + "bob_evans.png";
-      }
-      else if (restaurant.contains("Apple")){
-        return "images/" + "applebees.png";
-      }
-      else if (restaurant.contains("King")){
-        return "images/" + "bk.jpg";
-      }
-      else if (restaurant.contains("Chick")){
-        return "images/" + "chick-fil-a.gif";
-      }
-      else if (restaurant.contains("Donald")){
-        return "images/" + "mcdonalds.png";
-      }
-      else if (restaurant.contains("Chang")){
-        return "images/" + "pfchangs.jpg";
-      }
-      else if (restaurant.contains("Panera")){
-        return "images/" +"panera.jpg";
-      }
-      else if (restaurant.contains("Royal")){
-        return "images/" +"royal_farms.jpg";
-      }
-      else if (restaurant.contains("Smash")){
-        return "images/" +"smash.png";
-      }
-      else if (restaurant.contains("Taco")){
-        return "images/" +"taco.png";
-      }
-      else if (restaurant.contains("Wawa")){
-        return"images/" +"wawa.jpg";
-      }
-
-
-
-    }
 
 
 
