@@ -473,7 +473,7 @@ if(done){
                                                       width: 40,
                                                       height: 40,
                                                       child: Image.asset(
-                                                          "images/" + imageArray.elementAt(0)),
+                                                         imageArray.elementAt(0)),
                                                     ) : SizedBox(height: 0),
                                                     Padding(
                                                       padding:
@@ -521,7 +521,7 @@ if(done){
                                                       width: 40,
                                                       height: 40,
                                                       child: Image.asset(
-                                                          "images/" + imageArray.elementAt(1)),
+                                                           imageArray.elementAt(1)),
                                                     ) : SizedBox(height: 0),
                                                     Padding(
                                                       padding:
@@ -569,7 +569,7 @@ if(done){
                                                       width: 40,
                                                       height: 40,
                                                       child: Image.asset(
-                                                          "images/" + imageArray.elementAt(2)),
+                                                          imageArray.elementAt(2)),
                                                     ) : SizedBox(height: 0),
 
                                 ], ),
@@ -823,7 +823,7 @@ if(done){
                     width: 40,
                     height: 40,
                     child: Image.asset(
-                        "images/" + imageArray.elementAt(3)),
+                         imageArray.elementAt(3)),
                   ) : SizedBox(height: 0),
               Padding(
                 padding:
@@ -871,7 +871,7 @@ if(done){
                 width: 40,
                 height: 40,
                 child: Image.asset(
-                    "images/" + imageArray.elementAt(4)),
+                   imageArray.elementAt(4)),
               ) : SizedBox(height: 0),
 
 

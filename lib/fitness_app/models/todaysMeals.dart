@@ -381,6 +381,7 @@ print(nutrientList.toString());
                       :Column(
 
                           children: [Container(
+
                             margin: EdgeInsets.only(top: 150, right: 10, left: 10, bottom: 15),
                             child: Center(child: RichText(
 
@@ -397,7 +398,7 @@ print(nutrientList.toString());
                             ),
                           ),
                             Container(
-                              margin: EdgeInsets.only(top: 2, right: 20, left: 20, bottom: 15),
+                              margin: EdgeInsets.only(top: 2, right: 20, left: 20, bottom: 200),
                               child: Center(child: RichText(
                                 text: TextSpan(
                                   style: TextStyle(color: Colors.black, fontSize: 16),
@@ -409,7 +410,8 @@ print(nutrientList.toString());
                               ),
 
                               ),
-                            )],
+                            ),
+                          ],
                         ),
 
                   ],
