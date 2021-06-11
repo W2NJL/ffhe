@@ -45,12 +45,14 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   @override
   void didChangeDependencies() {
 
+    Future.delayed(Duration(milliseconds: 50), () {
+      if(firebaseUser ==null) {
+        setUpUsers();
+      }
+    });
 
 
 
-    if(firebaseUser ==null) {
-  setUpUsers();
-}
 
 
 
@@ -112,8 +114,8 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
 
 
-    firebaseUser = context.watch<User>();
-    userID  = firebaseUser.uid;
+
+
     user = Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
 
 
@@ -389,7 +391,7 @@ color: Colors.deepOrange,
   }
 
   Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 500));
+    await Future<dynamic>.delayed(const Duration(milliseconds: 50));
 
     return true;
   }
@@ -399,36 +401,30 @@ color: Colors.deepOrange,
 
 
 
-
-
-
-if(done) {
-
-
-
-
-  return Container(
-    color: FitnessAppTheme.background,
-    child: Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        children: <Widget>[
-          getMainListViewUI(),
-          SizedBox(
-            height: MediaQuery
-                .of(context)
-                .padding
-                .bottom,
-          )
-        ],
-      ),
-    ),
-  );
-}
-else{
-  return Center(child: CircularProgressIndicator(),);
-}
-  }
+return FutureBuilder<bool>(
+    future: getData(),
+    builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+      if (!snapshot.hasData) {
+        return Center(child: CircularProgressIndicator());
+      } else {
+        return Container(
+          color: FitnessAppTheme.background,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Stack(
+              children: <Widget>[
+                getMainListViewUI(),
+                SizedBox(
+                  height: MediaQuery
+                      .of(context)
+                      .padding
+                      .bottom,
+                )
+              ],
+            ),
+          ),
+        );
+      }});}
 
   Widget getMainListViewUI() {
 
