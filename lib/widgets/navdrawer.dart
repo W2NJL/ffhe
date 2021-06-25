@@ -66,6 +66,11 @@ class NavDrawer extends StatelessWidget {
             onTap: () => {Navigator.pushNamed(context, 'AboutTheTeam')},
           ),
           ListTile(
+            leading: Icon(Icons.fact_check_outlined),
+            title: Text('Legal Disclaimer'),
+            onTap: () => {Navigator.pushNamed(context, 'LegalDisclaimer')},
+          ),
+          ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () => { context.read<AuthenticationProvider>().signOut(),
