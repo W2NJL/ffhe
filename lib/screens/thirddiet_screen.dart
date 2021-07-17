@@ -1,7 +1,6 @@
 import 'package:fast_food_health_e/models/dietplan.dart';
 import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
 import 'package:fast_food_health_e/screens/seconddiet_screen.dart';
-import 'package:fast_food_health_e/screens/thirddiet_screen.dart';
 import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
@@ -17,7 +16,7 @@ import 'package:flutter_animated_button/flutter_animated_button.dart';
 import '../utils/email_screen.dart';
 import 'package:provider/provider.dart';
 
-class DietScreen extends StatelessWidget {
+class ThirdDietScreen extends StatelessWidget {
 
 
   // This widget is the root of your application.
@@ -26,24 +25,24 @@ class DietScreen extends StatelessWidget {
     return Scaffold(
 
 
-      body: new DietPage(title: 'Select a Calorie Plan'),
+      body: new ThirdDietPage(title: 'Select daily allotment of meals'),
       // home: DetailPage(),
     );
   }
 }
-class DietPage extends StatefulWidget {
+class ThirdDietPage extends StatefulWidget {
 
-  DietPage({Key key, this.title, this.app}) : super(key: key);
+  ThirdDietPage({Key key, this.title, this.app}) : super(key: key);
 
   final String title;
   final FirebaseApp app;
 
 
   @override
-  _DietPageState createState() => _DietPageState();
+  _ThirdDietPageState createState() => _ThirdDietPageState();
 }
 
-class _DietPageState extends State<DietPage> {
+class _ThirdDietPageState extends State<ThirdDietPage> {
   String selectedPlan;
   List dietPlans;
   final referenceDatabase = FirebaseDatabase.instance;
@@ -130,8 +129,8 @@ class _DietPageState extends State<DietPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Welcome to Fast Food Health-E!"),
-          content: new Text("First, please choose one of our 3 calorie plans."),
+          title: new Text("Choose your daily allotment of meals"),
+          content: new Text("Choose your number of meals"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -286,7 +285,7 @@ class _DietPageState extends State<DietPage> {
               onPressed: () {
 
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (BuildContext context) => ThirdDietScreen())
+                    MaterialPageRoute(builder: (BuildContext context) => SecondDietScreen())
                 );
               },
 
@@ -357,7 +356,7 @@ print("I got here!");
 List getDietPlans() {
   return [
     DietPlan(
-        title: Constants.LOW_CALORIE_1,
+        title: Constants.MEAL_3,
         number: 2000,
         level: "Light",
         indicatorValue: 0.33,
@@ -368,7 +367,7 @@ List getDietPlans() {
         disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."
     ),
     DietPlan(
-        title: Constants.LOW_CALORIE_2,
+        title: Constants.MEAL_2,
         number: 1500,
         level: "Intermediate",
         indicatorValue: 0.66,
@@ -379,7 +378,7 @@ List getDietPlans() {
         disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
 
     DietPlan(
-        title: Constants.LOW_CALORIE_3,
+        title: Constants.MEAL_1,
         number: 1200,
         level: "Advanced",
         indicatorValue: 0.99,

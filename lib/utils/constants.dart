@@ -13,6 +13,9 @@ class Constants {
   static const String LOW_CALORIE_1 = "2000 Calorie Diet per day";
   static const String LOW_CALORIE_2 = "1500 Calorie Diet per day";
   static const String LOW_CALORIE_3 = "1200 Calorie Diet per day";
+  static const String MEAL_3 = "3 meals per day";
+  static const String MEAL_2 = "2 meals per day";
+  static const String MEAL_1 = "1 meal per day";
   static const String LOW_CARB = "Low Carb";
   static const String KETO = "Ketogenic";
   static const String LOW_FAT = "Low Fat";
