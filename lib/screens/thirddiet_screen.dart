@@ -76,9 +76,6 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
 
 
 
-    FirebaseFunctions joe = new FirebaseFunctions();
-
-   joe.activateFirstRun();
 
 
 
@@ -112,7 +109,7 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
 
     dietPlans = getDietPlans();
     if(fastFoodHealthEUser!=null) {
-      selectedPlan = fastFoodHealthEUser.caloriePlan;
+      selectedPlan = fastFoodHealthEUser.mealPref;
 
     }
 
@@ -252,8 +249,7 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
       Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
       onTap: () {
 
-        ref.child('DietPlan').set(lesson.title);
-        ref.child('DietVals').child('Calories').child('MaxValue').set(lesson.number);
+        ref.child('MealPref').set(lesson.title);
         String result;
         storeDietPlan(lesson.title);
         setState(() {

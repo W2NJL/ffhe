@@ -12,13 +12,14 @@ final String sodiumPlan;
 final String fatPlan;
 final String cholesterolPlan;
 final String carbPlan;
+final String mealPref;
 final int calMaxValue, sodiumMaxValue, carbsMaxValue, cholesterolmaxValue, fatMaxValue, saturatedFatMaxValue, transFatMaxValue;
 final int todaysCal, todaysSodium, todaysCarbs, todaysCholesterol, todaysFat, todaysSaturatedFat, todaysTransFat;
 final Map<String, dynamic> restaurantList;
 final Map<String, dynamic> favsList;
 
 
-FastFoodHealthEUser(this.restaurantList, this.sodiumMaxValue, this.carbsMaxValue, this.cholesterolmaxValue, this.fatMaxValue, this.saturatedFatMaxValue, this.transFatMaxValue, this.todaysCal, this.todaysSodium, this.todaysCarbs, this.todaysCholesterol, this.todaysFat, this.todaysSaturatedFat, this.todaysTransFat, this.favsList, { this.caloriePlan, this.sodiumPlan, this.fatPlan, this.cholesterolPlan, this.carbPlan, this.calMaxValue});
+FastFoodHealthEUser(this.restaurantList, this.mealPref, this.sodiumMaxValue, this.carbsMaxValue, this.cholesterolmaxValue, this.fatMaxValue, this.saturatedFatMaxValue, this.transFatMaxValue, this.todaysCal, this.todaysSodium, this.todaysCarbs, this.todaysCholesterol, this.todaysFat, this.todaysSaturatedFat, this.todaysTransFat, this.favsList, { this.caloriePlan, this.sodiumPlan, this.fatPlan, this.cholesterolPlan, this.carbPlan, this.calMaxValue});
 
 
 
@@ -26,6 +27,7 @@ FastFoodHealthEUser(this.restaurantList, this.sodiumMaxValue, this.carbsMaxValue
 FastFoodHealthEUser.fromJson(Map<String, dynamic> parsedJson, BuildContext context)
   :
       caloriePlan = parsedJson['DietPlan'],
+      mealPref = parsedJson['MealPref'],
       sodiumPlan = parsedJson['Sodium'],
       fatPlan = parsedJson['Low Fat'],
       carbPlan = parsedJson['Low Carb'],
