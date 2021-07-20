@@ -29,6 +29,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   String _email, _password;
   final auth = FirebaseAuth.instance;
+  int dropDownValue = 0;
 
 
   @override
@@ -78,6 +79,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               },
             ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[ Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+
+                "Select your age: ",
+                style: TextStyle(fontWeight: FontWeight.bold),
+
+              ),
+            ),DropdownButton<int>(
+
+              value: dropDownValue,
+              icon: const Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              style: const TextStyle(color: Colors.deepPurple),
+              underline: Container(
+                height: 2,
+                color: Colors.deepPurpleAccent,
+              ),
+              onChanged: (int newValue) {
+                setState(() {
+                  dropDownValue = newValue;
+                });
+              },
+              items: getAgeRange()
+                  .map<DropdownMenuItem<int>>((int value) {
+                return DropdownMenuItem<int>(
+                  value: value,
+                  child: Text(value.toString()),
+                );
+              }).toList(),
+            ),
+          ]),
 
             RoundedButton(
               text: "SIGN UP",
@@ -133,6 +169,18 @@ else {
 
       preferences.setBool("FirstRun", true);
     }
+
+  getAgeRange() {
+
+    int j = 0;
+    var ageRange = <int>[];
+    for (int i=18; i<=100; i++){
+      ageRange.add(i);
+      j++;
+    }
+
+    return ageRange;
+  }
 
 
 
