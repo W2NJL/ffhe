@@ -50,6 +50,7 @@ dependencies:
   flutter_svg: ^0.19.1
   calendar_appbar: ^0.0.1
   webview_flutter: ^2.0.8
+  dropdown_date_picker: ^0.1.1+2
 
 
 dev_dependencies:

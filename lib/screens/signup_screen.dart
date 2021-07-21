@@ -13,6 +13,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dropdown_date_picker/dropdown_date_picker.dart';
 
 import 'Login/background.dart';
 import 'Login/rounded_button.dart';
@@ -29,7 +30,16 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   String _email, _password;
   final auth = FirebaseAuth.instance;
-  int dropDownValue = 0;
+  static final now = DateTime.now();
+
+  final dropdownDatePicker = DropdownDatePicker(
+    firstDate: ValidDate(year: now.year - 100, month: 1, day: 1),
+    lastDate: ValidDate(year: now.year, month: now.month, day: now.day),
+    textStyle: TextStyle(fontWeight: FontWeight.bold),
+    dropdownColor: Colors.blue[200],
+    dateHint: DateHint(year: 'year', month: 'month', day: 'day'),
+    ascending: false,
+  );
 
 
   @override
@@ -85,40 +95,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
 
-                "Select your age: ",
+                "Select your date of birth: ",
                 style: TextStyle(fontWeight: FontWeight.bold),
 
               ),
-            ),DropdownButton<int>(
+            ),dropdownDatePicker,
 
-              value: dropDownValue,
-              icon: const Icon(Icons.arrow_downward),
-              iconSize: 24,
-              elevation: 16,
-              style: const TextStyle(color: Colors.deepPurple),
-              underline: Container(
-                height: 2,
-                color: Colors.deepPurpleAccent,
-              ),
-              onChanged: (int newValue) {
-                setState(() {
-                  dropDownValue = newValue;
-                });
-              },
-              items: getAgeRange()
-                  .map<DropdownMenuItem<int>>((int value) {
-                return DropdownMenuItem<int>(
-                  value: value,
-                  child: Text(value.toString()),
-                );
-              }).toList(),
-            ),
-          ]),
+
+              ]),
 
             RoundedButton(
               text: "SIGN UP",
               press: () {
-
+                  print(dropdownDatePicker.getDate());
                   _signUp(_email, _password);
                 }
 
