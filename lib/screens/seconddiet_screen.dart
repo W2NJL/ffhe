@@ -516,6 +516,8 @@ return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
                   }
                   );
 
+                  firebaseFunctions.activateFirstRun();
+
                   Future.delayed(Duration(milliseconds: 50), () {
                     Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
                   });

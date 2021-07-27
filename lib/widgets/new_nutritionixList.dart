@@ -771,7 +771,7 @@ if(fastFoodHealthEUser != null) {
                             .child('Saturated Fat')
                             .set(
                             ServerValue.increment(
-                                users[index]['nf_saturated_fat']));
+                                users[index]['nf_saturated_fat'].toInt()));
                         ref.child('Favorites')
                             .child(users[index]['item_name'])
                             .child('Trans Fat')
@@ -782,6 +782,8 @@ if(fastFoodHealthEUser != null) {
                             .child(users[index]['item_name'])
                             .child('Restaurant')
                             .set(users[index]['brand_name']);
+
+                        print("SOS: " + users[index]['brand_name'].toString());
                       }
                       else
                         {

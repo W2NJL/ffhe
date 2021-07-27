@@ -48,14 +48,15 @@ class _DietPageState extends State<DietPage> {
   List dietPlans;
   final referenceDatabase = FirebaseDatabase.instance;
   var firebaseUser;
-  bool firstRun = false;
+
 
   final dietPlan = 'DietPlan';
   String user;
   String userID;
   DatabaseReference _dietPlanRef;
   FastFoodHealthEUser fastFoodHealthEUser;
-
+  FirebaseFunctions joe = new FirebaseFunctions();
+  bool firstRun;
 
 
   @override
@@ -64,7 +65,7 @@ class _DietPageState extends State<DietPage> {
     // or else you end up creating multiple instances in this case.
 
 
-      _getDietPlan();
+    _getDietPlan();
 
       super.didChangeDependencies();
 
@@ -72,14 +73,16 @@ class _DietPageState extends State<DietPage> {
 
   }
 
+
+
   @override
   void initState() {
 
 
 
-    FirebaseFunctions joe = new FirebaseFunctions();
 
-   joe.activateFirstRun();
+
+
 
 
 
@@ -110,12 +113,19 @@ class _DietPageState extends State<DietPage> {
 
     fastFoodHealthEUser = Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
 
+    await joe.getFirstRun().then((value) => setState(() {
+      firstRun = value;
+      dietPlans = getDietPlans();
+      if(!firstRun ) {
+        selectedPlan = fastFoodHealthEUser.caloriePlan;
 
-    dietPlans = getDietPlans();
-    if(fastFoodHealthEUser!=null) {
-      selectedPlan = fastFoodHealthEUser.caloriePlan;
+      }
 
-    }
+
+
+    }));
+
+  print("Firstrun is " + firstRun.toString());
 
 
 

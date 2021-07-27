@@ -3,6 +3,7 @@ import 'package:fast_food_health_e/fitness_app/models/todaysMeals.dart';
 import 'package:fast_food_health_e/fitness_app/ui_view/testcalendar.dart';
 import 'package:fast_food_health_e/screens/Login/login.dart';
 import 'package:fast_food_health_e/screens/ask_a_nutritionist.dart';
+import 'package:fast_food_health_e/screens/bmi_screen.dart';
 import 'package:fast_food_health_e/screens/legal_disclaimer.dart';
 import 'package:fast_food_health_e/screens/limit_screen.dart';
 import 'package:fast_food_health_e/screens/login_screen.dart';
@@ -73,6 +74,10 @@ class FastFoodHealthEApp extends StatelessWidget {
           'DietScreen': (context) =>
               Scaffold(
                 body: DietScreen(),
+              ),
+          'BMIScreen': (context) =>
+              Scaffold(
+                body: BMIScreen(),
               ),
           'AboutTheTeam': (context) =>
               Scaffold(

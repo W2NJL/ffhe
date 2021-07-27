@@ -23,17 +23,46 @@ import 'Login/rounded_password_field.dart';
 
 
 
-class SignUpScreen extends StatefulWidget {
+class BMIScreen extends StatefulWidget {
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  _BMIScreenState createState() => _BMIScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _BMIScreenState extends State<BMIScreen> {
   String _email, _password;
   final auth = FirebaseAuth.instance;
   static final now = DateTime.now();
+  var firebaseUser;
+  String userID;
+  final referenceDatabase = FirebaseDatabase.instance;
+
+  @override
+  void didChangeDependencies() {
+
+    // or else you end up creating multiple instances in this case.
 
 
+    firebaseUser = context.watch<User>();
+    userID  = firebaseUser.uid;
+
+
+
+
+    super.didChangeDependencies();
+
+
+
+  }
+
+
+  final dropdownDatePicker = DropdownDatePicker(
+    firstDate: ValidDate(year: now.year - 100, month: 1, day: 1),
+    lastDate: ValidDate(year: now.year, month: now.month, day: now.day),
+    textStyle: TextStyle(fontWeight: FontWeight.bold),
+    dropdownColor: Colors.blue[200],
+    dateHint: DateHint(year: 'year', month: 'month', day: 'day'),
+    ascending: false,
+  );
 
 
 
@@ -64,33 +93,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
               height: size.height * 0.35,
             ),
             SizedBox(height: size.height * 0.03),
-            RoundedInputField(
-              hintText: "Your Email",
-              onChanged: (value) {
 
-                setState(() {
-                  _email = value.trim();
-                });
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[ Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
 
-              },
-            ),
+                    "Select your date of birth: ",
+                    style: TextStyle(fontWeight: FontWeight.bold),
 
-            RoundedPasswordField(
+                  ),
+                ),dropdownDatePicker,
 
-              onChanged: (value) {
-                setState(() {
-                  _password = value.trim();
-                });
 
-              },
-            ),
-
+                ]),
 
             RoundedButton(
-              text: "SIGN UP",
-              press: () {
-
-                  _signUp(_email, _password);
+                text: "SIGN UP",
+                press: () {
+                  print(dropdownDatePicker.getDate());
+                  sendDate(dropdownDatePicker.getDate());
+                  Navigator.pushReplacementNamed(context, 'DietScreen');
                 }
 
 
@@ -121,12 +145,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     if (test == "Signed up!"){
 
-
+      sendDate(dropdownDatePicker.getDate());
       _activateFirstRun();
-      Navigator.pushReplacementNamed(context, 'BMIScreen');
+      Navigator.pushReplacementNamed(context, 'DietScreen');
     }
 
-else {
+    else {
       Fluttertoast.showToast(msg: test,
         toastLength: Toast.LENGTH_LONG,
 
@@ -142,8 +166,8 @@ else {
 
 
 
-      preferences.setBool("FirstRun", true);
-    }
+    preferences.setBool("FirstRun", true);
+  }
 
   getAgeRange() {
 
@@ -157,12 +181,19 @@ else {
     return ageRange;
   }
 
+  void sendDate(String date) {
+    final ref = referenceDatabase.reference().child(userID);
+
+    print("Got here!  Eye of the tiger.");
 
 
-
-
-
+    ref.child('DOB').set(date);
   }
+
+
+
+
+}
 
 
 
