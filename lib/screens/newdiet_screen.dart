@@ -93,7 +93,7 @@ class _DietPageState extends State<DietPage> {
 
     _dietPlanRef = database.reference();
 
-
+    dietPlans = getDietPlans();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _showDialog());
     super.initState();
@@ -115,7 +115,7 @@ class _DietPageState extends State<DietPage> {
 
     await joe.getFirstRun().then((value) => setState(() {
       firstRun = value;
-      dietPlans = getDietPlans();
+
       if(!firstRun ) {
         selectedPlan = fastFoodHealthEUser.caloriePlan;
 
