@@ -1537,9 +1537,10 @@ _showDialog(ref, user);
 
   favListContains(String meal, DatabaseReference ref) {
 
+    if(fastFoodHealthEUser.favsList != null){
     if(fastFoodHealthEUser.favsList.containsKey(meal)){
       return true;
-    }
+    }}
 
     return false;
   }
