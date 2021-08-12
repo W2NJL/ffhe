@@ -50,6 +50,8 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
     tabBody = MyDiaryScreen(animationController: animationController);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showDialog());
     super.initState();
   }
 
@@ -57,6 +59,34 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
   void dispose() {
     animationController.dispose();
     super.dispose();
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Welcome to Fast Food Health-E!"),
+          content: new   Image.asset("images\/" + "ffhe_logo.PNG",
+            width: 70,
+            height: 70,
+
+
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

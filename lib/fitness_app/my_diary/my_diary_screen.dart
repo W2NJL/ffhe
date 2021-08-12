@@ -45,7 +45,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   @override
   void didChangeDependencies() {
 
-    Future.delayed(Duration(milliseconds: 50), () {
+    Future.delayed(Duration(milliseconds: 5), () {
       if(firebaseUser ==null) {
         setUpUsers();
       }
@@ -120,7 +120,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
 
         if(user!= null) {
-          print("Evaluating!");
+          print("Evaluating from My Diary Screen");
           addAllListData();
         }
 
