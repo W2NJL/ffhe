@@ -106,12 +106,27 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
 
     fastFoodHealthEUser = Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
 
+    FirebaseFunctions joe = new FirebaseFunctions();
+
+
 
     dietPlans = getDietPlans();
-    if(fastFoodHealthEUser!=null) {
-      selectedPlan = fastFoodHealthEUser.mealPref;
 
-    }
+    await joe.getFirstRun().then((value) => setState(() {
+      firstRun = value;
+
+      if(!firstRun ) {
+        selectedPlan = fastFoodHealthEUser.mealPref;
+
+      }
+
+
+
+    }));
+
+    print("Firstrun is " + firstRun.toString());
+
+
 
 
 

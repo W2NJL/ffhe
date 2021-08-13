@@ -128,8 +128,28 @@ class _SecondDietPageState extends State<SecondDietPage> {
   Future <String> _getDietPlan(String diet, FastFoodHealthEUser fastFoodHealthEUser) async {
     String result;
 
-    if(userID != null) {
+    var firstRun;
+    FirebaseFunctions joe = new FirebaseFunctions();
+
+    await joe.getFirstRun().then((value) => setState(() {
+      firstRun = value;
+
+
+
+      }
+
+
+
+    ));
+
+    print("Firstrun is " + firstRun.toString());
+
+    if(userID != null && !firstRun) {
       print("Got a Steve.");
+
+
+
+
 return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
     }
 

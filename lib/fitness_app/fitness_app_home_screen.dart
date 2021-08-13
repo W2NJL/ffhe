@@ -68,12 +68,17 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Welcome to Fast Food Health-E!"),
-          content: new   Image.asset("images\/" + "ffhe_logo.PNG",
-            width: 70,
-            height: 70,
+          title:  Text("...... because fast food can be healthy."),
+          content: ConstrainedBox(
+            constraints:
+            BoxConstraints(minWidth: 10, minHeight: 10),
+            child:
+            Image.asset("images\/" + "ffhe_logo.PNG",
+              width: 70,
+              height: 70,
 
 
+            ),
           ),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
