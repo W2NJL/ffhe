@@ -113,9 +113,22 @@ class _BMIScreenState extends State<BMIScreen> {
             RoundedButton(
                 text: "SIGN UP",
                 press: () {
-                  print(dropdownDatePicker.getDate());
+                  print('The date is: ' + dropdownDatePicker.getDate());
                   sendDate(dropdownDatePicker.getDate());
-                  Navigator.pushReplacementNamed(context, 'DietScreen');
+
+                  if(dropdownDatePicker.getDate().toString().contains('null')){
+    Fluttertoast.showToast(msg: 'Please enter a valid date of birth',
+    toastLength: Toast.LENGTH_LONG,
+
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.grey,
+    textColor: Colors.white,
+    fontSize: 16.0,);
+    }
+
+                  else {
+                    Navigator.pushReplacementNamed(context, 'DietScreen');
+                  }
                 }
 
 

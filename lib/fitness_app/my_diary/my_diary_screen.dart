@@ -45,7 +45,8 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   @override
   void didChangeDependencies() {
 
-    Future.delayed(Duration(milliseconds: 5), () {
+    Future.delayed(Duration(milliseconds: 1500), () {
+      print("Got to future delayed");
       if(firebaseUser ==null) {
         setUpUsers();
       }
@@ -391,7 +392,7 @@ color: Colors.deepOrange,
   }
 
   Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 50));
+    await Future<dynamic>.delayed(const Duration(milliseconds: 1500));
 
     return true;
   }
