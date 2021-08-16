@@ -12,6 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
@@ -46,7 +47,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
   String selectedPlan;
   int totalCalories;
   var firebaseUser;
-  String userID;
+  String userID, sodiumPlan, cholesterolPlan, carbPlan, fatPlan;
 
   List sodiumPlans = [];
   List carbPlans = [];
@@ -67,6 +68,8 @@ class _SecondDietPageState extends State<SecondDietPage> {
       firebaseUser = context.watch<User>();
       userID = firebaseUser.uid;
       fastFoodHealthEUser =   Provider.of<FastFoodHealthEState>(context, listen: false).activeVote;
+
+
 
       for (int i = 0; i < diets.length; i++) {
         String key = diets.keys.elementAt(i);
@@ -133,6 +136,15 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
     await joe.getFirstRun().then((value) => setState(() {
       firstRun = value;
+
+      print("First Run is: " + firstRun.toString());
+
+      if(!firstRun){
+        carbPlan = "active";
+        sodiumPlan = "active";
+        cholesterolPlan = "active";
+        fatPlan = "active";
+      }
 
 
 
@@ -438,6 +450,53 @@ return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
     );
   }
 
+  String checkDietPlan(String title) {
+    if(title == Constants.LOW_SODIUM_2 || title == Constants.LOW_SODIUM_1 || title == Constants.NO_SODIUM){
+
+      return "Sodium";
+    }
+    else if
+    (title == Constants.LOW_CARB|| title == Constants.KETO || title == Constants.NO_CARB) {
+
+      return "Low Carb";
+    }
+    else if
+    (title == Constants.LOW_FAT || title == Constants.LOWEST_FAT || title == Constants.NO_FAT){
+
+      return "Low Fat";
+    }
+    else if
+    (title == Constants.LOW_CHOLESTEROL || title == Constants.NO_CHOLESTEROL){
+
+      return "Low Cholesterol";
+    }
+
+    return null;
+  }
+
+  String onClickCheckDietPlan(String title) {
+    if(title == Constants.LOW_SODIUM_2 || title == Constants.LOW_SODIUM_1 || title == Constants.NO_SODIUM){
+      sodiumPlan = title;
+      return "Sodium";
+    }
+    else if
+    (title == Constants.LOW_CARB|| title == Constants.KETO || title == Constants.NO_CARB) {
+      carbPlan = title;
+      return "Low Carb";
+    }
+    else if
+    (title == Constants.LOW_FAT || title == Constants.LOWEST_FAT || title == Constants.NO_FAT){
+      fatPlan = title;
+      return "Low Fat";
+    }
+    else if
+    (title == Constants.LOW_CHOLESTEROL || title == Constants.NO_CHOLESTEROL){
+      cholesterolPlan = title;
+      return "Low Cholesterol";
+    }
+
+    return null;
+  }
 
 
   @override
@@ -489,7 +548,7 @@ return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
       onTap: () {
 
         print("Test! " + lesson.title);
-        ref.child(checkDietPlan(lesson.title)).set(lesson.title);
+        ref.child(onClickCheckDietPlan(lesson.title)).set(lesson.title);
         ref.child('DietVals').child(checkDietPlan(lesson.title)).child('MaxValue').set(lesson.number);
 
 
@@ -530,19 +589,65 @@ return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
               child: ElevatedButton(
 
                 onPressed: () {
-                  Future.microtask(() {
-                    Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
-                    Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
+
+
+
+                  if(cholesterolPlan == null){
+                    Fluttertoast.showToast(msg: "Please select a cholesterol plan!",
+                      toastLength: Toast.LENGTH_LONG,
+
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey,
+                      textColor: Colors.white,
+                      fontSize: 16.0,);
                   }
-                  );
 
-                  firebaseFunctions.activateFirstRun();
+                  else if  (sodiumPlan == null){
+                    Fluttertoast.showToast(msg: "Please select a sodium plan!",
+                      toastLength: Toast.LENGTH_LONG,
 
-                  Future.delayed(Duration(milliseconds: 50), () {
-                    Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
-                  });
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey,
+                      textColor: Colors.white,
+                      fontSize: 16.0,);
+                  }
 
+                  else if  (fatPlan == null){
+                    Fluttertoast.showToast(msg: "Please select a fat plan!",
+                      toastLength: Toast.LENGTH_LONG,
 
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey,
+                      textColor: Colors.white,
+                      fontSize: 16.0,);
+                  }
+
+                  else if  (carbPlan == null){
+                    Fluttertoast.showToast(msg: "Please select a carb plan!",
+                      toastLength: Toast.LENGTH_LONG,
+
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey,
+                      textColor: Colors.white,
+                      fontSize: 16.0,);
+                  }
+
+                  else {
+                    Future.microtask(() {
+                      Provider.of<FastFoodHealthEState>(context, listen: false)
+                          .clearState();
+                      Provider.of<FastFoodHealthEState>(context, listen: false)
+                          .loadUserList(context);
+                    }
+                    );
+
+                    firebaseFunctions.activateFirstRun();
+
+                    Future.delayed(Duration(milliseconds: 50), () {
+                      Navigator.pushNamedAndRemoveUntil(context, "/home", (
+                          _) => false);
+                    });
+                  }
                 },
 
                 child: Row(
@@ -672,25 +777,7 @@ return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
     preferences.setString(checkDietPlan(dietPlan), dietPlan);
   }}
 
-  String checkDietPlan(String title) {
-    if(title == Constants.LOW_SODIUM_2 || title == Constants.LOW_SODIUM_1 || title == Constants.NO_SODIUM){
-      return "Sodium";
-    }
-    else if
-    (title == Constants.LOW_CARB|| title == Constants.KETO || title == Constants.NO_CARB) {
-      return "Low Carb";
-    }
-    else if
-    (title == Constants.LOW_FAT || title == Constants.LOWEST_FAT || title == Constants.NO_FAT){
-      return "Low Fat";
-    }
-    else if
-    (title == Constants.LOW_CHOLESTEROL || title == Constants.NO_CHOLESTEROL){
-      return "Low Cholesterol";
-    }
 
-    return null;
-  }
 
 
 

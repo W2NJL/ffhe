@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import '../utils/email_screen.dart';
@@ -295,9 +296,25 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
 
               onPressed: () {
 
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (BuildContext context) => SecondDietScreen())
-                );
+
+                if(selectedPlan == null){
+                  Fluttertoast.showToast(msg: "Please select your preferred number of meals!",
+                    toastLength: Toast.LENGTH_LONG,
+
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.grey,
+                    textColor: Colors.white,
+                    fontSize: 16.0,);
+                }
+
+                else {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (BuildContext context) => SecondDietScreen())
+                  );
+                }
+
+
+
               },
 
                   child: Row(

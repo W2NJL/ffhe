@@ -12,6 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import '../utils/email_screen.dart';
@@ -295,9 +296,22 @@ class _DietPageState extends State<DietPage> {
 
               onPressed: () {
 
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (BuildContext context) => ThirdDietScreen())
-                );
+                if(selectedPlan == null){
+                  Fluttertoast.showToast(msg: "Please select a calorie plan!",
+                    toastLength: Toast.LENGTH_LONG,
+
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.grey,
+                    textColor: Colors.white,
+                    fontSize: 16.0,);
+                }
+
+else {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => ThirdDietScreen())
+                  );
+                }
               },
 
                   child: Row(
