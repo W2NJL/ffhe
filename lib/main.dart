@@ -26,6 +26,7 @@ import 'package:fast_food_health_e/screens/result_screen.dart';
 import 'package:fast_food_health_e/screens/ffhe_screen.dart';
 import 'package:fast_food_health_e/screens/dietplan_screen.dart';
 import 'package:fast_food_health_e/screens/newdiet_screen.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:fast_food_health_e/state/vote.dart';
 
@@ -38,8 +39,13 @@ SharedPreferences preferences;
 
 void main() async {
 
+
+
+
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   preferences = await SharedPreferences.getInstance();
+
   await Firebase.initializeApp();
   runApp(FastFoodHealthEApp());
 }

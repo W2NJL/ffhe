@@ -7,6 +7,7 @@ import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:fast_food_health_e/widgets/navdrawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
@@ -22,6 +23,7 @@ class FitnessAppHomeScreen extends StatefulWidget {
 
 class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     with TickerProviderStateMixin {
+
   AnimationController animationController;
 
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;

@@ -16,6 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +42,8 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   String userID;
   FirebaseFunctions joe = new FirebaseFunctions();
   bool done = false;
+
+
 
   @override
   void didChangeDependencies() {
@@ -73,7 +76,6 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     //   Provider.of<FastFoodHealthEState>(context, listen: false).loadUserList(context);
     // }
     // );
-
 
 
 
@@ -290,6 +292,26 @@ color: Colors.deepOrange,
         ),
 
       ),);
+
+      final BannerAd myBanner = BannerAd(
+        adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+        size: AdSize.banner,
+        request: AdRequest(),
+        listener: BannerAdListener(),
+      );
+
+
+      final AdWidget adWidget = AdWidget(ad: myBanner);
+
+      myBanner.load();
+
+    listViews.add(
+          Container(
+            alignment: Alignment.center,
+            child: adWidget,
+            width: myBanner.size.width.toDouble(),
+            height: myBanner.size.height.toDouble(),)
+    );
     // listViews.add(
     //   TitleView(
     //     titleTxt: 'Ask A Nutritionist',

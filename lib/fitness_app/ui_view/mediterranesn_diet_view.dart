@@ -307,7 +307,7 @@ if(meals!=null){
     carbPlan = preferences.getString("Low Carb") ?? null;
     fatPlan = preferences.getString("Low Fat") ?? null;
 
-    print("Sodium Plan is: " + sodiumPlan);
+
 
 
 
