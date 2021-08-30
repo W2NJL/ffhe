@@ -9,12 +9,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
+import 'package:intro_views_flutter/intro_views_flutter.dart';
 import 'package:provider/provider.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'fintness_app_theme.dart';
 import 'my_diary/my_diary_screen.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
 import 'package:fast_food_health_e/screens/restaurant_screen.dart';
+
 
 class FitnessAppHomeScreen extends StatefulWidget {
   @override
@@ -53,7 +55,9 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
         duration: const Duration(milliseconds: 600), vsync: this);
     tabBody = MyDiaryScreen(animationController: animationController);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => _showDialog());
+
+
+
     super.initState();
   }
 
