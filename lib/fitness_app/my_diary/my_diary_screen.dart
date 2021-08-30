@@ -42,6 +42,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   String userID;
   FirebaseFunctions joe = new FirebaseFunctions();
   bool done = false;
+  InterstitialAd _interstitialAd;
 
 
 
@@ -109,6 +110,22 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
         }
       }
     });
+
+    InterstitialAd.load(
+        adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            // Keep a reference to the ad so you can show it later.
+            this._interstitialAd = ad;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            print('InterstitialAd failed to load: $error');
+          },
+        ));
+
+
+
     super.initState();
 
   }
@@ -207,7 +224,10 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
           color: Color(0xFF69F0AE),
           child: Text('Add A Meal', style: new TextStyle(fontSize: 24.0, color: Colors.blueAccent)),
 
-          onPressed: () { Navigator.pushNamed(context, 'RestaurantScreen');},
+          onPressed: () {
+
+            _interstitialAd.show();
+          Navigator.pushNamed(context, 'RestaurantScreen');},
         ),
       ),
     );
