@@ -46,31 +46,20 @@ class IntroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'IntroViews Flutter',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Builder(
-        builder: (context) => IntroViewsFlutter(
+    return IntroViewsFlutter(
           pages,
           showNextButton: true,
           showBackButton: true,
           onTapDoneButton: () {
             // Use Navigator.pushReplacement if you want to dispose the latest route
             // so the user will not be able to slide back to the Intro Views.
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => FitnessAppHomeScreen()),
-            );
+            Navigator.pushReplacementNamed(context, '/home');
           },
           pageButtonTextStyles: const TextStyle(
             color: Colors.white,
             fontSize: 18.0,
           ),
-        ),
-      ),
-    );
+        );
+
   }
 }
