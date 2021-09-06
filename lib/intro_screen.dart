@@ -1,5 +1,6 @@
 import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 
 
@@ -21,26 +22,25 @@ class IntroScreen extends StatelessWidget {
             end: FractionalOffset.bottomCenter,
             tileMode: TileMode.repeated,
             colors: [
-              Colors.orange,
-              Colors.pinkAccent,
+              Colors.green,
+              Colors.blueAccent,
             ],
           ),
         ),
       ),
-      iconImageAssetPath: 'assets/images/taxi-driver.png',
-      body: const Text(
-        'Easy  cab  booking  at  your  doorstep  with  cashless  payment  system',
-      ),
-      title: const Text('Cabs'),
+      iconImageAssetPath: 'assets/images/ffhe_logo.PNG',
+      body: Text(
+        '...because fast food can be healthy',
+        style: GoogleFonts.lato(fontStyle: FontStyle.italic)),
+      title: Text('Fast Food Health-E', style: GoogleFonts.lato(fontStyle: FontStyle.normal)),
       mainImage: Image.asset(
-        'assets/images/taxi.png',
+        'assets/images/ffhe_logo.PNG',
         height: 285.0,
         width: 285.0,
         alignment: Alignment.center,
       ),
-      titleTextStyle:
-      const TextStyle(fontFamily: 'MyFont', color: Colors.white),
-      bodyTextStyle: const TextStyle(fontFamily: 'MyFont', color: Colors.white),
+
+
     ),
   ];
 

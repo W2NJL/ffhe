@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:fast_food_health_e/fitness_app/ui_view/body_measurement.dart';
 import 'package:fast_food_health_e/fitness_app/ui_view/glass_view.dart';
 import 'package:fast_food_health_e/fitness_app/ui_view/mediterranesn_diet_view.dart';
-import 'package:fast_food_health_e/fitness_app/ui_view/title_view.dart';
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/meals_list_view.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/water_view.dart';

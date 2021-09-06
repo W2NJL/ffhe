@@ -22,7 +22,6 @@ import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/screens/home_screen.dart';
 import 'package:fast_food_health_e/screens/launch_screen.dart';
-import 'package:fast_food_health_e/screens/result_screen.dart';
 import 'package:fast_food_health_e/screens/ffhe_screen.dart';
 import 'package:fast_food_health_e/screens/dietplan_screen.dart';
 import 'package:fast_food_health_e/screens/newdiet_screen.dart';
@@ -141,21 +140,6 @@ class FastFoodHealthEApp extends StatelessWidget {
           '/home': (context) =>
               Scaffold(
                 body: FitnessAppHomeScreen(),
-              ),
-          '/result': (context) =>
-              Scaffold(
-                appBar: AppBar(
-                  title: Text('Result'),
-                  leading: IconButton(
-                    icon: Icon(Icons.home),
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/home');
-                    },
-                  ),
-
-                ),
-                body: ResultScreen(),
               )
         },
       ),

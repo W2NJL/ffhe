@@ -31,7 +31,6 @@ dependencies:
   cupertino_icons: ^1.0.1
   uuid: 3.0.3
   provider: ^4.3.3
-  charts_flutter: ^0.10.0
   firebase_auth: ^1.0.1
   firebase_core: ^1.0.2
   google_sign_in: ^4.5.9
@@ -53,6 +52,8 @@ dependencies:
   dropdown_date_picker: ^0.1.1+2
   google_mobile_ads: ^0.13.0
   intro_views_flutter: ^3.2.0
+  google_fonts: ^2.1.0
+  geolocator: ^7.6.0
 
 dev_dependencies:
   flutter_test:
