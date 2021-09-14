@@ -73,7 +73,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
           print("Location obtained");
 
           _currentPosition = position;
-          //_storeCoordinatesInSharedPrefs(position);
+          helperFunctions.storeCoordinatesInSharedPrefs(position);
           locationServicesTimeOut = false;
           print(_currentPosition.longitude.toString());
         });

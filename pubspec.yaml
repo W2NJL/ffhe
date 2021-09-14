@@ -54,6 +54,7 @@ dependencies:
   intro_views_flutter: ^3.2.0
   google_fonts: ^2.1.0
   geolocator: ^7.6.0
+  geocoding: ^2.0.1
 
 dev_dependencies:
   flutter_test:

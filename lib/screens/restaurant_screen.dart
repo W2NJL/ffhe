@@ -1,13 +1,85 @@
 import 'package:fast_food_health_e/screens/meal_screen.dart';
+import 'package:fast_food_health_e/utils/helperFunctions.dart';
 import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:fast_food_health_e/widgets/navdrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
+import 'package:geolocator/geolocator.dart';
 
-class RestaurantScreen extends StatelessWidget {
+class RestaurantScreen extends StatefulWidget {
+  @override
+  _RestaurantScreenState createState() => _RestaurantScreenState();
+}
+
+
+
+class _RestaurantScreenState extends State<RestaurantScreen>  {
+  HelperFunctions helperFunctions = new HelperFunctions();
+  List<double> coordinates;
+
+  @override
+  void initState() {
+
+
+    _getCurrentLocation();
+
+
+
+    super.initState();
+
+
+  }
+
+  _getCurrentLocation() async{
+    await helperFunctions.getCoordinates().then((value)  => setState(() {
+      print("Got here!");
+
+      coordinates = value;
+
+
+
+    }));
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    final title = "Choose a restaurant";
+    var title = "Choose a restaurant";
+
+    Future<String> getCoordinates () async{
+
+      await helperFunctions.getCoordinates().then((value) {
+          print("Got here!");
+
+        coordinates = value;
+
+        print("Coordinates: "  + coordinates.first.toString());
+
+        return coordinates.first.toString();
+
+      });
+    }
+
+    // getTown () async{
+    //
+    //   print(coordinates.first.toString());
+    //
+    //   await helperFunctions.getLocationFromCoordinates(coordinates).then((value) {
+    //
+    //
+    //
+    //     title = value;
+    //
+    //
+    //
+    //   });
+    // }
+
+
+
+    // getTown();
+
+
 
     List choices = const [
       const Choice(
@@ -76,9 +148,54 @@ class RestaurantScreen extends StatelessWidget {
 
             route: '/home',
 
-        title: Text(title),
-          context: context,
-    ),
+        title: FutureBuilder(future:     helperFunctions.getLocationFromCoordinates(coordinates),
+          builder: (context,  AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Column(
+                  children: [
+                    Center(child: CircularProgressIndicator()),
+                    Center(
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          color: Colors.black12,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }
+
+
+
+            if (snapshot.connectionState == ConnectionState.done) {
+              //Sort by distance
+
+
+              return
+                Text(
+
+
+                    snapshot.data
+                );
+            }
+
+else {
+
+            return Text(
+              "Could Not Obtain Location",
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            );}
+          },
+        ),context: context),
 
             body: new ListView(
                 shrinkWrap: true,

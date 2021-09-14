@@ -21,5 +21,6 @@ class Constants {
   static const String LOW_FAT = "Low Fat";
   static const String LOWEST_FAT = "Lowest Fat";
   static const String LOW_CHOLESTEROL = "Low Cholesterol";
+  static const String restaurantsLocatedNear = "Restaurants located near ";
 
 }
