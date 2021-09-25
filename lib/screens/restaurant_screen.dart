@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:fast_food_health_e/utils/helperFunctions.dart';
 import 'package:fast_food_health_e/widgets/appbar.dart';
@@ -5,6 +7,8 @@ import 'package:fast_food_health_e/widgets/navdrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class RestaurantScreen extends StatefulWidget {
   @override
@@ -16,6 +20,31 @@ class RestaurantScreen extends StatefulWidget {
 class _RestaurantScreenState extends State<RestaurantScreen>  {
   HelperFunctions helperFunctions = new HelperFunctions();
   List<double> coordinates;
+  Dio _dio = new Dio();
+  List<Choice> choices = <Choice>[];
+  http.Client client;
+
+
+
+  getChoices() async{
+
+    print("Hey yaaaaa!");
+
+    var response = await http.get(Uri.parse('https://d1gvlspmcma3iu.cloudfront.net/restaurants-3d-party.json.gz'));
+
+
+   //print(response.body);
+    print(response.body);
+
+    choices = (json.decode(response.body)as List)
+        .map((data) => Choice.fromJson(data))
+        .toList();
+
+    print(choices.length.toString());
+
+    return choices;
+
+  }
 
   @override
   void initState() {
@@ -39,6 +68,10 @@ class _RestaurantScreenState extends State<RestaurantScreen>  {
 
 
     }));
+
+
+
+
 
   }
 
@@ -81,66 +114,66 @@ class _RestaurantScreenState extends State<RestaurantScreen>  {
 
 
 
-    List choices = const [
-      const Choice(
-          title: 'Applebee\'s',
-                   imglink:
-          'applebees.png'),
-      const Choice(
-          title: 'Bob Evans',
-
-          imglink:
-          'bob_evans.png'),
-      const Choice(
-          title: 'Burger King',
-
-          imglink:
-          'bk.jpg'),
-      const Choice(
-          title: 'Chick-Fil-A',
-
-          imglink:
-          'chick-fil-a.gif'),
-      const Choice(
-          title: 'McDonald\'s',
-
-          imglink:
-          'mcdonalds.png'),
-      const Choice(
-          title: 'Olive Garden',
-
-          imglink:
-          'og.jpg'),
-      const Choice(
-          title: 'P.F. Chang\'s',
-
-          imglink:
-          'pfchangs.jpg'),
-      const Choice(
-          title: 'Panera Bread',
-
-          imglink:
-          'panera.jpg'),
-      const Choice(
-          title: 'Royal Farms',
-
-          imglink:
-          'royal_farms.jpg'),
-      const Choice(
-          title: 'SmashBurger',
-
-          imglink:
-          'smash.png'),
-      const Choice(
-          title: 'Taco Bell',
-
-          imglink:
-          'taco.png'),
-      const Choice(
-          title: 'Wawa',
-
-          imglink:
-          'wawa.jpg'),];
+    // List choices = const [
+    //   const Choice(
+    //       name: 'Applebee\'s',
+    //                imglink:
+    //       'applebees.png'),
+    //   const Choice(
+    //       name: 'Bob Evans',
+    //
+    //       imglink:
+    //       'bob_evans.png'),
+    //   const Choice(
+    //       name: 'Burger King',
+    //
+    //       imglink:
+    //       'bk.jpg'),
+    //   const Choice(
+    //       name: 'Chick-Fil-A',
+    //
+    //       imglink:
+    //       'chick-fil-a.gif'),
+    //   const Choice(
+    //       name: 'McDonald\'s',
+    //
+    //       imglink:
+    //       'mcdonalds.png'),
+    //   const Choice(
+    //       name: 'Olive Garden',
+    //
+    //       imglink:
+    //       'og.jpg'),
+    //   const Choice(
+    //       name: 'P.F. Chang\'s',
+    //
+    //       imglink:
+    //       'pfchangs.jpg'),
+    //   const Choice(
+    //       name: 'Panera Bread',
+    //
+    //       imglink:
+    //       'panera.jpg'),
+    //   const Choice(
+    //       name: 'Royal Farms',
+    //
+    //       imglink:
+    //       'royal_farms.jpg'),
+    //   const Choice(
+    //       name: 'SmashBurger',
+    //
+    //       imglink:
+    //       'smash.png'),
+    //   const Choice(
+    //       name: 'Taco Bell',
+    //
+    //       imglink:
+    //       'taco.png'),
+    //   const Choice(
+    //       name: 'Wawa',
+    //
+    //       imglink:
+    //       'wawa.jpg'),];
 
     return Scaffold(
       drawer: NavDrawer(),
@@ -197,25 +230,74 @@ else {
           },
         ),context: context),
 
-            body: new ListView(
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(20.0),
-                children: List.generate(choices.length, (index) {
-                  return Center(
+            body:  FutureBuilder(future:     getChoices(),
+    builder: (context,  AsyncSnapshot snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(
+          child: Column(
+            children: [
+              Center(child: CircularProgressIndicator()),
+              Center(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: Colors.black12,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+    ),
+    )
+              )],
+    ),
+    );
+    }
+    if (snapshot.connectionState == ConnectionState.done) {
+        //Sort by distance
 
-                      child: ChoiceCard(
-                          choice: choices[index], item: choices[index]),
-                    );
 
-                })));
-  }
-}
+        return
+        ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(20.0),
+        children: List.generate(snapshot.data.length, (index) {
+          return Center(
+
+            child: ChoiceCard(
+                choice: choices[index], item: choices[index]),
+    );
+    }));}
+
+
+
+    else {
+
+    return Text(
+    "Could Not Obtain Location",
+    style: TextStyle(
+    color: Colors.white70,
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    ),
+    );}
+  },
+  ),);
+
+
+}}
 
 class Choice {
-  final String title;
-   final String imglink;
+  final String name;
 
-  const Choice({this.title,  this.imglink});
+
+  const Choice({this.name});
+
+  factory Choice.fromJson(Map<String, dynamic> json) {
+
+    return new Choice(
+
+      name: json['name'].toString(),
+
+    );
+  }
 }
 
 class ChoiceCard extends StatelessWidget {
@@ -248,7 +330,7 @@ class ChoiceCard extends StatelessWidget {
 
         Navigator.push(context,
             MaterialPageRoute(
-                builder: (context) => MealScreen(restaurant: choice.title)
+                builder: (context) => MealScreen(restaurant: choice.name)
             )
         );
       },
@@ -258,14 +340,14 @@ class ChoiceCard extends StatelessWidget {
             children: [
               new Container(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.asset("images\/" + choice.imglink)),
+                  child: Image.asset("images\/")),
               new Container(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(choice.title, style: Theme.of(context).textTheme.bodyText1),
+                    Text(choice.name, style: Theme.of(context).textTheme.bodyText1),
                     // Text(choice.date,
                     //     style: TextStyle(color: Colors.black.withOpacity(0.5))),
                     // Text(choice.description),

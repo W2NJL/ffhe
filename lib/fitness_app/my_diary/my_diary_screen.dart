@@ -110,7 +110,16 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
       }
     });
 
-    InterstitialAd.load(
+    loadInterstitial();
+
+
+
+    super.initState();
+
+  }
+
+  void loadInterstitial() async{
+    await InterstitialAd.load(
         adUnitId: 'ca-app-pub-3940256099942544/1033173712',
         request: AdRequest(),
         adLoadCallback: InterstitialAdLoadCallback(
@@ -122,11 +131,6 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             print('InterstitialAd failed to load: $error');
           },
         ));
-
-
-
-    super.initState();
-
   }
 
   void setUpUsers () async {

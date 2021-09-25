@@ -724,7 +724,7 @@ if(fastFoodHealthEUser != null) {
                         constraints:
                         BoxConstraints(minWidth: 10, minHeight: 10),
                         child:
-                          Image.asset("images\/" + imgLink(restaurant),
+                          Image.asset("images\/",
                           width: 70,
                           height: 70,
 
