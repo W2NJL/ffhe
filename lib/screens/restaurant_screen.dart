@@ -33,14 +33,36 @@ class _RestaurantScreenState extends State<RestaurantScreen>  {
     var response = await http.get(Uri.parse('https://d1gvlspmcma3iu.cloudfront.net/restaurants-3d-party.json.gz'));
 
 
+
+
    //print(response.body);
     print(response.body);
 
-    choices = (json.decode(response.body)as List)
-        .map((data) => Choice.fromJson(data))
-        .toList();
 
-    print(choices.length.toString());
+
+    //var response2 = await http.get(Uri.parse('https://api.tomtom.com/search/2/categorySearch/fast%20food.json?lat='+coordinates.elementAt(0).toString()+'&lon='+coordinates.elementAt(1).toString()+'&key=Ui6wPx3DtzvDbWaAgwiQLfGAgIXTj8Ff'));
+
+    Response<dynamic> response2 = await _dio.get('https://api.tomtom.com/search/2/categorySearch/fast%20food.json?lat='+coordinates.elementAt(0).toString()+'&lon='+coordinates.elementAt(1).toString()+'&key=Ui6wPx3DtzvDbWaAgwiQLfGAgIXTj8Ff');
+
+    print(response2.data['results'][0]['poi']['name']);
+
+   var convertDataToJson  = response2.data['results'] as List;
+
+  print(convertDataToJson );
+
+  choices = convertDataToJson.map((e) => Choice.fromJson(e)).toList();
+
+    //print(convertDataToJson.first);
+
+    // choices = (json.decode(response2.data['results'])as List)
+    //      .map((data) => Choice.fromJson(data))
+    //      .toList();
+
+
+
+
+
+  print(choices.length);
 
     return choices;
 
@@ -294,7 +316,7 @@ class Choice {
 
     return new Choice(
 
-      name: json['name'].toString(),
+      name: json['poi']['name'],
 
     );
   }
