@@ -38,7 +38,7 @@ class _RestaurantScreenState extends State<RestaurantScreen>  {
    //print(response.body);
     print(response.body);
 
-
+    print('Love is a losing game ' + coordinates.elementAt(0).toString());
 
     //var response2 = await http.get(Uri.parse('https://api.tomtom.com/search/2/categorySearch/fast%20food.json?lat='+coordinates.elementAt(0).toString()+'&lon='+coordinates.elementAt(1).toString()+'&key=Ui6wPx3DtzvDbWaAgwiQLfGAgIXTj8Ff'));
 
@@ -362,7 +362,7 @@ class ChoiceCard extends StatelessWidget {
             children: [
               new Container(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.asset("images\/")),
+                  child: Image.network("https://logo.clearbit.com/" + choice.name + ".com")),
               new Container(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
