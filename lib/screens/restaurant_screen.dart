@@ -362,7 +362,7 @@ class ChoiceCard extends StatelessWidget {
             children: [
               new Container(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.network("https://logo.clearbit.com/" + choice.name + ".com")),
+                  child: Image.network("https://logo.clearbit.com/" + fixName(choice.name) + ".com")),
               new Container(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
@@ -380,5 +380,12 @@ class ChoiceCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
           )),
     );
+  }
+
+  String fixName(String name) {
+    name = name.replaceAll(" ", "");
+    name = name.replaceAll("'", "");
+    return name;
+
   }
 }
