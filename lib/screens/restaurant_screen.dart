@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:fast_food_health_e/utils/helperFunctions.dart';
@@ -9,6 +10,7 @@ import 'package:fast_food_health_e/widgets/nutritionixList.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'dart:math';
 
 class RestaurantScreen extends StatefulWidget {
   @override
@@ -306,17 +308,30 @@ else {
 
 }}
 
+
+
 class Choice {
   final String name;
+  final String address;
+  final String distance;
+  final String latitude;
+  final String longitude;
 
 
-  const Choice({this.name});
+
+  const Choice({this.name, this.address, this.distance, this.latitude, this.longitude});
 
   factory Choice.fromJson(Map<String, dynamic> json) {
 
     return new Choice(
 
       name: json['poi']['name'],
+      address: json['address']['freeformAddress'],
+        distance: double.parse((json['dist']/1609.344).toStringAsFixed(1)).toString()
+
+
+
+
 
     );
   }
@@ -356,29 +371,37 @@ class ChoiceCard extends StatelessWidget {
             )
         );
       },
-      child: Card(
-          color: Colors.white,
-          child: Column(
-            children: [
-              new Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network("https://logo.clearbit.com/" + fixName(choice.name) + ".com")),
-              new Container(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(choice.name, style: Theme.of(context).textTheme.bodyText1),
-                    // Text(choice.date,
-                    //     style: TextStyle(color: Colors.black.withOpacity(0.5))),
-                    // Text(choice.description),
-                  ],
-                ),
-              )
-            ],
-            crossAxisAlignment: CrossAxisAlignment.start,
-          )),
+      child: Container(
+        height: 280,
+        width: 350,
+        child: Card(
+            color: Colors.white,
+            child: Column(
+              children: [
+                new Container(
+                  height: 100,
+                    width: 100,
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network("https://logo.clearbit.com/" + fixName(choice.name) + ".com")),
+                new Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(choice.name, style: Theme.of(context).textTheme.headline3),
+                      Text(choice.distance + ' mi.', style: Theme.of(context).textTheme.headline5),
+                      Text(choice.address, style: Theme.of(context).textTheme.bodyText2),
+                      // Text(choice.date,
+                      //     style: TextStyle(color: Colors.black.withOpacity(0.5))),
+                      // Text(choice.description),
+                    ],
+                  ),
+                )
+              ],
+              crossAxisAlignment: CrossAxisAlignment.start,
+            )),
+      ),
     );
   }
 

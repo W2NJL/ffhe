@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:math' as Math;
 
 class HelperFunctions{
 
@@ -43,4 +44,6 @@ class HelperFunctions{
 
     return city + ", " + state;
   }
+
+
 }
