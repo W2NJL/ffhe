@@ -9,7 +9,7 @@ import 'package:fast_food_health_e/screens/limit_screen.dart';
 import 'package:fast_food_health_e/screens/login_screen.dart';
 import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:fast_food_health_e/screens/resetpw_screen.dart';
-import 'package:fast_food_health_e/screens/restaurant_screen.dart';
+import 'package:fast_food_health_e/screens/closest_restaurant_screen.dart';
 import 'package:fast_food_health_e/screens/signup_screen.dart';
 import 'package:fast_food_health_e/services/firebase_services.dart';
 import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
@@ -33,6 +33,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
+
+import 'fitness_app/my_diary/nationwide_restaurant_screen.dart';
 SharedPreferences preferences;
 
 
@@ -94,7 +96,11 @@ class FastFoodHealthEApp extends StatelessWidget {
               ),
           'RestaurantScreen': (context) =>
               Scaffold(
-                body: RestaurantScreen(),
+                body: LocalRestaurantScreen(),
+              ),
+          'NationwideRestaurantScreen': (context) =>
+              Scaffold(
+                body: NationwideRestaurantScreen(),
               ),
           'MealScreen': (context) =>
               Scaffold(

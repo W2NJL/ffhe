@@ -12,14 +12,14 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math';
 
-class RestaurantScreen extends StatefulWidget {
+class LocalRestaurantScreen extends StatefulWidget {
   @override
-  _RestaurantScreenState createState() => _RestaurantScreenState();
+  _LocalRestaurantScreenState createState() => _LocalRestaurantScreenState();
 }
 
 
 
-class _RestaurantScreenState extends State<RestaurantScreen>  {
+class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
   HelperFunctions helperFunctions = new HelperFunctions();
   List<double> coordinates;
   Dio _dio = new Dio();

@@ -217,23 +217,53 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
     );
 
+
+
     listViews.add(
-      Card(
+      Column(
 
-        margin: EdgeInsets.only(top: 20, bottom: 4, left: 20, right: 20),
-        child: MaterialButton(minWidth: 5.0,
-          height: 30,
-          padding: const EdgeInsets.all(20),
-          color: Color(0xFF69F0AE),
-          child: Text('Add A Meal', style: new TextStyle(fontSize: 24.0, color: Colors.blueAccent)),
 
-          onPressed: () {
+        children: <Widget>[ExpansionTile(title: Text("Add A Meal", style: Theme.of(context).textTheme.headline6,
+        textAlign: TextAlign.center,),
+          backgroundColor: Colors.green,
+          collapsedBackgroundColor: Colors.green,
+          children: <Widget>[
 
-            _interstitialAd.show();
-          Navigator.pushNamed(context, 'RestaurantScreen');},
-        ),
-      ),
-    );
+            GestureDetector(
+              onTap: (){
+
+                _interstitialAd.show();
+                Navigator.pushNamed(context, 'RestaurantScreen');
+
+
+
+              },
+              child: ListTile(
+
+                title: Text("Closest to my location"),
+
+              ),
+            ),
+            GestureDetector(onTap: () {
+
+              _interstitialAd.show();
+              Navigator.pushNamed(context, 'NationwideRestaurantScreen');
+
+
+
+            },
+              child: ListTile(
+                title: Text("Nationwide restaurants"),
+
+
+
+              ),
+            ),
+
+
+          ],),
+      ]),);
+
 
     // listViews.add(
     //   Card(

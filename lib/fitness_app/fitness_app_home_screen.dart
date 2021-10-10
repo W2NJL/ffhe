@@ -16,7 +16,7 @@ import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'fintness_app_theme.dart';
 import 'my_diary/my_diary_screen.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
-import 'package:fast_food_health_e/screens/restaurant_screen.dart';
+import 'package:fast_food_health_e/screens/closest_restaurant_screen.dart';
 
 
 class FitnessAppHomeScreen extends StatefulWidget {

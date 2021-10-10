@@ -45,5 +45,10 @@ class HelperFunctions{
     return city + ", " + state;
   }
 
+  String fixName(String name) {
+    name = name.replaceAll(" ", "");
+    name = name.replaceAll("'", "");
+    return name;
 
+  }
 }
