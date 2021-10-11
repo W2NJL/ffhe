@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
 import 'package:fast_food_health_e/services/firebase_services.dart';
 import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
+import 'package:fast_food_health_e/utils/helperFunctions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
@@ -693,6 +694,7 @@ if(fastFoodHealthEUser != null) {
     final User user2 = auth.currentUser;
     final uid = user2.uid;
     final ref = referenceDatabase.reference().child(uid);
+    HelperFunctions helperFunctions = new HelperFunctions();
 
     if(!allDone)
       return Center(child: CircularProgressIndicator());
@@ -723,12 +725,10 @@ if(fastFoodHealthEUser != null) {
                     leading:  ConstrainedBox(
                         constraints:
                         BoxConstraints(minWidth: 10, minHeight: 10),
-                        child:
-                          Image.asset("images\/",
-                          width: 70,
-                          height: 70,
-
-                        ),
+                        child:Image.network("https://logo.clearbit.com/" + helperFunctions.fixName(restaurant) + ".com",
+                        width: 70,
+                        height: 70,)
+                         ,
                       ),
 
                     trailing: GestureDetector(

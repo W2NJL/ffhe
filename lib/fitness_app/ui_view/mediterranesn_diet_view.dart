@@ -472,7 +472,7 @@ if(done){
                                                     imageArray.isNotEmpty ? SizedBox(
                                                       width: 40,
                                                       height: 40,
-                                                      child: Image.asset(
+                                                      child: Image.network(
                                                          imageArray.elementAt(0)),
                                                     ) : SizedBox(height: 0),
                                                     Padding(
