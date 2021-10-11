@@ -349,7 +349,7 @@ print(nutrientList.toString());
                                 child: ConstrainedBox(
                                     constraints:
                                     BoxConstraints(minWidth: 100, minHeight: 100),
-                                    child: Image.asset(
+                                    child: Image.network(
                                       joe.getRestaurantIcon(snapshot.value['Restaurant'].toString()),
                                       width: 100,
                                       height: 100,
