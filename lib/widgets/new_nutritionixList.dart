@@ -299,7 +299,7 @@ if(fastFoodHealthEUser != null) {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        route: 'RestaurantScreen',
+        route: 'pop',
         context: context,
         title:  Text(restaurant),
       ),

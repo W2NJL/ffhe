@@ -520,7 +520,7 @@ if(done){
                                                     imageArray.isNotEmpty && imageArray.length >= 2? SizedBox(
                                                       width: 40,
                                                       height: 40,
-                                                      child: Image.asset(
+                                                      child: Image.network(
                                                            imageArray.elementAt(1)),
                                                     ) : SizedBox(height: 0),
                                                     Padding(
@@ -568,7 +568,7 @@ if(done){
                                                     imageArray.isNotEmpty && imageArray.length >= 3? SizedBox(
                                                       width: 40,
                                                       height: 40,
-                                                      child: Image.asset(
+                                                      child: Image.network(
                                                           imageArray.elementAt(2)),
                                                     ) : SizedBox(height: 0),
 
@@ -822,7 +822,7 @@ if(done){
                       imageArray.isNotEmpty && imageArray.length >= 4 ? SizedBox(
                     width: 40,
                     height: 40,
-                    child: Image.asset(
+                    child: Image.network(
                          imageArray.elementAt(3)),
                   ) : SizedBox(height: 0),
               Padding(
@@ -870,7 +870,7 @@ if(done){
               imageArray.isNotEmpty && imageArray.length >= 5? SizedBox(
                 width: 40,
                 height: 40,
-                child: Image.asset(
+                child: Image.network(
                    imageArray.elementAt(4)),
               ) : SizedBox(height: 0),
 

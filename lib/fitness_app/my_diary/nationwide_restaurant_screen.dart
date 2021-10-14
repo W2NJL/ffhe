@@ -37,8 +37,14 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
     print(response.body);
 
     choices = (json.decode(response.body)as List)
+
+
         .map((data) => Choice.fromJson(data))
         .toList();
+
+    choices.sort((a, b) {
+      return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+    });
 
     print(choices.length.toString());
 
@@ -213,7 +219,7 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
                   Text(
 
 
-                      snapshot.data
+                      'Nationwide Restaurants'
                   );
               }
 
@@ -292,6 +298,8 @@ class Choice {
 
   factory Choice.fromJson(Map<String, dynamic> json) {
 
+
+
     return new Choice(
 
       name: json['name'].toString(),
@@ -334,29 +342,47 @@ class ChoiceCard extends StatelessWidget {
             )
         );
       },
-      child: Card(
-          color: Colors.white,
-          child: Column(
-            children: [
-              new Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network("https://logo.clearbit.com/" + fixName(choice.name) + ".com")),
-              new Container(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(choice.name, style: Theme.of(context).textTheme.bodyText1),
-                    // Text(choice.date,
-                    //     style: TextStyle(color: Colors.black.withOpacity(0.5))),
-                    // Text(choice.description),
-                  ],
-                ),
-              )
-            ],
-            crossAxisAlignment: CrossAxisAlignment.start,
-          )),
+      child: Container(
+        width: 200,
+        height: 300,
+        child: Card(
+
+
+            color: Colors.white,
+            child: Column(
+              children: [
+                new Container(
+                  width: 200,
+                  height: 200,
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network("https://logo.clearbit.com/" + fixName(choice.name) + ".com",
+                      errorBuilder: (context, error, StackTrace){
+                        return Image.network(
+
+
+                            "https://static.wixstatic.com/media/7d5dd4_7314dd4e69d3447e8fcf6319495fdb80~mv2.png/v1/fill/w_150,h_150,al_c,q_85,usm_0.66_1.00_0.01/FastFoodHealthELogo.webp"
+                        );
+                      },),
+                    ),
+
+
+                new Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(choice.name, style: Theme.of(context).textTheme.bodyText1),
+                      // Text(choice.date,
+                      //     style: TextStyle(color: Colors.black.withOpacity(0.5))),
+                      // Text(choice.description),
+                    ],
+                  ),
+                )
+              ],
+              crossAxisAlignment: CrossAxisAlignment.start,
+            )),
+      ),
     );
   }
 
