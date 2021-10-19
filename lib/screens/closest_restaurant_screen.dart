@@ -32,13 +32,11 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
     print("Hey yaaaaa!");
 
-    var response = await http.get(Uri.parse('https://d1gvlspmcma3iu.cloudfront.net/restaurants-3d-party.json.gz'));
+    var response = await _dio.get('https://d1gvlspmcma3iu.cloudfront.net/restaurants-3d-party.json.gz');
 
 
 
 
-   //print(response.body);
-    print(response.body);
 
     print('Love is a losing game ' + coordinates.elementAt(0).toString());
 
@@ -50,9 +48,33 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
    var convertDataToJson  = response2.data['results'] as List;
 
-  print(convertDataToJson );
 
-  choices = convertDataToJson.map((e) => Choice.fromJson(e)).toList();
+
+
+
+
+    var names = response.data as List;
+
+    List tList = new List();
+
+    print('Names is: ' + names.toString());
+
+    for(int i=0; i<convertDataToJson.length; i++){
+
+      if(names.any((e) => e['name'] == convertDataToJson[i]['poi']['name'].toString()
+          ))
+      {
+        tList.add(convertDataToJson[i]);
+      }
+
+
+    }
+
+
+
+  print('Heres your TList ' + tList.toString());
+
+  choices = tList.map((e) => Choice.fromJson(e)).toList();
 
     //print(convertDataToJson.first);
 
