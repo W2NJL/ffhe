@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
 import 'package:fast_food_health_e/services/firebase_services.dart';
 import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
+import 'package:fast_food_health_e/utils/helperFunctions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
@@ -298,7 +299,7 @@ if(fastFoodHealthEUser != null) {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        route: 'RestaurantScreen',
+        route: 'pop',
         context: context,
         title:  Text(restaurant),
       ),
@@ -693,6 +694,7 @@ if(fastFoodHealthEUser != null) {
     final User user2 = auth.currentUser;
     final uid = user2.uid;
     final ref = referenceDatabase.reference().child(uid);
+    HelperFunctions helperFunctions = new HelperFunctions();
 
     if(!allDone)
       return Center(child: CircularProgressIndicator());
@@ -723,12 +725,17 @@ if(fastFoodHealthEUser != null) {
                     leading:  ConstrainedBox(
                         constraints:
                         BoxConstraints(minWidth: 10, minHeight: 10),
-                        child:
-                          Image.asset("images\/" + imgLink(restaurant),
-                          width: 70,
-                          height: 70,
+                        child:Image.network("https://logo.clearbit.com/" + helperFunctions.fixName(restaurant) + ".com",
+                        width: 70,
+                        height: 70,
+                          errorBuilder: (context, error, StackTrace){
+                            return Image.network(
 
-                        ),
+
+                                "https://static.wixstatic.com/media/7d5dd4_7314dd4e69d3447e8fcf6319495fdb80~mv2.png/v1/fill/w_150,h_150,al_c,q_85,usm_0.66_1.00_0.01/FastFoodHealthELogo.webp"
+                            );
+                          },)
+                         ,
                       ),
 
                     trailing: GestureDetector(

@@ -1,5 +1,3 @@
-
-
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,16 +5,16 @@ import 'package:provider/provider.dart';
 import 'navdrawer.dart';
 
 class MyAppBar extends AppBar {
-MyAppBar({Key key, Widget title, BuildContext context, String route}) : super(key: key, title: title,
-    automaticallyImplyLeading: false,
-    leading:  route != null? new IconButton(
-        icon: new Icon(Icons.arrow_back),
-        onPressed: route != 'pop'? (){Navigator.pushNamedAndRemoveUntil(context, route, (_) => false);}:(){Navigator.pop(context);}):(null),
-    actions: <Widget>[getActions(context), ]);
+  MyAppBar({Key key, Widget title, BuildContext context, String route}) : super(key: key, title: title,
+      automaticallyImplyLeading: false,
+      leading:  route != null? new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: route != 'pop'? (){Navigator.pushNamedAndRemoveUntil(context, route, (_) => false);}:(){Navigator.pop(context);}):(null),
+      actions: <Widget>[getActions(context), ]);
 
 
 
-  }
+}
 
 PopupMenuButton getActions(
     BuildContext context ){
@@ -72,11 +70,10 @@ PopupMenuButton getActions(
 
 class DrawerAppBar extends AppBar {
   DrawerAppBar({Key key, Widget title, BuildContext context, String route}) : super(key: key, title: title,
-      );
+  );
 
 
 
 
 
 }
-

@@ -1,4 +1,5 @@
 import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
+import 'package:fast_food_health_e/intro_screen.dart';
 import 'package:fast_food_health_e/screens/launch_screen.dart';
 import 'package:fast_food_health_e/screens/newdiet_screen.dart';
 import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
@@ -60,7 +61,7 @@ class _AuthenticateState extends State<Authenticate> {
 
     if (firebaseUser != null) {
       if (!firstRun) {
-        return FitnessAppHomeScreen();
+        return IntroScreen();
       }
     }
     return LaunchScreen();

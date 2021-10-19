@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:fast_food_health_e/fitness_app/ui_view/body_measurement.dart';
 import 'package:fast_food_health_e/fitness_app/ui_view/glass_view.dart';
 import 'package:fast_food_health_e/fitness_app/ui_view/mediterranesn_diet_view.dart';
-import 'package:fast_food_health_e/fitness_app/ui_view/title_view.dart';
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/meals_list_view.dart';
 import 'package:fast_food_health_e/fitness_app/my_diary/water_view.dart';
@@ -111,7 +110,16 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
       }
     });
 
-    InterstitialAd.load(
+    loadInterstitial();
+
+
+
+    super.initState();
+
+  }
+
+  void loadInterstitial() async{
+    await InterstitialAd.load(
         adUnitId: 'ca-app-pub-3940256099942544/1033173712',
         request: AdRequest(),
         adLoadCallback: InterstitialAdLoadCallback(
@@ -123,11 +131,6 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             print('InterstitialAd failed to load: $error');
           },
         ));
-
-
-
-    super.initState();
-
   }
 
   void setUpUsers () async {
@@ -214,23 +217,53 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
     );
 
+
+
     listViews.add(
-      Card(
+      Column(
 
-        margin: EdgeInsets.only(top: 20, bottom: 4, left: 20, right: 20),
-        child: MaterialButton(minWidth: 5.0,
-          height: 30,
-          padding: const EdgeInsets.all(20),
-          color: Color(0xFF69F0AE),
-          child: Text('Add A Meal', style: new TextStyle(fontSize: 24.0, color: Colors.blueAccent)),
 
-          onPressed: () {
+        children: <Widget>[ExpansionTile(title: Text("Add A Meal", style: Theme.of(context).textTheme.headline6,
+        textAlign: TextAlign.center,),
+          backgroundColor: Colors.green,
+          collapsedBackgroundColor: Colors.green,
+          children: <Widget>[
 
-            _interstitialAd.show();
-          Navigator.pushNamed(context, 'RestaurantScreen');},
-        ),
-      ),
-    );
+            GestureDetector(
+              onTap: (){
+
+                _interstitialAd.show();
+                Navigator.pushNamed(context, 'RestaurantScreen');
+
+
+
+              },
+              child: ListTile(
+
+                title: Text("Closest to my location"),
+
+              ),
+            ),
+            GestureDetector(onTap: () {
+
+              _interstitialAd.show();
+              Navigator.pushNamed(context, 'NationwideRestaurantScreen');
+
+
+
+            },
+              child: ListTile(
+                title: Text("Nationwide restaurants"),
+
+
+
+              ),
+            ),
+
+
+          ],),
+      ]),);
+
 
     // listViews.add(
     //   Card(

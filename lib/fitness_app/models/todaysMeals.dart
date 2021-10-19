@@ -349,11 +349,17 @@ print(nutrientList.toString());
                                 child: ConstrainedBox(
                                     constraints:
                                     BoxConstraints(minWidth: 100, minHeight: 100),
-                                    child: Image.asset(
+                                    child: Image.network(
                                       joe.getRestaurantIcon(snapshot.value['Restaurant'].toString()),
                                       width: 100,
                                       height: 100,
+                                      errorBuilder: (context, error, StackTrace){
+                                        return Image.network(
 
+
+                                            "https://static.wixstatic.com/media/7d5dd4_7314dd4e69d3447e8fcf6319495fdb80~mv2.png/v1/fill/w_150,h_150,al_c,q_85,usm_0.66_1.00_0.01/FastFoodHealthELogo.webp"
+                                        );
+                                      },
                                     )),
                               ),
 

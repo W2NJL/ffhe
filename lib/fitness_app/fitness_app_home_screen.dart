@@ -1,20 +1,23 @@
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/fitness_app/models/tabIcon_data.dart';
-import 'package:fast_food_health_e/fitness_app/traning/training_screen.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:fast_food_health_e/state/vote.dart';
+import 'package:fast_food_health_e/utils/helperFunctions.dart';
 import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:fast_food_health_e/widgets/navdrawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
+import 'package:intro_views_flutter/intro_views_flutter.dart';
 import 'package:provider/provider.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'fintness_app_theme.dart';
 import 'my_diary/my_diary_screen.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
-import 'package:fast_food_health_e/screens/restaurant_screen.dart';
+import 'package:fast_food_health_e/screens/closest_restaurant_screen.dart';
+
 
 class FitnessAppHomeScreen extends StatefulWidget {
   @override
@@ -34,15 +37,138 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
   String currDate;
+  Position _currentPosition;
+  bool locationServicesTimeOut = true;
+  HelperFunctions helperFunctions = new HelperFunctions();
 
   Widget tabBody = Container(
     color: FitnessAppTheme.background,
   );
 
+  _getCurrentLocation() async {
+
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+
+      _getDeviceLocationPermissions();
+
+
+
+    }
+
+    else if (permission == LocationPermission.deniedForever) {
+
+      await Geolocator.openLocationSettings();
+    }
+    else{
+
+      await Geolocator
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true, timeLimit: Duration(seconds: 5))
+          .then((Position position) {
+
+
+
+        setState(() {
+          print("Location obtained");
+
+          _currentPosition = position;
+          helperFunctions.storeCoordinatesInSharedPrefs(position);
+          locationServicesTimeOut = false;
+          print(_currentPosition.longitude.toString());
+        });
+
+
+
+
+
+
+      }).catchError((e) {
+
+        print(e);
+
+
+        if (e.toString().contains("TimeoutException")){
+          setState(() {
+            locationServicesTimeOut = true;
+          });
+
+          //TODO:  HANDLE OTHER EXCEPETIONS HERE
+        }
+
+
+
+      });
+
+      if (locationServicesTimeOut){
+        await _getLastKnownLocation();
+      }}}
+
+  Future<void> _getLastKnownLocation() async {
+    await Geolocator
+        .getLastKnownPosition()
+        .then((Position position) {
+
+
+
+      setState(() {
+        print("Last Known Location here");
+        _currentPosition = position;
+        //_storeCoordinatesInSharedPrefs(position);
+      });
+
+
+
+    }).catchError((e) {
+
+      print(e);
+
+
+
+
+    });}
+
+  void _getDeviceLocationPermissions() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(locationPermsNeeded),
+          content: new Text(pleaseAllow),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new TextButton(
+              style: helperFunctions.flatButtonStyle,
+              onPressed: () async {
+                await Geolocator.openAppSettings();
+              },
+              child: Text(getPermissions),
+            ),
+
+
+
+            new TextButton(
+              style: helperFunctions.flatButtonStyle,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(closeWindow),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 
 
   @override
   void initState() {
+
+    _getCurrentLocation();
 
     tabIconsList.forEach((TabIconData tab) {
       tab.isSelected = false;
@@ -53,7 +179,9 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
         duration: const Duration(milliseconds: 600), vsync: this);
     tabBody = MyDiaryScreen(animationController: animationController);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => _showDialog());
+
+
+
     super.initState();
   }
 
@@ -176,6 +304,10 @@ Navigator.pushReplacementNamed(context, 'LoginScreen');
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
     return true;
   }
+
+
+
+
 
   // Widget bottomBar() {
   //   return Column(

@@ -90,7 +90,7 @@ class ChoiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.display1;
+    TextStyle textStyle = Theme.of(context).textTheme.headline1;
 
     if (selected)
       textStyle = textStyle.copyWith(color: Colors.lightGreenAccent[400]);
@@ -116,7 +116,7 @@ class ChoiceCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(choice.title, style: Theme.of(context).textTheme.title),
+                    Text(choice.title, style: Theme.of(context).textTheme.bodyText1),
                     // Text(choice.date,
                     //     style: TextStyle(color: Colors.black.withOpacity(0.5))),
                     // Text(choice.description),

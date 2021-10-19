@@ -1,5 +1,6 @@
 import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
 import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
+import 'package:fast_food_health_e/utils/helperFunctions.dart';
 import 'package:fast_food_health_e/widgets/favoritesList.dart';
 import 'package:fast_food_health_e/widgets/new_nutritionixList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +17,7 @@ class FirebaseFunctions {
   var now = new DateTime.now();
   String formattedDate;
   var formatter = new DateFormat('yyyy-MM-dd');
+  HelperFunctions helperFunctions = new HelperFunctions();
 
 
 
@@ -78,6 +80,8 @@ class FirebaseFunctions {
 
 
     print("Hmm " + restaurant);
+
+    return "https://logo.clearbit.com/" + helperFunctions.fixName(restaurant) + ".com";
 
 
     if(restaurant.contains("Bob"))

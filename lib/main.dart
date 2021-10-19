@@ -9,7 +9,7 @@ import 'package:fast_food_health_e/screens/limit_screen.dart';
 import 'package:fast_food_health_e/screens/login_screen.dart';
 import 'package:fast_food_health_e/screens/meal_screen.dart';
 import 'package:fast_food_health_e/screens/resetpw_screen.dart';
-import 'package:fast_food_health_e/screens/restaurant_screen.dart';
+import 'package:fast_food_health_e/screens/closest_restaurant_screen.dart';
 import 'package:fast_food_health_e/screens/signup_screen.dart';
 import 'package:fast_food_health_e/services/firebase_services.dart';
 import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
@@ -22,7 +22,6 @@ import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/screens/home_screen.dart';
 import 'package:fast_food_health_e/screens/launch_screen.dart';
-import 'package:fast_food_health_e/screens/result_screen.dart';
 import 'package:fast_food_health_e/screens/ffhe_screen.dart';
 import 'package:fast_food_health_e/screens/dietplan_screen.dart';
 import 'package:fast_food_health_e/screens/newdiet_screen.dart';
@@ -34,6 +33,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
+
+import 'screens/nationwide_restaurant_screen.dart';
 SharedPreferences preferences;
 
 
@@ -95,7 +96,11 @@ class FastFoodHealthEApp extends StatelessWidget {
               ),
           'RestaurantScreen': (context) =>
               Scaffold(
-                body: RestaurantScreen(),
+                body: LocalRestaurantScreen(),
+              ),
+          'NationwideRestaurantScreen': (context) =>
+              Scaffold(
+                body: NationwideRestaurantScreen(),
               ),
           'MealScreen': (context) =>
               Scaffold(
@@ -141,21 +146,6 @@ class FastFoodHealthEApp extends StatelessWidget {
           '/home': (context) =>
               Scaffold(
                 body: FitnessAppHomeScreen(),
-              ),
-          '/result': (context) =>
-              Scaffold(
-                appBar: AppBar(
-                  title: Text('Result'),
-                  leading: IconButton(
-                    icon: Icon(Icons.home),
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/home');
-                    },
-                  ),
-
-                ),
-                body: ResultScreen(),
               )
         },
       ),
