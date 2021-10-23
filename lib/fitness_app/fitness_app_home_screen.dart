@@ -47,21 +47,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
   _getCurrentLocation() async {
 
-    LocationPermission permission = await Geolocator.checkPermission();
 
-    if (permission == LocationPermission.denied) {
-
-      _getDeviceLocationPermissions();
-
-
-
-    }
-
-    else if (permission == LocationPermission.deniedForever) {
-
-      await Geolocator.openLocationSettings();
-    }
-    else{
 
       await Geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true, timeLimit: Duration(seconds: 5))
@@ -102,7 +88,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
       if (locationServicesTimeOut){
         await _getLastKnownLocation();
-      }}}
+      }}
 
   Future<void> _getLastKnownLocation() async {
     await Geolocator

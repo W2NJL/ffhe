@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class AboutTheTeam extends StatefulWidget {
   @override
@@ -15,7 +14,7 @@ class AboutTheTeamState extends State<AboutTheTeam> {
   void initState() {
     super.initState();
     // Enable hybrid composition.
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+
   }
 
   @override
@@ -26,9 +25,7 @@ class AboutTheTeamState extends State<AboutTheTeam> {
         context: context,
         route: '/home',
       ),
-      body: WebView(
-        initialUrl: 'https://www.fastfoodhealthe.com/about-the-team',
-      ),
+      body: SizedBox(),
     );
   }
 }

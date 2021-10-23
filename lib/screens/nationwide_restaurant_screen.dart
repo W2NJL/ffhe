@@ -19,7 +19,7 @@ class NationwideRestaurantScreen extends StatefulWidget {
 
 class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>  {
   HelperFunctions helperFunctions = new HelperFunctions();
-  List<double> coordinates;
+
   Dio _dio = new Dio();
   List<Choice> choices = <Choice>[];
   http.Client client;
@@ -56,7 +56,7 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
   void initState() {
 
 
-    _getCurrentLocation();
+
 
 
 
@@ -65,39 +65,19 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
 
   }
 
-  _getCurrentLocation() async{
-    await helperFunctions.getCoordinates().then((value)  => setState(() {
-      print("Got here!");
-
-      coordinates = value;
-
-
-
-    }));
 
 
 
 
 
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
     var title = "Choose a restaurant";
 
-    Future<String> getCoordinates () async{
 
-      await helperFunctions.getCoordinates().then((value) {
-        print("Got here!");
-
-        coordinates = value;
-
-        print("Coordinates: "  + coordinates.first.toString());
-
-        return coordinates.first.toString();
-
-      });
-    }
 
     // getTown () async{
     //
@@ -187,54 +167,13 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
 
           route: '/home',
 
-          title: FutureBuilder(future:     helperFunctions.getLocationFromCoordinates(coordinates),
-            builder: (context,  AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Column(
-                    children: [
-                      Center(child: CircularProgressIndicator()),
-                      Center(
-                        child: Text(
-                          title,
-                          style: TextStyle(
-                            color: Colors.black12,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              }
-
-
-
-              if (snapshot.connectionState == ConnectionState.done) {
-                //Sort by distance
-
-
-                return
+          title:
                   Text(
 
 
                       'Nationwide Restaurants'
-                  );
-              }
+                  ),),
 
-              else {
-
-                return Text(
-                  "Could Not Obtain Location",
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                );}
-            },
-          ),context: context),
 
       body:  FutureBuilder(future:     getChoices(),
         builder: (context,  AsyncSnapshot snapshot) {
