@@ -28,8 +28,8 @@ class _NutrientFacts extends State<NutrientLabel> {
   @override
   void initState() {
 
-    print("Teste: ");
-    print( widget.user);
+
+
 
     widget.user.entries.forEach((e) => listy.add(Nutrients(e.key, e.value)));
     
@@ -77,7 +77,7 @@ class _NutrientFacts extends State<NutrientLabel> {
     totalFat = widget.nutritionList.elementAt(4);
     totalSatFat = widget.nutritionList.elementAt(5);
 
-    print("I need you" + listy.toString());
+
 
 
     super.initState();
@@ -141,7 +141,7 @@ class _NutrientFacts extends State<NutrientLabel> {
       d["name"] != "Trans Fat" && d["dly"]["male"] != 999999999;
 
   void initNutrients() {
-    print("Garfield is a fat cat: " + totalCarbs.toString());
+
 
 
     MetaDataNutrient.fatValue = totalFat;

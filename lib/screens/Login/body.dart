@@ -36,7 +36,7 @@ class _BodyState extends State<Body> {
 
 
         this.value = value;
-        print("Bool is: " + value.toString());
+
 
     }));
 
@@ -92,11 +92,11 @@ class _BodyState extends State<Body> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * 0.03),
-          Image.asset("images\/" + "ffhe_logo.PNG",
+            Image.asset("images\/" + "FastFoodHealthELogo_Slogan.png",
 
 
 
-          ),
+            ),
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
               hintText: "Your Email",
@@ -122,7 +122,7 @@ class _BodyState extends State<Body> {
               text: "LOGIN",
               press: () {
 
-                print("Value is: " + value.toString());
+
                 if(value) {
                   _storeRememberMePref(_email, _password, value);
                   _signIn(_email, _password, context);

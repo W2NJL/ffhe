@@ -49,7 +49,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   void didChangeDependencies() {
 
     Future.delayed(Duration(milliseconds: 1500), () {
-      print("Got to future delayed");
+
       if(firebaseUser ==null) {
         setUpUsers();
       }
@@ -128,7 +128,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             this._interstitialAd = ad;
           },
           onAdFailedToLoad: (LoadAdError error) {
-            print('InterstitialAd failed to load: $error');
+
           },
         ));
   }
@@ -143,7 +143,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
 
         if(user!= null) {
-          print("Evaluating from My Diary Screen");
+
           addAllListData();
         }
 
@@ -166,7 +166,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   void addAllListData () async {
 
 
-      print("Got here");
+
 
 
       done = true;
@@ -174,7 +174,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
     const int count = 4;
 
-    print("Done is: " + done.toString());
+
 
     listViews.add(
 
@@ -504,7 +504,7 @@ return FutureBuilder<bool>(
 
   Widget getMainListViewUI() {
 
-    print("Work work work work work");
+
 
     return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {

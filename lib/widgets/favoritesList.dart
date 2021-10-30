@@ -77,7 +77,7 @@ class _FavoritesListState extends State<FavoritesList> {
 
 
 
-    print("Date is: " + date.day.toString());
+
 
     setState(() {
 
@@ -122,7 +122,7 @@ class _FavoritesListState extends State<FavoritesList> {
   //
   //   currDate = month + " " + day.toString() + ", " + year.toString();
   //
-  //   print("Hi :" + currDate);
+  //
   // }
 
   Future <String> _getNutrientAmount(String mealName, String diet) async {
@@ -135,7 +135,7 @@ class _FavoritesListState extends State<FavoritesList> {
         .child('Meals')
         .once()
         .then((snapshot){result=snapshot.value;});
-    print("The result is: " + result);
+
 
 
 
@@ -237,11 +237,11 @@ class _FavoritesListState extends State<FavoritesList> {
     // nutrientList.add(ref.child('User').child('DietVals').child('Low Cholesterol'));
     // nutrientList.add(ref.child('User').child('DietVals').child('Saturated Fat'));
 
-    print("test!" + nutrientList.elementAt(0).toString());
+
 
     final nutrientTypes = NutrientList.listOfNutrients;
 
-    print(nutrientList.toString());
+
 
 
 
@@ -291,7 +291,11 @@ class _FavoritesListState extends State<FavoritesList> {
       ),
 
 
-      body: done? SingleChildScrollView(
+      body: done?
+
+
+
+      SingleChildScrollView(
         child: Column(
           children:[
             Center(
@@ -349,10 +353,12 @@ class _FavoritesListState extends State<FavoritesList> {
                           );
                         })
                     ),
+
                   ],
                 ),
               ),
             ),
+
           ],
         ),
       ):Center(child: CircularProgressIndicator()),
@@ -363,7 +369,7 @@ class _FavoritesListState extends State<FavoritesList> {
   getRestaurantIcon(String restaurant) {
 
 
-    print("Hmm " + restaurant);
+
 
 
     if(restaurant.contains("Bob"))

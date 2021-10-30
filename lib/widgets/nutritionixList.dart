@@ -31,7 +31,7 @@ class NutritionListState extends State<NutritionList> {
   void initState() {
     super.initState();
 
-    print(category);
+
     _populateNutritionListings(restaurant, category);
   }
 
@@ -135,9 +135,9 @@ class NutritionListState extends State<NutritionList> {
 
     int nutritionixIncrement = 0;
 
-    print(category);
 
-    print(restaurant);
+
+
 
     Webservice().load(NutritionixData.getTotalNum(restaurant)).then((nutritionNum) => {
 

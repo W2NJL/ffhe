@@ -88,8 +88,8 @@ class _BMIScreenState extends State<BMIScreen> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * 0.03),
-            Image.asset("images\/" + "ffhe_logo.PNG",
-           
+            Image.asset("images\/" + "FastFoodHealthELogo_Slogan.png",
+
 
 
             ),
@@ -113,7 +113,7 @@ class _BMIScreenState extends State<BMIScreen> {
             RoundedButton(
                 text: "SIGN UP",
                 press: () {
-                  print('The date is: ' + dropdownDatePicker.getDate());
+
                   sendDate(dropdownDatePicker.getDate());
 
                   if(dropdownDatePicker.getDate().toString().contains('null')){
@@ -198,7 +198,7 @@ class _BMIScreenState extends State<BMIScreen> {
   void sendDate(String date) {
     final ref = referenceDatabase.reference().child(userID);
 
-    print("Got here!  Eye of the tiger.");
+
 
 
     ref.child('DOB').set(date);

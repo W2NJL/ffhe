@@ -4,6 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as Math;
+import 'package:us_states/us_states.dart';
 
 class HelperFunctions{
 
@@ -42,12 +43,13 @@ class HelperFunctions{
 
 
 
-    return city + ", " + state;
+    return city + ", " + USStates.getAbbreviation(state);
   }
 
   String fixName(String name) {
     name = name.replaceAll(" ", "");
     name = name.replaceAll("'", "");
+    name = name.replaceAll("-", "");
     return name;
 
   }

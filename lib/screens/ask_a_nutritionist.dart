@@ -1,3 +1,4 @@
+import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import '../utils/email_screen.dart';
 
@@ -8,8 +9,11 @@ class AskNutritionist extends StatelessWidget {
     final appTitle = 'Ask A Nutritionist!';
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: MyAppBar(
+
+        route: '/home',
         title: Text(appTitle),
+        context: context,
       ),
       body: NutritionistForm(),
     );

@@ -113,7 +113,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
       totalCalories = value.elementAt(0);
 
 
-      print("Benatar: " + totalCalories.toString());
+
     }
 
 
@@ -137,7 +137,7 @@ class _SecondDietPageState extends State<SecondDietPage> {
     await joe.getFirstRun().then((value) => setState(() {
       firstRun = value;
 
-      print("First Run is: " + firstRun.toString());
+
 
       if(!firstRun){
         carbPlan = "active";
@@ -154,10 +154,10 @@ class _SecondDietPageState extends State<SecondDietPage> {
 
     ));
 
-    print("Firstrun is " + firstRun.toString());
+
 
     if(userID != null && !firstRun) {
-      print("Got a Steve.");
+
 
 
 
@@ -213,7 +213,7 @@ return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
   }
 
   getCarb(String plan) {
-    print("Plan is : " + plan + totalCalories.toString());
+
 
     if (plan == Constants.KETO && totalCalories == 2000) {
       return 50;
@@ -331,7 +331,7 @@ return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
 
   List getCholesterolPlans(){
     List<int> cholesterols = getCholesterol();
-    print("Hey YAAAA!" + cholesterols.elementAt(1).toString());
+
 
 
     return [ DietPlan(
@@ -547,12 +547,12 @@ return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
       Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
       onTap: () {
 
-        print("Test! " + lesson.title);
+
         ref.child(onClickCheckDietPlan(lesson.title)).set(lesson.title);
         ref.child('DietVals').child(checkDietPlan(lesson.title)).child('MaxValue').set(lesson.number);
 
 
-        print("Here I am Lord: " + lesson.number.toString());
+
 
         if(lesson.satFat !=null){
           ref.child('DietVals').child('Saturated Fat').child('MaxValue').set(lesson.satFat);

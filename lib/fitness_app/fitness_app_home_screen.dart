@@ -56,12 +56,12 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
 
         setState(() {
-          print("Location obtained");
+
 
           _currentPosition = position;
           helperFunctions.storeCoordinatesInSharedPrefs(position);
           locationServicesTimeOut = false;
-          print(_currentPosition.longitude.toString());
+
         });
 
 
@@ -71,7 +71,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
       }).catchError((e) {
 
-        print(e);
+
 
 
         if (e.toString().contains("TimeoutException")){
@@ -98,8 +98,10 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
 
       setState(() {
-        print("Last Known Location here");
+
         _currentPosition = position;
+        helperFunctions.storeCoordinatesInSharedPrefs(position);
+
         //_storeCoordinatesInSharedPrefs(position);
       });
 
@@ -107,7 +109,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
     }).catchError((e) {
 
-      print(e);
+
 
 
 

@@ -1,4 +1,5 @@
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
+import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import '../utils/email_screen.dart';
 
@@ -9,8 +10,10 @@ class LegalDisclaimer extends StatelessWidget {
     final appTitle = 'Legal Disclaimer!';
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: MyAppBar(
+        route: '/home',
         title: Text(appTitle),
+        context: context,
       ),
       body: LegalDisclaimerPage(),
     );

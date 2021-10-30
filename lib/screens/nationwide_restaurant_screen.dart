@@ -28,13 +28,13 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
 
   getChoices() async{
 
-    print("Hey yaaaaa!");
+
 
     var response = await http.get(Uri.parse('https://d1gvlspmcma3iu.cloudfront.net/restaurants-3d-party.json.gz'));
 
 
-    //print(response.body);
-    print(response.body);
+    //
+
 
     choices = (json.decode(response.body)as List)
 
@@ -46,7 +46,7 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
       return a.name.toLowerCase().compareTo(b.name.toLowerCase());
     });
 
-    print(choices.length.toString());
+
 
     return choices;
 
@@ -81,7 +81,7 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
 
     // getTown () async{
     //
-    //   print(coordinates.first.toString());
+    //
     //
     //   await helperFunctions.getLocationFromCoordinates(coordinates).then((value) {
     //
@@ -172,7 +172,7 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
 
 
                       'Nationwide Restaurants'
-                  ),),
+                  ),context: context),
 
 
       body:  FutureBuilder(future:     getChoices(),

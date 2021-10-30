@@ -126,7 +126,7 @@ class _DietPageState extends State<DietPage> {
 
     }));
 
-  print("Firstrun is " + firstRun.toString());
+
 
 
 
@@ -365,12 +365,12 @@ else {
     //   joe = val;
     // }));
 
-    print("Holler: ");
+
     if (title == joe){
       return true;
     }
 
-print("I got here!");
+
 
   return false;
 }

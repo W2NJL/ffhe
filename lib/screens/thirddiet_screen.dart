@@ -125,7 +125,7 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
 
     }));
 
-    print("Firstrun is " + firstRun.toString());
+
 
 
 
@@ -368,12 +368,12 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
     //   joe = val;
     // }));
 
-    print("Holler: ");
+
     if (title == joe){
       return true;
     }
 
-print("I got here!");
+
 
   return false;
 }

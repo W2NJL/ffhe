@@ -47,13 +47,14 @@ dependencies:
   mailer: ^3.0.3
   fluttertoast: ^8.0.6
   flutter_svg: ^0.19.1
-  calendar_appbar: ^0.0.1
+  calendar_appbar: ^0.0.4
   dropdown_date_picker: ^0.1.1+2
   google_mobile_ads: ^0.13.0
   intro_views_flutter: ^3.2.0
   google_fonts: ^2.1.0
   geolocator: ^7.7.1
   geocoding: ^2.0.1
+  us_states: ^1.1.5
 
 
 dev_dependencies:
