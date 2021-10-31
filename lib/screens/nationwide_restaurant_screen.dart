@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fast_food_health_e/screens/meal_screen.dart';
+import 'package:fast_food_health_e/utils/debouncer.dart';
 import 'package:fast_food_health_e/utils/helperFunctions.dart';
 import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:fast_food_health_e/widgets/navdrawer.dart';
@@ -18,15 +19,15 @@ class NationwideRestaurantScreen extends StatefulWidget {
 
 
 class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>  {
+  final _debouncer = Debouncer(milliseconds: 500);
   HelperFunctions helperFunctions = new HelperFunctions();
-
   Dio _dio = new Dio();
   List<Choice> choices = <Choice>[];
   http.Client client;
 
 
 
-  getChoices() async{
+  Future<List<Choice>> getChoices() async{
 
 
 
@@ -35,11 +36,19 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
 
     //
 
+    var decodedFromTVStudyServer = jsonDecode(response.body);
 
-    choices = (json.decode(response.body)as List)
 
 
-        .map((data) => Choice.fromJson(data))
+
+
+    final parsed = decodedFromTVStudyServer.cast<Map>();
+
+
+    choices = parsed.map<Choice>(
+
+
+            (json) => Choice(json))
         .toList();
 
     choices.sort((a, b) {
@@ -176,7 +185,7 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
 
 
       body:  FutureBuilder(future:     getChoices(),
-        builder: (context,  AsyncSnapshot snapshot) {
+        builder: (context,  AsyncSnapshot <List<Choice>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: Column(
@@ -196,20 +205,50 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
             );
           }
           if (snapshot.connectionState == ConnectionState.done) {
+choices = snapshot.data;
+print(snapshot.data);
+
+
+return
+    Column(
+    children: [
+    StatefulBuilder(builder:
+    (BuildContext context, StateSetter setState) {
+    return Expanded(child: Column(
+    children: [
+    TextField(
+    decoration: InputDecoration(
+    contentPadding: EdgeInsets.all(15.0),
+    hintText: "Type in a restaurant",
+    ),
+    onChanged: (string) {
+    _debouncer.run(() {
+    setState(() {
+    choices = snapshot.data
+        .where((u) => (helperFunctions.fixName(u.name)
+        .toLowerCase()
+        .contains(helperFunctions.fixName(string).toLowerCase())))
+        .toList();
+    });
+    });
+    },
+    ),
+    Expanded(
+    child: ListView.builder(
+    itemCount: choices.length,itemBuilder: (BuildContext context,int index){
+
+    return ChoiceCard(choice: choices.elementAt(index));
+    }
+    ),
+    ),
+
+    ],
+    ));},
+    )]);
             //Sort by distance
 
 
-            return
-              ListView(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(20.0),
-                  children: List.generate(snapshot.data.length, (index) {
-                    return Center(
-
-                      child: ChoiceCard(
-                          choice: choices[index], item: choices[index]),
-                    );
-                  }));}
+           }
 
 
 
@@ -231,20 +270,23 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
 
 class Choice {
   final String name;
-
-
-  const Choice({this.name});
-
-  factory Choice.fromJson(Map<String, dynamic> json) {
+  Choice._({this.name});
 
 
 
-    return new Choice(
+  factory Choice(Map json) => Choice._(
+
+
+
 
       name: json['name'].toString(),
 
+
+
     );
-  }
+
+
+  @override toString() => 'Name: $name';
 }
 
 class ChoiceCard extends StatelessWidget {
