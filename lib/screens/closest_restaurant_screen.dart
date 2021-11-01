@@ -402,11 +402,15 @@ class ChoiceCard extends StatelessWidget {
         );
       },
       child: Container(
+
         height: 280,
         width: 350,
         child: Card(
+
             color: Colors.white,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 new Container(
                   height: 100,
@@ -420,14 +424,14 @@ class ChoiceCard extends StatelessWidget {
 
                             "https://static.wixstatic.com/media/7d5dd4_7314dd4e69d3447e8fcf6319495fdb80~mv2.png/v1/fill/w_150,h_150,al_c,q_85,usm_0.66_1.00_0.01/FastFoodHealthELogo.webp"
                         );
-                      },)),
+                      })),
                 new Container(
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(choice.name, style: Theme.of(context).textTheme.headline3),
+                      Text(choice.name, style: Theme.of(context).textTheme.headline4),
                       Text(choice.distance + ' mi.', style: Theme.of(context).textTheme.headline5),
                       Text(choice.address, style: Theme.of(context).textTheme.bodyText2),
                       // Text(choice.date,
@@ -437,7 +441,7 @@ class ChoiceCard extends StatelessWidget {
                   ),
                 )
               ],
-              crossAxisAlignment: CrossAxisAlignment.start,
+
             )),
       ),
     );

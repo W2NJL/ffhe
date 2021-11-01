@@ -444,7 +444,7 @@ return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
             Navigator.of(context).pop();
           },
           textColor: Theme.of(context).primaryColor,
-          child: const Text('Select this plan'),
+          child: const Text('Dismiss'),
         ),
       ],
     );
@@ -641,7 +641,7 @@ return firebaseFunctions.getDietPlan(diet, fastFoodHealthEUser);
                     }
                     );
 
-                    firebaseFunctions.activateFirstRun();
+                    firebaseFunctions.activateFirstRun(false);
 
                     Future.delayed(Duration(milliseconds: 50), () {
                       Navigator.pushNamedAndRemoveUntil(context, "/home", (

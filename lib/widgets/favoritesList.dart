@@ -42,6 +42,7 @@ class _FavoritesListState extends State<FavoritesList> {
   bool done = true;
   FirebaseFunctions firebaseFunctions = new FirebaseFunctions();
   FastFoodHealthEUser fastFoodHealthEUser;
+  bool proceed = false;
 
 
   DatabaseReference _callLettersRef;
@@ -70,6 +71,20 @@ class _FavoritesListState extends State<FavoritesList> {
     _callLettersRef = database.reference().child(userID).child('Favorites');
     this._getMoreData(userID);
 
+    checkEmptyList().then((value) => setState(() {
+      proceed = value;
+
+    }));
+
+  }
+
+  Future<bool> checkEmptyList() async {
+    var data = await _callLettersRef.once();
+    if (data.value == null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 
@@ -282,6 +297,7 @@ class _FavoritesListState extends State<FavoritesList> {
   @override
   Widget build(BuildContext context) {
     final ref = referenceDatabase.reference();
+    if (proceed){
     return Scaffold(
       appBar:
       MyAppBar(
@@ -289,6 +305,7 @@ class _FavoritesListState extends State<FavoritesList> {
         context: context,
         route: '/home',
       ),
+
 
 
       body: done?
@@ -333,12 +350,18 @@ class _FavoritesListState extends State<FavoritesList> {
                               child: ConstrainedBox(
                                   constraints:
                                   BoxConstraints(minWidth: 100, minHeight: 100),
-                                  child: Image.asset(
-                                    getRestaurantIcon(snapshot.value['Restaurant'].toString()),
+                                  child: Image.network(
+                                    firebaseFunctions.getRestaurantIcon(snapshot.value['Restaurant'].toString()),
                                     width: 100,
                                     height: 100,
+                                    errorBuilder: (context, error, StackTrace){
+                                      return Image.network(
 
-                                  ),
+
+                                          "https://static.wixstatic.com/media/7d5dd4_7314dd4e69d3447e8fcf6319495fdb80~mv2.png/v1/fill/w_150,h_150,al_c,q_85,usm_0.66_1.00_0.01/FastFoodHealthELogo.webp"
+                                      );
+                                    },
+                                  )
                             )),
 
                             trailing: IconButton(icon: Icon(Icons.delete), onPressed: () =>{
@@ -363,7 +386,63 @@ class _FavoritesListState extends State<FavoritesList> {
         ),
       ):Center(child: CircularProgressIndicator()),
 
-    );
+    );}
+    else{
+      return Scaffold(
+        appBar: MyAppBar(
+          title: Text("Favorite Meals"),
+          route: '/home',
+          context: context,
+        ),
+        body: Column(
+
+          children: [
+            Image.asset("images\/" + "FastFoodHealthELogo_WhiteSlogan.png",
+
+
+
+            ),
+            Expanded(
+              child: Container(
+
+                margin: EdgeInsets.only(top: 10, right: 10, left: 10, bottom: 15),
+                child: Center(child: RichText(
+
+                  text: TextSpan(
+
+                    style: TextStyle(color: Colors.black, fontSize: 36),
+                    children: <TextSpan>[
+                      TextSpan(text: 'No meals available! ', style: TextStyle(color: Colors.blue)),
+
+                    ],
+                  ),
+                ),
+
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 2, right: 20, left: 20, bottom: 200),
+              child: Center(child: RichText(
+                text: TextSpan(
+                  style: TextStyle(color: Colors.black, fontSize: 16),
+                  children: <TextSpan>[
+                    TextSpan(text: 'Add some meals as favorites to see them here!', style: TextStyle(color: Colors.black)),
+
+                  ],
+                ),
+              ),
+
+              ),
+            ),
+          ],
+        ),
+
+
+      );
+
+
+    }
   }
 
   getRestaurantIcon(String restaurant) {

@@ -19,6 +19,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MyDiaryScreen extends StatefulWidget {
   const MyDiaryScreen({Key key, this.animationController}) : super(key: key);
@@ -42,6 +43,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   FirebaseFunctions joe = new FirebaseFunctions();
   bool done = false;
   InterstitialAd _interstitialAd;
+  YoutubePlayerController _controller;
 
 
 
@@ -69,7 +71,13 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   @override
   void initState() {
 
-
+    _controller = YoutubePlayerController(
+      initialVideoId: 'C-tCcDzNHqU',
+      flags: YoutubePlayerFlags(
+        mute: false,
+        autoPlay: false,
+      ),
+    );
 
     // Future.microtask(() {
     //   Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
@@ -345,6 +353,25 @@ color: Colors.deepOrange,
         ),
 
       ),);
+
+
+      YoutubePlayerController _controller = YoutubePlayerController(
+        initialVideoId: 'C-tCcDzNHqU',
+        flags: YoutubePlayerFlags(
+          autoPlay: false,
+          mute: false,
+        ),
+      );
+
+      listViews.add(YoutubePlayer(
+        controller: _controller,
+        showVideoProgressIndicator: true,
+
+        progressIndicatorColor: Colors.blueAccent,
+        onReady: () {
+          print('Player is ready.');
+        },
+      ));
 
       final BannerAd myBanner = BannerAd(
         adUnitId: 'ca-app-pub-3940256099942544/6300978111',

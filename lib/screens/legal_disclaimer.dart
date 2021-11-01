@@ -52,7 +52,16 @@ class LegalDisclaimerPageState extends State<LegalDisclaimerPage > {
                   color: FitnessAppTheme.darkerText,
                 ),
               ),
-
+SizedBox(height: 50,),
+              Text("© 2021 Capriotti Preventive Health Care LLC.  FAST FOOD HEALTH-E is a trademark of Capriotti Preventive Health Care LLC.  All restaurant logos and company names are trademarks or registered trademarks of their respective owners, and no affiliation or endorsement is implied."
+                  , textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14,
+                  letterSpacing: -0.2,
+                  color: FitnessAppTheme.darkerText,
+                ),)
             ],
           ),
         ),

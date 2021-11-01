@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fast_food_health_e/screens/verify_email.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
+import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -35,6 +36,7 @@ class _BMIScreenState extends State<BMIScreen> {
   var firebaseUser;
   String userID;
   final referenceDatabase = FirebaseDatabase.instance;
+  FirebaseFunctions firebaseFunctions = new FirebaseFunctions();
 
   @override
   void didChangeDependencies() {
@@ -160,7 +162,7 @@ class _BMIScreenState extends State<BMIScreen> {
     if (test == "Signed up!"){
 
       sendDate(dropdownDatePicker.getDate());
-      _activateFirstRun();
+      firebaseFunctions.activateFirstRun(true);
       Navigator.pushReplacementNamed(context, 'DietScreen');
     }
 

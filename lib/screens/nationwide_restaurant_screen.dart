@@ -234,13 +234,14 @@ return
     },
     ),
     Expanded(
-    child: ListView.builder(
-    itemCount: choices.length,itemBuilder: (BuildContext context,int index){
+      child: ListView.builder(
+      itemCount: choices.length,itemBuilder: (BuildContext context,int index){
 
-    return ChoiceCard(choice: choices.elementAt(index));
-    }
-    ),
-    ),
+      return ChoiceCard(choice: choices.elementAt(index));
+      }
+      ),
+      ),
+
 
     ],
     ));},
@@ -324,6 +325,7 @@ class ChoiceCard extends StatelessWidget {
         );
       },
       child: Container(
+        alignment: Alignment.center,
         width: 200,
         height: 300,
         child: Card(
@@ -349,11 +351,13 @@ class ChoiceCard extends StatelessWidget {
 
                 new Container(
                   padding: const EdgeInsets.all(10.0),
+                  width: 200,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(choice.name, style: Theme.of(context).textTheme.bodyText1),
+                      FittedBox(fit: BoxFit.scaleDown,child: Text(choice.name, style: Theme.of(context).textTheme.headline6)
+                      ),
                       // Text(choice.date,
                       //     style: TextStyle(color: Colors.black.withOpacity(0.5))),
                       // Text(choice.description),

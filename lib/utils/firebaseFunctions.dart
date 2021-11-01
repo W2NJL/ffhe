@@ -175,16 +175,20 @@ class FirebaseFunctions {
 
     preferences = await SharedPreferences.getInstance();
 
-
-    return preferences.getBool("FirstRun");
+    print('What are my preferences: ' + preferences.getBool("FirstRun").toString());
+    if (preferences.getBool("FirstRun") != null) {
+      return preferences.getBool("FirstRun");
+    }
+    else
+      return false;
   }
 
-  void activateFirstRun() async {
+  void activateFirstRun(bool set) async {
 
     preferences = await SharedPreferences.getInstance();
 
 
-    preferences.setBool("FirstRun", false);
+    preferences.setBool("FirstRun", set);
   }
 
   getDietPlanHeader(FastFoodHealthEUser user)  {
