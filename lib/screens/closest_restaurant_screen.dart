@@ -221,116 +221,135 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
     //       imglink:
     //       'wawa.jpg'),];
 
-    return Scaffold(
-      drawer: NavDrawer(),
-        appBar: MyAppBar(
+    return WillPopScope(
+      onWillPop: () => showDialog<bool>(
+        context: context,
+        builder: (c) => AlertDialog(
+          title: Text('Warning'),
+          content: Text('Do you really want to exit restaurant search?'),
+          actions: [
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false),
+            ),
+            FlatButton(
+              child: Text('No'),
+              onPressed: () => Navigator.pop(c, false),
+            ),
+          ],
+        ),
+      ),
+      child: Scaffold(
+        drawer: NavDrawer(),
+          appBar: MyAppBar(
 
-            route: '/home',
+              route: '/home',
 
-        title: FutureBuilder(future:     helperFunctions.getLocationFromCoordinates(coordinates),
-          builder: (context,  AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: Column(
-                  children: [
-                    Center(child: CircularProgressIndicator()),
-                    Center(
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          color: Colors.black12,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+          title: FutureBuilder(future:     helperFunctions.getLocationFromCoordinates(coordinates),
+            builder: (context,  AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Column(
+                    children: [
+                      Center(child: CircularProgressIndicator()),
+                      Center(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            color: Colors.black12,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            }
+                      )
+                    ],
+                  ),
+                );
+              }
 
 
 
-            if (snapshot.connectionState == ConnectionState.done) {
-              //Sort by distance
+              if (snapshot.connectionState == ConnectionState.done) {
+                //Sort by distance
 
 
-              return
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child:
+                return
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child:
 
 
-                  Text(
+                    Text(
 
 
-                    snapshot.data + ' nearby restaurants'
-                ));
-            }
+                      snapshot.data + ' nearby restaurants'
+                  ));
+              }
 
 else {
 
-            return Text(
-              "Could Not Obtain Location",
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            );}
-          },
-        ),context: context),
+              return Text(
+                "Could Not Obtain Location",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              );}
+            },
+          ),context: context),
 
-            body:  FutureBuilder(future:     getChoices(),
-    builder: (context,  AsyncSnapshot snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(
-          child: Column(
-            children: [
-              Center(child: CircularProgressIndicator()),
-              Center(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    color: Colors.black12,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-    ),
-    )
-              )],
-    ),
-    );
-    }
-    if (snapshot.connectionState == ConnectionState.done) {
-        //Sort by distance
-
-
-        return
-        ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(20.0),
-        children: List.generate(snapshot.data.length, (index) {
+              body:  FutureBuilder(future:     getChoices(),
+      builder: (context,  AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
+            child: Column(
+              children: [
+                Center(child: CircularProgressIndicator()),
+                Center(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.black12,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+      ),
+      )
+                )],
+      ),
+      );
+      }
+      if (snapshot.connectionState == ConnectionState.done) {
+          //Sort by distance
 
-            child: ChoiceCard(
-                choice: choices[index], item: choices[index]),
-    );
-    }));}
+
+          return
+          ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(20.0),
+          children: List.generate(snapshot.data.length, (index) {
+            return Center(
+
+              child: ChoiceCard(
+                  choice: choices[index], item: choices[index]),
+      );
+      }));}
 
 
 
-    else {
+      else {
 
-    return Text(
-    "Could Not Obtain Location",
-    style: TextStyle(
-    color: Colors.white70,
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-    ),
-    );}
+      return Text(
+      "Could Not Obtain Location",
+      style: TextStyle(
+      color: Colors.white70,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      ),
+      );}
   },
-  ),);
+  ),),
+    );
 
 
 }}

@@ -170,101 +170,120 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
     //       imglink:
     //       'wawa.jpg'),];
 
-    return Scaffold(
-      drawer: NavDrawer(),
-      appBar: MyAppBar(
+    return WillPopScope(
+      onWillPop: () => showDialog<bool>(
+        context: context,
+        builder: (c) => AlertDialog(
+          title: Text('Warning'),
+          content: Text('Do you really want to exit restaurant search?'),
+          actions: [
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false),
+            ),
+            FlatButton(
+              child: Text('No'),
+              onPressed: () => Navigator.pop(c, false),
+            ),
+          ],
+        ),
+      ),
+      child: Scaffold(
+        drawer: NavDrawer(),
+        appBar: MyAppBar(
 
-          route: '/home',
+            route: '/home',
 
-          title:
-                  Text(
-
-
-                      'Nationwide Restaurants'
-                  ),context: context),
+            title:
+                    Text(
 
 
-      body:  FutureBuilder(future:     getChoices(),
-        builder: (context,  AsyncSnapshot <List<Choice>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: Column(
-                children: [
-                  Center(child: CircularProgressIndicator()),
-                  Center(
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          color: Colors.black12,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                  )],
-              ),
-            );
-          }
-          if (snapshot.connectionState == ConnectionState.done) {
+                        'Nationwide Restaurants'
+                    ),context: context),
+
+
+        body:  FutureBuilder(future:     getChoices(),
+          builder: (context,  AsyncSnapshot <List<Choice>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Column(
+                  children: [
+                    Center(child: CircularProgressIndicator()),
+                    Center(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            color: Colors.black12,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                    )],
+                ),
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
 choices = snapshot.data;
 print(snapshot.data);
 
 
 return
-    Column(
-    children: [
-    StatefulBuilder(builder:
-    (BuildContext context, StateSetter setState) {
-    return Expanded(child: Column(
-    children: [
-    TextField(
-    decoration: InputDecoration(
-    contentPadding: EdgeInsets.all(15.0),
-    hintText: "Type in a restaurant",
-    ),
-    onChanged: (string) {
-    _debouncer.run(() {
-    setState(() {
-    choices = snapshot.data
-        .where((u) => (helperFunctions.fixName(u.name)
-        .toLowerCase()
-        .contains(helperFunctions.fixName(string).toLowerCase())))
-        .toList();
-    });
-    });
-    },
-    ),
-    Expanded(
-      child: ListView.builder(
-      itemCount: choices.length,itemBuilder: (BuildContext context,int index){
-
-      return ChoiceCard(choice: choices.elementAt(index));
-      }
+      Column(
+      children: [
+      StatefulBuilder(builder:
+      (BuildContext context, StateSetter setState) {
+      return Expanded(child: Column(
+      children: [
+      TextField(
+      decoration: InputDecoration(
+      contentPadding: EdgeInsets.all(15.0),
+      hintText: "Type in a restaurant",
       ),
+      onChanged: (string) {
+      _debouncer.run(() {
+      setState(() {
+      choices = snapshot.data
+          .where((u) => (helperFunctions.fixName(u.name)
+          .toLowerCase()
+          .contains(helperFunctions.fixName(string).toLowerCase())))
+          .toList();
+      });
+      });
+      },
       ),
+      Expanded(
+        child: ListView.builder(
+        itemCount: choices.length,itemBuilder: (BuildContext context,int index){
+
+        return ChoiceCard(choice: choices.elementAt(index));
+        }
+        ),
+        ),
 
 
-    ],
-    ));},
-    )]);
-            //Sort by distance
+      ],
+      ));},
+      )]);
+              //Sort by distance
 
 
-           }
+             }
 
 
 
-          else {
+            else {
 
-            return Text(
-              "Could Not Obtain Location",
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            );}
-        },
-      ),);
+              return Text(
+                "Could Not Obtain Location",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              );}
+          },
+        ),),
+    );
 
 
   }}

@@ -46,7 +46,7 @@ dependencies:
   unsplash_client: ^2.0.0
   mailer: ^3.0.3
   fluttertoast: ^8.0.6
-  flutter_svg: ^0.19.1
+  flutter_svg: ^0.23.0+1
   calendar_appbar: ^0.0.4
   dropdown_date_picker: ^0.1.1+2
   google_mobile_ads: ^0.13.0
@@ -55,8 +55,10 @@ dependencies:
   geolocator: ^7.7.1
   geocoding: ^2.0.1
   us_states: ^1.1.5
-  youtube_player_flutter: ^8.0.0
+  flutter_app_name: ^0.1.0
 
+flutter_app_name:
+  name: "Fast Food Health-E"
 
 dev_dependencies:
   flutter_test:
