@@ -125,7 +125,7 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
 
     }));
 
-    print("Firstrun is " + firstRun.toString());
+
 
 
 
@@ -162,12 +162,9 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
   static Widget _buildAboutText(DietPlan lesson) {
     return new Text.rich(
       TextSpan(children: [
-        TextSpan(text: lesson.content + '\n\n' + lesson.content2 + '\n\n',
+        TextSpan(text: lesson.content + '\n\n',
             style: const TextStyle(color: Colors.black87)),
-        TextSpan(text: "Disclaimer: ",
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        TextSpan(text: lesson.disclaimer,
-            style: const TextStyle(color: Colors.black87))
+
       ],),
       // children: <TextSpan>[
       //   const TextSpan(text: 'The app was developed with '),
@@ -207,7 +204,7 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
 
           },
           textColor: Theme.of(context).primaryColor,
-          child: const Text('Select this plan'),
+          child: const Text('Dismiss'),
         ),
       ],
     );
@@ -368,12 +365,12 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
     //   joe = val;
     // }));
 
-    print("Holler: ");
+
     if (title == joe){
       return true;
     }
 
-print("I got here!");
+
 
   return false;
 }
@@ -390,9 +387,7 @@ List getDietPlans() {
         indicatorValue: 0.33,
         price: 20,
         content:
-        "This 2000 calorie diet plan is defined as 3 meals per day each meal no more than 660 calories; There are no other nutrition restrictions other than calories.",
-        content2: "When trying to lose weight, a general rule of thumb is to reduce your calorie intake to 500 fewer calories than your body needs to maintain your current weight. This will help you lose about 1 pound (0.45 kg) of body weight per week.",
-        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."
+        "3 Meals per day - note, this feature has not yet been implemented",
     ),
     DietPlan(
         title: Constants.MEAL_2,
@@ -400,10 +395,7 @@ List getDietPlans() {
         level: "Intermediate",
         indicatorValue: 0.66,
         price: 50,
-        content:
-        "This 1500 calorie diet plan is defined as 3 meals per day each meal no more than 500 calories. There are no other nutrient restrictions other than calories.",
-        content2: "When trying to lose weight, a general rule of thumb is to reduce your calorie intake to 500 fewer calories than your body needs to maintain your current weight. This will help you lose about 1 pound (0.45 kg) of body weight per week.",
-        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+        content: "2 Meals per day - note, this feature has not yet been implemented",),
 
     DietPlan(
         title: Constants.MEAL_1,
@@ -412,9 +404,7 @@ List getDietPlans() {
         indicatorValue: 0.99,
         price: 30,
         content:
-        "This 1200 calorie diet plan is defined as 3 meals per day each meal no more than 400 calories ; There are no other nutrient restrictions other than calories.",
-        content2: "When trying to lose weight, a general rule of thumb is to reduce your calorie intake to 500 fewer calories than your body needs to maintain your current weight. This will help you lose about 1 pound (0.45 kg) of body weight per week.",
-        disclaimer: "Of course there is always the caveat the this may vary with individuals due to metabolism and activity level."),
+  "1 Meal per day - note, this feature has not yet been implemented",),
 
   ];
 }

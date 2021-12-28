@@ -40,7 +40,9 @@ class MealScreen extends StatelessWidget {
 
           route: 'pop',
 
-          title: Text(title),
+          title: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(title),),
           context: context,
         ),
 

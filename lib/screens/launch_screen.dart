@@ -24,19 +24,17 @@ class _LaunchScreenState extends State<LaunchScreen> {
 
   dynamic foodImages = [
     "alex-loup-NcUZLagOHt4-unsplash.jpg",
-    "brooke-lark-nBtmglfY0HU-unsplash.jpg",
     "brooke-lark-jUPOXXRNdcA-unsplash.jpg",
-    "edgar-castrejon-1CsaVdwfIew-unsplash.jpg",
     "element5-digital-acrBf9BlfvE-unsplash.jpg",
     "jamie-street-tb5A-QTI6xg-unsplash.jpg",
-    "jony-ariadi-QZub8Ni3x_c-unsplash.jpg",
+
     "juan-jose-valencia-antia-TTrJMhrkoeY-unsplash.jpg",
     "lum3n-5GK0KjhBLs4-unsplash.jpg",
     "mariana-medvedeva-usfIE5Yc7PY-unsplash.jpg",
     "milada-vigerova-5fj-ShvSEnc-unsplash.jpg",
     "nathan-dumlao-Xt4yZUIpRTo-unsplash.jpg",
     "nutritionbg.jpg",
-    "yilmaz-akin-FPKtCl74Hfs-unsplash.jpg",
+
 
   ];
 
@@ -69,13 +67,10 @@ class _LaunchScreenState extends State<LaunchScreen> {
             children: <Widget>[
         Container(
         margin: EdgeInsets.only(top: 100),
-        child: Text(
-          kAppName,
-          style: TextStyle(
-            fontSize: 40.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.blueAccent,
-          ),
+        child:  Image.asset("images\/" + "FastFoodHealthELogo_Slogan.png",
+
+
+
         ),
       ),
       SizedBox(

@@ -57,7 +57,7 @@ class _DietPageState extends State<DietPage> {
   DatabaseReference _dietPlanRef;
   FastFoodHealthEUser fastFoodHealthEUser;
   FirebaseFunctions joe = new FirebaseFunctions();
-  bool firstRun;
+  bool firstRun = false;
 
 
   @override
@@ -126,7 +126,7 @@ class _DietPageState extends State<DietPage> {
 
     }));
 
-  print("Firstrun is " + firstRun.toString());
+
 
 
 
@@ -206,7 +206,7 @@ class _DietPageState extends State<DietPage> {
 
           },
           textColor: Theme.of(context).primaryColor,
-          child: const Text('Select this plan'),
+          child: const Text('Dismiss'),
         ),
       ],
     );
@@ -365,12 +365,12 @@ else {
     //   joe = val;
     // }));
 
-    print("Holler: ");
+
     if (title == joe){
       return true;
     }
 
-print("I got here!");
+
 
   return false;
 }

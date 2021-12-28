@@ -79,7 +79,7 @@ class FirebaseFunctions {
   getRestaurantIcon(String restaurant) {
 
 
-    print("Hmm " + restaurant);
+
 
     return "https://logo.clearbit.com/" + helperFunctions.fixName(restaurant) + ".com";
 
@@ -130,7 +130,7 @@ class FirebaseFunctions {
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy-MM-dd');
     String formattedDate;
-    print("Testing this shiz: " + userID);
+
     formattedDate = formatter.format(now);
     List<String> dietList = <String>[];
     dietList.add("Calories");
@@ -157,7 +157,7 @@ class FirebaseFunctions {
         maxValue = snapshot.value;
       });
 
-      print("The maxvalue for " + dietList.elementAt(i) + "is: " + maxValue.toString());
+
 
       if (maxValue == null) {
         nutritionList.add(999999999);
@@ -175,16 +175,20 @@ class FirebaseFunctions {
 
     preferences = await SharedPreferences.getInstance();
 
-
-    return preferences.getBool("FirstRun");
+    print('What are my preferences: ' + preferences.getBool("FirstRun").toString());
+    if (preferences.getBool("FirstRun") != null) {
+      return preferences.getBool("FirstRun");
+    }
+    else
+      return false;
   }
 
-  void activateFirstRun() async {
+  void activateFirstRun(bool set) async {
 
     preferences = await SharedPreferences.getInstance();
 
 
-    preferences.setBool("FirstRun", false);
+    preferences.setBool("FirstRun", set);
   }
 
   getDietPlanHeader(FastFoodHealthEUser user)  {

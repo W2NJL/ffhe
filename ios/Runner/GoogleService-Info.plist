@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>656405557277-oqivs3pqagrkmdv62r6m8e03fijh5qtu.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.656405557277-oqivs3pqagrkmdv62r6m8e03fijh5qtu</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>656405557277-d2lmhfqidmq6kmasl0u5cncgjl2u6d03.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCiYpUEnaWfcAILFpv82ldC2mpw8S4ToTs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>656405557277</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ffhe.fastfoodhealthe</string>
+	<key>PROJECT_ID</key>
+	<string>fastfoodhealthe</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fastfoodhealthe.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:656405557277:ios:70ceca946a4c0b8e5696f4</string>
+	<key>DATABASE_URL</key>
+	<string>https://fastfoodhealthe-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

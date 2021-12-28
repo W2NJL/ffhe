@@ -1,4 +1,5 @@
 import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
+import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import '../utils/email_screen.dart';
 
@@ -9,8 +10,10 @@ class LegalDisclaimer extends StatelessWidget {
     final appTitle = 'Legal Disclaimer!';
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: MyAppBar(
+        route: '/home',
         title: Text(appTitle),
+        context: context,
       ),
       body: LegalDisclaimerPage(),
     );
@@ -49,7 +52,16 @@ class LegalDisclaimerPageState extends State<LegalDisclaimerPage > {
                   color: FitnessAppTheme.darkerText,
                 ),
               ),
-
+SizedBox(height: 50,),
+              Text("© 2021 Capriotti Preventive Health Care LLC.  FAST FOOD HEALTH-E is a trademark of Capriotti Preventive Health Care LLC.  All restaurant logos and company names are trademarks or registered trademarks of their respective owners, and no affiliation or endorsement is implied."
+                  , textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14,
+                  letterSpacing: -0.2,
+                  color: FitnessAppTheme.darkerText,
+                ),)
             ],
           ),
         ),

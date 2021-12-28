@@ -35,7 +35,7 @@ class NutritionixData {
           final result = json.decode(response.body);
 
 
-      print(result['total_hits']);
+
 
 
 

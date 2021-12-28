@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fast_food_health_e/screens/verify_email.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
+import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -35,6 +36,7 @@ class _BMIScreenState extends State<BMIScreen> {
   var firebaseUser;
   String userID;
   final referenceDatabase = FirebaseDatabase.instance;
+  FirebaseFunctions firebaseFunctions = new FirebaseFunctions();
 
   @override
   void didChangeDependencies() {
@@ -88,8 +90,8 @@ class _BMIScreenState extends State<BMIScreen> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * 0.03),
-            Image.asset("images\/" + "ffhe_logo.PNG",
-           
+            Image.asset("images\/" + "FastFoodHealthELogo_Slogan.png",
+
 
 
             ),
@@ -113,7 +115,7 @@ class _BMIScreenState extends State<BMIScreen> {
             RoundedButton(
                 text: "SIGN UP",
                 press: () {
-                  print('The date is: ' + dropdownDatePicker.getDate());
+
                   sendDate(dropdownDatePicker.getDate());
 
                   if(dropdownDatePicker.getDate().toString().contains('null')){
@@ -160,7 +162,7 @@ class _BMIScreenState extends State<BMIScreen> {
     if (test == "Signed up!"){
 
       sendDate(dropdownDatePicker.getDate());
-      _activateFirstRun();
+      firebaseFunctions.activateFirstRun(true);
       Navigator.pushReplacementNamed(context, 'DietScreen');
     }
 
@@ -198,7 +200,7 @@ class _BMIScreenState extends State<BMIScreen> {
   void sendDate(String date) {
     final ref = referenceDatabase.reference().child(userID);
 
-    print("Got here!  Eye of the tiger.");
+
 
 
     ref.child('DOB').set(date);

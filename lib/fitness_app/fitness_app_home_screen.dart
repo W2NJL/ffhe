@@ -47,21 +47,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
   _getCurrentLocation() async {
 
-    LocationPermission permission = await Geolocator.checkPermission();
 
-    if (permission == LocationPermission.denied) {
-
-      _getDeviceLocationPermissions();
-
-
-
-    }
-
-    else if (permission == LocationPermission.deniedForever) {
-
-      await Geolocator.openLocationSettings();
-    }
-    else{
 
       await Geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true, timeLimit: Duration(seconds: 5))
@@ -70,12 +56,12 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
 
         setState(() {
-          print("Location obtained");
+
 
           _currentPosition = position;
           helperFunctions.storeCoordinatesInSharedPrefs(position);
           locationServicesTimeOut = false;
-          print(_currentPosition.longitude.toString());
+
         });
 
 
@@ -85,7 +71,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
       }).catchError((e) {
 
-        print(e);
+
 
 
         if (e.toString().contains("TimeoutException")){
@@ -102,7 +88,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
       if (locationServicesTimeOut){
         await _getLastKnownLocation();
-      }}}
+      }}
 
   Future<void> _getLastKnownLocation() async {
     await Geolocator
@@ -112,8 +98,10 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
 
       setState(() {
-        print("Last Known Location here");
+
         _currentPosition = position;
+        helperFunctions.storeCoordinatesInSharedPrefs(position);
+
         //_storeCoordinatesInSharedPrefs(position);
       });
 
@@ -121,7 +109,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
     }).catchError((e) {
 
-      print(e);
+
 
 
 

@@ -301,7 +301,9 @@ if(fastFoodHealthEUser != null) {
       appBar: MyAppBar(
         route: 'pop',
         context: context,
-        title:  Text(restaurant),
+        title:  FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(restaurant + ' listings'),),
       ),
 
       body: Column(children:
@@ -739,7 +741,7 @@ if(fastFoodHealthEUser != null) {
                       ),
 
                     trailing: GestureDetector(
-                      onTap: () {print("Got here");
+                      onTap: () {
 
                       Provider.of<FastFoodHealthEState>(context, listen: false).clearState();
 
@@ -790,7 +792,7 @@ if(fastFoodHealthEUser != null) {
                             .child('Restaurant')
                             .set(users[index]['brand_name']);
 
-                        print("SOS: " + users[index]['brand_name'].toString());
+
                       }
                       else
                         {
@@ -874,7 +876,7 @@ if(fastFoodHealthEUser != null) {
     final ref = referenceDatabase.reference().child(uid);
     final List<int> nutrientList = <int>[];
     Map<String, dynamic> nutrientMap = Map<String, dynamic>.from(user);
-    print(nutrientMap.remove('item_name'));
+
     nutrientMap.remove('brand_name');
 
 
@@ -889,7 +891,7 @@ if(fastFoodHealthEUser != null) {
     nutrientList.add(totalSatFat);
     nutrientList.add(totalTransFat);
 
-    print(user.runtimeType);
+
 
 
     return new AlertDialog(
@@ -1016,7 +1018,7 @@ if(fastFoodHealthEUser != null) {
 
       totalCalories = value;
 
-      print("Totalcalroies is " + totalCalories.toString());
+
     }));
 
       await _getTotalNutrients('Sodium').then((value) => setState(() {
@@ -1037,14 +1039,14 @@ if(fastFoodHealthEUser != null) {
 
         totalFat = value;
 
-        print("Totalcalroies is " + totalFat.toString());
+
       }));
 
       await _getTotalNutrients('Low Cholesterol').then((value) => setState(() {
 
         totalCholesterol = value;
 
-        print("Total cholesterol is " + totalCholesterol.toString());
+
       }));
 
       await _getTotalNutrients('Saturated Fat').then((value) => setState(() {
@@ -1074,7 +1076,7 @@ if(fastFoodHealthEUser != null) {
       }
 
 
-      print("recalroies is " + remainingCalories.toString());
+
 
     }));
 
@@ -1129,7 +1131,7 @@ if(fastFoodHealthEUser != null) {
           remainingFat = 0;
         }
 
-        print("FatSum is: " + fatSum.toString());
+
       }));
       await firebaseFunctions.getRemainingNutrients('Trans Fat', fastFoodHealthEUser).then((value) => setState(() {
         remainingTransFat = value;
@@ -1160,7 +1162,7 @@ if(fastFoodHealthEUser != null) {
           done = true;
         }
 
-        print("CarbSum is: " + carbSum.toString());
+
 
 
         }));
@@ -1178,18 +1180,18 @@ if(fastFoodHealthEUser != null) {
 
 
           //var url = 'https://api.nutritionix.com/v1_1/search/' + restaurant + '?results='+ index.toString() + ':' + (index+50).toString() + '&fields=item_name,brand_name,nf_calories,nf_sodium,nf_sugars,nf_cholesterol,nf_total_fat,nf_dietary_fiber&appId=816cee15&appKey=aab0a0a4c4224eca770bf5a2a0f4c984';
-          //print(url);
+          //
 
 
           List<String> foodList = <String>[];
 
           int orig = tList.length;
-          print("Response is: " + response.data['hits'].toString());
+
 
 
           for (int i = 0; i < response.data['hits'].length; i++) {
             addFoodtoTList(response, i, category, foodList, tList);
-            print("Length of list is: " + tList.length.toString());
+
 
           }
 
@@ -1201,7 +1203,7 @@ if(fastFoodHealthEUser != null) {
           });
 
            if(tList.length < 10){
-             print("Page is " + page.toString());
+
 
             setState(() {
                params = generateParams(params, restaurant);
@@ -1217,7 +1219,7 @@ if(fastFoodHealthEUser != null) {
 
 
     catch (error, stackTrace) {
-    print("Exception occurred: $error  stackTrace: $stackTrace");
+
 
     }
 
@@ -1225,7 +1227,7 @@ if(fastFoodHealthEUser != null) {
       if (mounted) {
         setState(() {
           isLoading = false;
-          print(tList.toString());
+
           users.addAll(tList);
         });
       }
@@ -1463,16 +1465,21 @@ if(fastFoodHealthEUser != null) {
 
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    
+    if (preferences.getBool("listings") == null){
+      return false; 
+    }
     return preferences.getBool("listings");
   }
 
   bool badWords(String string) {
 
 
-    print("String is " + string);
+
     final ignoreReg =  RegExp("(?:kids|children|combo|catering|gallon|build|create|family|bundle|serves|whole|tray|kid|party)", caseSensitive: false);
 
-    print("Truth is " + ignoreReg.hasMatch(string).toString());
+
     return ignoreReg.hasMatch(string);
   }
 

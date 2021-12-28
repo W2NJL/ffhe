@@ -31,7 +31,7 @@ import 'package:provider/provider.dart';
         .once()
        .then((snapshot){theMap = new Map<String, dynamic>.from(snapshot.value);});
 
-   print('Check the map for ' + uid + " hey ye " + theMap.toString());
+
 
    Provider.of<FastFoodHealthEState>(context, listen: false).activeVote = FastFoodHealthEUser.fromJson(theMap, context);
 

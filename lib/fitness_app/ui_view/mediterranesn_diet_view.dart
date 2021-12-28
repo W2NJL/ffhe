@@ -133,20 +133,20 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
 
     if(fastFoodHealthEUser!=null){
-      print("Got here in never never land");
+
 
 
 
         Calories = fastFoodHealthEUser.todaysCal;
 
-        print("Just testing this: " + Calories.toString());
+
 
 
         sodium = fastFoodHealthEUser.todaysSodium;
 
         carbs = fastFoodHealthEUser.todaysCarbs;
 
-      print("Just testing this2: " + carbs.toString());
+
 
         fat = fastFoodHealthEUser.todaysFat;
 
@@ -182,7 +182,7 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
 
 
 
-      print("Van McCoy is: " + done.toString());
+
     }
 
 
@@ -230,9 +230,9 @@ class _DrillDownScreenState extends State<DrillDownScreen> {
     meals = fastFoodHealthEUser.restaurantList;
 
 if(meals!=null){
-//    print(fridgesDs.runtimeType);
+//
     meals.forEach((key, value) {
-      print("Value is: " + value['Restaurant'].toString());
+
 
 
       restaurants.add(value['Restaurant'].toString());
@@ -274,7 +274,7 @@ if(meals!=null){
   //       .once()
   //       .then((snapshot){result=snapshot.value;});
   //
-  //   print("Here it is NICKY: " + result.toString());
+  //
   //   done = true;
   //
   //   if(result != null) {
@@ -346,7 +346,7 @@ if(meals!=null){
 
         default: {
           graphMeasure = "Kcal";
-          print(dietPlan);
+
         } break;
       }
 
@@ -1244,7 +1244,7 @@ if(done){
       graph2Divisor = 1;
       graph2Bool = false;
 
-      print("Here nick. " + carbs.toString());
+
 
 
 
@@ -1788,7 +1788,7 @@ Future <String> _getDietPlan() async {
   .child('DietPlan')
   .once()
       .then((snapshot){result=snapshot.value;});
-  print(result);
+
 
   SharedPreferences preferences = await SharedPreferences.getInstance();
   return preferences.getString("dietPlan") ?? "No plan selected";

@@ -45,11 +45,12 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
 
 
+
   @override
   void didChangeDependencies() {
 
     Future.delayed(Duration(milliseconds: 1500), () {
-      print("Got to future delayed");
+
       if(firebaseUser ==null) {
         setUpUsers();
       }
@@ -128,7 +129,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             this._interstitialAd = ad;
           },
           onAdFailedToLoad: (LoadAdError error) {
-            print('InterstitialAd failed to load: $error');
+
           },
         ));
   }
@@ -143,7 +144,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
 
         if(user!= null) {
-          print("Evaluating from My Diary Screen");
+
           addAllListData();
         }
 
@@ -166,7 +167,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   void addAllListData () async {
 
 
-      print("Got here");
+
 
 
       done = true;
@@ -174,7 +175,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
     const int count = 4;
 
-    print("Done is: " + done.toString());
+
 
     listViews.add(
 
@@ -233,7 +234,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
               onTap: (){
 
                 _interstitialAd.show();
-                Navigator.pushNamed(context, 'RestaurantScreen');
+                Navigator.pushNamed(context, 'RestaurantScreen').then((value) => setState(() {}));;
 
 
 
@@ -253,7 +254,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
             },
               child: ListTile(
-                title: Text("Nationwide restaurants"),
+                title: Text("Search for a Restaurant"),
 
 
 
@@ -345,6 +346,9 @@ color: Colors.deepOrange,
         ),
 
       ),);
+
+
+
 
       final BannerAd myBanner = BannerAd(
         adUnitId: 'ca-app-pub-3940256099942544/6300978111',
@@ -504,7 +508,7 @@ return FutureBuilder<bool>(
 
   Widget getMainListViewUI() {
 
-    print("Work work work work work");
+
 
     return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {

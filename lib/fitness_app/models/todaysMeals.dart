@@ -96,7 +96,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
 
 
 
-    print("Date is: " + date.day.toString());
+
 
 
 
@@ -113,7 +113,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
       selectedDate = date;
 
       formattedDate = formatter.format(date);
-      print(formattedDate);
+
       _callLettersRef = database.reference().child(userID).child('DietVals').child(formattedDate).child('Meals');
       checkData(_callLettersRef );
       callTheFunction();
@@ -152,7 +152,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
   //
   //   currDate = month + " " + day.toString() + ", " + year.toString();
   //
-  //   print("Hi :" + currDate);
+  //
   // }
 
   Future <String> _getNutrientAmount(String mealName, String diet) async {
@@ -165,7 +165,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
         .child('Meals')
         .once()
         .then((snapshot){result=snapshot.value;});
-    print("The result is: " + result);
+
 
 
 
@@ -263,11 +263,11 @@ class _TodaysMealsState extends State<TodaysMeals> {
     // nutrientList.add(ref.child('User').child('DietVals').child('Low Cholesterol'));
     // nutrientList.add(ref.child('User').child('DietVals').child('Saturated Fat'));
 
-     print("test!" + nutrientList.elementAt(0).toString());
+
 
  final nutrientTypes = NutrientList.listOfNutrients;
 
-print(nutrientList.toString());
+
 
 
 
@@ -306,6 +306,7 @@ print(nutrientList.toString());
       ),
         firstDate: DateTime.now().subtract(Duration(days: 140)),
         lastDate: DateTime.now(),
+          locale: 'en'
       ),
 
 
@@ -335,7 +336,7 @@ print(nutrientList.toString());
 
                               leading: GestureDetector(
                                 onTap: (){
-                                  print("Got a Steve");
+
 
 
                                     showDialog(
@@ -386,9 +387,15 @@ print(nutrientList.toString());
                           })
                       :Column(
 
-                          children: [Container(
+                          children: [
+                            Image.asset("images\/" + "FastFoodHealthELogo_WhiteSlogan.png",
 
-                            margin: EdgeInsets.only(top: 150, right: 10, left: 10, bottom: 15),
+
+
+                            ),
+                            Container(
+
+                            margin: EdgeInsets.only(top: 10, right: 10, left: 10, bottom: 15),
                             child: Center(child: RichText(
 
                               text: TextSpan(

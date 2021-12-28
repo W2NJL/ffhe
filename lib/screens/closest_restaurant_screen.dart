@@ -30,7 +30,7 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
   getChoices() async{
 
-    print("Hey yaaaaa!");
+
 
     var response = await _dio.get('https://d1gvlspmcma3iu.cloudfront.net/restaurants-3d-party.json.gz');
 
@@ -38,13 +38,13 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
 
 
-    print('Love is a losing game ' + coordinates.elementAt(0).toString());
+
 
     //var response2 = await http.get(Uri.parse('https://api.tomtom.com/search/2/categorySearch/fast%20food.json?lat='+coordinates.elementAt(0).toString()+'&lon='+coordinates.elementAt(1).toString()+'&key=Ui6wPx3DtzvDbWaAgwiQLfGAgIXTj8Ff'));
 
     Response<dynamic> response2 = await _dio.get('https://api.tomtom.com/search/2/categorySearch/fast%20food.json?lat='+coordinates.elementAt(0).toString()+'&lon='+coordinates.elementAt(1).toString()+'&key=Ui6wPx3DtzvDbWaAgwiQLfGAgIXTj8Ff');
 
-    print(response2.data['results'][0]['poi']['name']);
+
 
    var convertDataToJson  = response2.data['results'] as List;
 
@@ -57,7 +57,7 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
     List tList = new List();
 
-    print('Names is: ' + names.toString());
+
 
     for(int i=0; i<convertDataToJson.length; i++){
 
@@ -72,11 +72,11 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
 
 
-  print('Heres your TList ' + tList.toString());
+
 
   choices = tList.map((e) => Choice.fromJson(e)).toList();
 
-    //print(convertDataToJson.first);
+    //
 
     // choices = (json.decode(response2.data['results'])as List)
     //      .map((data) => Choice.fromJson(data))
@@ -86,7 +86,7 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
 
 
-  print(choices.length);
+
 
     return choices;
 
@@ -107,7 +107,7 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
   _getCurrentLocation() async{
     await helperFunctions.getCoordinates().then((value)  => setState(() {
-      print("Got here!");
+
 
       coordinates = value;
 
@@ -128,11 +128,11 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
     Future<String> getCoordinates () async{
 
       await helperFunctions.getCoordinates().then((value) {
-          print("Got here!");
+
 
         coordinates = value;
 
-        print("Coordinates: "  + coordinates.first.toString());
+
 
         return coordinates.first.toString();
 
@@ -141,7 +141,7 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
     // getTown () async{
     //
-    //   print(coordinates.first.toString());
+    //
     //
     //   await helperFunctions.getLocationFromCoordinates(coordinates).then((value) {
     //
@@ -221,111 +221,135 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
     //       imglink:
     //       'wawa.jpg'),];
 
-    return Scaffold(
-      drawer: NavDrawer(),
-        appBar: MyAppBar(
+    return WillPopScope(
+      onWillPop: () => showDialog<bool>(
+        context: context,
+        builder: (c) => AlertDialog(
+          title: Text('Warning'),
+          content: Text('Do you really want to exit restaurant search?'),
+          actions: [
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false),
+            ),
+            FlatButton(
+              child: Text('No'),
+              onPressed: () => Navigator.pop(c, false),
+            ),
+          ],
+        ),
+      ),
+      child: Scaffold(
+        drawer: NavDrawer(),
+          appBar: MyAppBar(
 
-            route: '/home',
+              route: '/home',
 
-        title: FutureBuilder(future:     helperFunctions.getLocationFromCoordinates(coordinates),
-          builder: (context,  AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: Column(
-                  children: [
-                    Center(child: CircularProgressIndicator()),
-                    Center(
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          color: Colors.black12,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+          title: FutureBuilder(future:     helperFunctions.getLocationFromCoordinates(coordinates),
+            builder: (context,  AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Column(
+                    children: [
+                      Center(child: CircularProgressIndicator()),
+                      Center(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            color: Colors.black12,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            }
-
-
-
-            if (snapshot.connectionState == ConnectionState.done) {
-              //Sort by distance
-
-
-              return
-                Text(
-
-
-                    snapshot.data
+                      )
+                    ],
+                  ),
                 );
-            }
+              }
+
+
+
+              if (snapshot.connectionState == ConnectionState.done) {
+                //Sort by distance
+
+
+                return
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child:
+
+
+                    Text(
+
+
+                      snapshot.data + ' nearby restaurants'
+                  ));
+              }
 
 else {
 
-            return Text(
-              "Could Not Obtain Location",
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            );}
-          },
-        ),context: context),
+              return Text(
+                "Could Not Obtain Location",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              );}
+            },
+          ),context: context),
 
-            body:  FutureBuilder(future:     getChoices(),
-    builder: (context,  AsyncSnapshot snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(
-          child: Column(
-            children: [
-              Center(child: CircularProgressIndicator()),
-              Center(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    color: Colors.black12,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-    ),
-    )
-              )],
-    ),
-    );
-    }
-    if (snapshot.connectionState == ConnectionState.done) {
-        //Sort by distance
-
-
-        return
-        ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(20.0),
-        children: List.generate(snapshot.data.length, (index) {
+              body:  FutureBuilder(future:     getChoices(),
+      builder: (context,  AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
+            child: Column(
+              children: [
+                Center(child: CircularProgressIndicator()),
+                Center(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.black12,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+      ),
+      )
+                )],
+      ),
+      );
+      }
+      if (snapshot.connectionState == ConnectionState.done) {
+          //Sort by distance
 
-            child: ChoiceCard(
-                choice: choices[index], item: choices[index]),
-    );
-    }));}
+
+          return
+          ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(20.0),
+          children: List.generate(snapshot.data.length, (index) {
+            return Center(
+
+              child: ChoiceCard(
+                  choice: choices[index], item: choices[index]),
+      );
+      }));}
 
 
 
-    else {
+      else {
 
-    return Text(
-    "Could Not Obtain Location",
-    style: TextStyle(
-    color: Colors.white70,
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-    ),
-    );}
+      return Text(
+      "Could Not Obtain Location",
+      style: TextStyle(
+      color: Colors.white70,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      ),
+      );}
   },
-  ),);
+  ),),
+    );
 
 
 }}
@@ -376,9 +400,12 @@ class ChoiceCard extends StatelessWidget {
 
   final bool selected;
 
+
+
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.headline1;
+    HelperFunctions helperFunctions = new HelperFunctions();
 
     if (selected)
       textStyle = textStyle.copyWith(color: Colors.lightGreenAccent[400]);
@@ -394,24 +421,36 @@ class ChoiceCard extends StatelessWidget {
         );
       },
       child: Container(
+
         height: 280,
         width: 350,
         child: Card(
+
             color: Colors.white,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 new Container(
                   height: 100,
                     width: 100,
                     padding: const EdgeInsets.all(8.0),
-                    child: Image.network("https://logo.clearbit.com/" + fixName(choice.name) + ".com")),
+                    child: Image.network("https://logo.clearbit.com/" + helperFunctions.fixName(choice.name) + ".com"
+
+                    ,errorBuilder: (context, error, StackTrace){
+                        return Image.network(
+
+
+                            "https://static.wixstatic.com/media/7d5dd4_7314dd4e69d3447e8fcf6319495fdb80~mv2.png/v1/fill/w_150,h_150,al_c,q_85,usm_0.66_1.00_0.01/FastFoodHealthELogo.webp"
+                        );
+                      })),
                 new Container(
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(choice.name, style: Theme.of(context).textTheme.headline3),
+                      Text(choice.name, style: Theme.of(context).textTheme.headline4),
                       Text(choice.distance + ' mi.', style: Theme.of(context).textTheme.headline5),
                       Text(choice.address, style: Theme.of(context).textTheme.bodyText2),
                       // Text(choice.date,
@@ -421,7 +460,7 @@ class ChoiceCard extends StatelessWidget {
                   ),
                 )
               ],
-              crossAxisAlignment: CrossAxisAlignment.start,
+
             )),
       ),
     );

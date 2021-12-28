@@ -42,7 +42,7 @@ class _AuthenticateState extends State<Authenticate> {
           if(value !=null) {
             firstRun = value;
           }
-          print("Bool is: " + value.toString());
+
         }));
   }
 
@@ -61,7 +61,7 @@ class _AuthenticateState extends State<Authenticate> {
 
     if (firebaseUser != null) {
       if (!firstRun) {
-        return IntroScreen();
+        return FitnessAppHomeScreen();
       }
     }
     return LaunchScreen();

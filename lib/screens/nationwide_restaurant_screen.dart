@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fast_food_health_e/screens/meal_screen.dart';
+import 'package:fast_food_health_e/utils/debouncer.dart';
 import 'package:fast_food_health_e/utils/helperFunctions.dart';
 import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:fast_food_health_e/widgets/navdrawer.dart';
@@ -18,35 +19,43 @@ class NationwideRestaurantScreen extends StatefulWidget {
 
 
 class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>  {
+  final _debouncer = Debouncer(milliseconds: 500);
   HelperFunctions helperFunctions = new HelperFunctions();
-  List<double> coordinates;
   Dio _dio = new Dio();
   List<Choice> choices = <Choice>[];
   http.Client client;
 
 
 
-  getChoices() async{
+  Future<List<Choice>> getChoices() async{
 
-    print("Hey yaaaaa!");
+
 
     var response = await http.get(Uri.parse('https://d1gvlspmcma3iu.cloudfront.net/restaurants-3d-party.json.gz'));
 
 
-    //print(response.body);
-    print(response.body);
+    //
 
-    choices = (json.decode(response.body)as List)
+    var decodedFromTVStudyServer = jsonDecode(response.body);
 
 
-        .map((data) => Choice.fromJson(data))
+
+
+
+    final parsed = decodedFromTVStudyServer.cast<Map>();
+
+
+    choices = parsed.map<Choice>(
+
+
+            (json) => Choice(json))
         .toList();
 
     choices.sort((a, b) {
       return a.name.toLowerCase().compareTo(b.name.toLowerCase());
     });
 
-    print(choices.length.toString());
+
 
     return choices;
 
@@ -56,7 +65,7 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
   void initState() {
 
 
-    _getCurrentLocation();
+
 
 
 
@@ -65,43 +74,23 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
 
   }
 
-  _getCurrentLocation() async{
-    await helperFunctions.getCoordinates().then((value)  => setState(() {
-      print("Got here!");
-
-      coordinates = value;
-
-
-
-    }));
 
 
 
 
 
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
     var title = "Choose a restaurant";
 
-    Future<String> getCoordinates () async{
 
-      await helperFunctions.getCoordinates().then((value) {
-        print("Got here!");
-
-        coordinates = value;
-
-        print("Coordinates: "  + coordinates.first.toString());
-
-        return coordinates.first.toString();
-
-      });
-    }
 
     // getTown () async{
     //
-    //   print(coordinates.first.toString());
+    //
     //
     //   await helperFunctions.getLocationFromCoordinates(coordinates).then((value) {
     //
@@ -181,20 +170,46 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
     //       imglink:
     //       'wawa.jpg'),];
 
-    return Scaffold(
-      drawer: NavDrawer(),
-      appBar: MyAppBar(
+    return WillPopScope(
+      onWillPop: () => showDialog<bool>(
+        context: context,
+        builder: (c) => AlertDialog(
+          title: Text('Warning'),
+          content: Text('Do you really want to exit restaurant search?'),
+          actions: [
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false),
+            ),
+            FlatButton(
+              child: Text('No'),
+              onPressed: () => Navigator.pop(c, false),
+            ),
+          ],
+        ),
+      ),
+      child: Scaffold(
+        drawer: NavDrawer(),
+        appBar: MyAppBar(
 
-          route: '/home',
+            route: '/home',
 
-          title: FutureBuilder(future:     helperFunctions.getLocationFromCoordinates(coordinates),
-            builder: (context,  AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Column(
-                    children: [
-                      Center(child: CircularProgressIndicator()),
-                      Center(
+            title:
+                    Text(
+
+
+                        'Nationwide Restaurants'
+                    ),context: context),
+
+
+        body:  FutureBuilder(future:     getChoices(),
+          builder: (context,  AsyncSnapshot <List<Choice>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Column(
+                  children: [
+                    Center(child: CircularProgressIndicator()),
+                    Center(
                         child: Text(
                           title,
                           style: TextStyle(
@@ -202,110 +217,96 @@ class _NationwideRestaurantScreenState extends State<NationwideRestaurantScreen>
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              }
+                        )
+                    )],
+                ),
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+choices = snapshot.data;
+print(snapshot.data);
+
+
+return
+      Column(
+      children: [
+      StatefulBuilder(builder:
+      (BuildContext context, StateSetter setState) {
+      return Expanded(child: Column(
+      children: [
+      TextField(
+      decoration: InputDecoration(
+      contentPadding: EdgeInsets.all(15.0),
+      hintText: "Type in a restaurant",
+      ),
+      onChanged: (string) {
+      _debouncer.run(() {
+      setState(() {
+      choices = snapshot.data
+          .where((u) => (helperFunctions.fixName(u.name)
+          .toLowerCase()
+          .contains(helperFunctions.fixName(string).toLowerCase())))
+          .toList();
+      });
+      });
+      },
+      ),
+      Expanded(
+        child: ListView.builder(
+        itemCount: choices.length,itemBuilder: (BuildContext context,int index){
+
+        return ChoiceCard(choice: choices.elementAt(index));
+        }
+        ),
+        ),
+
+
+      ],
+      ));},
+      )]);
+              //Sort by distance
+
+
+             }
 
 
 
-              if (snapshot.connectionState == ConnectionState.done) {
-                //Sort by distance
+            else {
 
-
-                return
-                  Text(
-
-
-                      'Nationwide Restaurants'
-                  );
-              }
-
-              else {
-
-                return Text(
-                  "Could Not Obtain Location",
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                );}
-            },
-          ),context: context),
-
-      body:  FutureBuilder(future:     getChoices(),
-        builder: (context,  AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: Column(
-                children: [
-                  Center(child: CircularProgressIndicator()),
-                  Center(
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          color: Colors.black12,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                  )],
-              ),
-            );
-          }
-          if (snapshot.connectionState == ConnectionState.done) {
-            //Sort by distance
-
-
-            return
-              ListView(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(20.0),
-                  children: List.generate(snapshot.data.length, (index) {
-                    return Center(
-
-                      child: ChoiceCard(
-                          choice: choices[index], item: choices[index]),
-                    );
-                  }));}
-
-
-
-          else {
-
-            return Text(
-              "Could Not Obtain Location",
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            );}
-        },
-      ),);
+              return Text(
+                "Could Not Obtain Location",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              );}
+          },
+        ),),
+    );
 
 
   }}
 
 class Choice {
   final String name;
-
-
-  const Choice({this.name});
-
-  factory Choice.fromJson(Map<String, dynamic> json) {
+  Choice._({this.name});
 
 
 
-    return new Choice(
+  factory Choice(Map json) => Choice._(
+
+
+
 
       name: json['name'].toString(),
 
+
+
     );
-  }
+
+
+  @override toString() => 'Name: $name';
 }
 
 class ChoiceCard extends StatelessWidget {
@@ -343,6 +344,7 @@ class ChoiceCard extends StatelessWidget {
         );
       },
       child: Container(
+        alignment: Alignment.center,
         width: 200,
         height: 300,
         child: Card(
@@ -368,11 +370,13 @@ class ChoiceCard extends StatelessWidget {
 
                 new Container(
                   padding: const EdgeInsets.all(10.0),
+                  width: 200,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(choice.name, style: Theme.of(context).textTheme.bodyText1),
+                      FittedBox(fit: BoxFit.scaleDown,child: Text(choice.name, style: Theme.of(context).textTheme.headline6)
+                      ),
                       // Text(choice.date,
                       //     style: TextStyle(color: Colors.black.withOpacity(0.5))),
                       // Text(choice.description),
