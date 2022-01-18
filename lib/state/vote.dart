@@ -1,18 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/models/ffhe.dart';
-import 'package:fast_food_health_e/services/service.dart';
 
 class VoteState with ChangeNotifier{
 List <Vote> _voteList = <Vote>[];
 Vote _activeVote;
 String _selectedOptionInActiveVote;
 
-void loadVoteList(BuildContext context) async {
-  //_voteList = getVoteList();
-  //notifyListeners();
-  getVoteListFromFirestore(context);
-}
+
 
 void clearState(){
   _voteList = null;

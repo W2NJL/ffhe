@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fast_food_health_e/fitness_app/models/todaysMeals.dart';
 import 'package:fast_food_health_e/fitness_app/ui_view/testcalendar.dart';
 import 'package:fast_food_health_e/screens/Login/login.dart';
@@ -25,6 +24,7 @@ import 'package:fast_food_health_e/screens/launch_screen.dart';
 import 'package:fast_food_health_e/screens/ffhe_screen.dart';
 import 'package:fast_food_health_e/screens/dietplan_screen.dart';
 import 'package:fast_food_health_e/screens/newdiet_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:fast_food_health_e/state/vote.dart';
@@ -70,84 +70,99 @@ class FastFoodHealthEApp extends StatelessWidget {
     ChangeNotifierProvider(create: (_) => FastFoodHealthEState()),
       ],
 
-      child: MaterialApp(
+      child: ScreenUtilInit(
+    designSize: Size(390, 844),
+    minTextAdapt: true,
+    splitScreenMode: true,
+    builder: () =>MaterialApp(
 
-        initialRoute: '/',
-        routes: {
-          '/': (context) =>
-              Scaffold(
-                body: Authenticate(),
-              ),
-          'DietScreen': (context) =>
-              Scaffold(
-                body: DietScreen(),
-              ),
-          'BMIScreen': (context) =>
-              Scaffold(
-                body: BMIScreen(),
-              ),
-          'AboutTheTeam': (context) =>
-              Scaffold(
-                body: AboutTheTeam(),
-              ),
-          'FavoritesListScreen': (context) =>
-              Scaffold(
-                body: FavoritesList(),
-              ),
-          'RestaurantScreen': (context) =>
-              Scaffold(
-                body: LocalRestaurantScreen(),
-              ),
-          'NationwideRestaurantScreen': (context) =>
-              Scaffold(
-                body: NationwideRestaurantScreen(),
-              ),
-          'MealScreen': (context) =>
-              Scaffold(
-                body: MealScreen(),
-              ),
-          'NutritionList': (context) =>
-              Scaffold(
-                body: NutritionList(),
-              ),
-          'TodaysMeals': (context) =>
-              Scaffold(
-                body: TodaysMeals(),
-              ),
-          'AskANutritionist': (context) =>
-              Scaffold(
-                body: AskNutritionist(),
-              ),
-          'LegalDisclaimer': (context) =>
-              Scaffold(
-                body: LegalDisclaimer(),
-              ),
-          'LimitScreen': (context) =>
-              Scaffold(
-                body: LimitScreen(),
-              ),
-          'LoginScreen': (context) =>
-              Scaffold(
-                body: LoginScreen(),
-              ),
-          'SignUpScreen': (context) =>
-              Scaffold(
-                body: SignUpScreen(),
-              ),
-          'ResetPWScreen': (context) =>
-              Scaffold(
-                body: ResetScreen(),
-              ),
-          'TestCalendar': (context) =>
-              Scaffold(
-                body: TestCalendar(),
-              ),
+          initialRoute: '/',
+          routes: {
+            '/': (context) =>
+                Scaffold(
+                  body: Authenticate(),
+                ),
+            'DietScreen': (context) =>
+                Scaffold(
+                  body: DietScreen(),
+                ),
+            'BMIScreen': (context) =>
+                Scaffold(
+                  body: BMIScreen(),
+                ),
+            'AboutTheTeam': (context) =>
+                Scaffold(
+                  body: AboutTheTeam(),
+                ),
+            'FavoritesListScreen': (context) =>
+                Scaffold(
+                  body: FavoritesList(),
+                ),
+            'RestaurantScreen': (context) =>
+                Scaffold(
+                  body: LocalRestaurantScreen(),
+                ),
+            'NationwideRestaurantScreen': (context) =>
+                Scaffold(
+                  body: NationwideRestaurantScreen(),
+                ),
+            'MealScreen': (context) =>
+                Scaffold(
+                  body: MealScreen(),
+                ),
+            'NutritionList': (context) =>
+                Scaffold(
+                  body: NutritionList(),
+                ),
+            'TodaysMeals': (context) =>
+                Scaffold(
+                  body: TodaysMeals(),
+                ),
+            'AskANutritionist': (context) =>
+                Scaffold(
+                  body: AskNutritionist(),
+                ),
+            'LegalDisclaimer': (context) =>
+                Scaffold(
+                  body: LegalDisclaimer(),
+                ),
+            'LimitScreen': (context) =>
+                Scaffold(
+                  body: LimitScreen(),
+                ),
+            'LoginScreen': (context) =>
+                Scaffold(
+                  body: LoginScreen(),
+                ),
+            'SignUpScreen': (context) =>
+                Scaffold(
+                  body: SignUpScreen(),
+                ),
+            'ResetPWScreen': (context) =>
+                Scaffold(
+                  body: ResetScreen(),
+                ),
+            'TestCalendar': (context) =>
+                Scaffold(
+                  body: TestCalendar(),
+                ),
 
-          '/home': (context) =>
-              Scaffold(
-                body: FitnessAppHomeScreen(),
-              )
-        },
+            '/home': (context) =>
+                Scaffold(
+                  body: FitnessAppHomeScreen(),
+                )
+          },
+
+        builder: (context, widget) {
+          ScreenUtil.setContext(context);
+          return MediaQuery(
+            //Setting font does not change with system font size
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            child: widget,
+
+          );
+        }
+        ),
       ),
     );
   }}

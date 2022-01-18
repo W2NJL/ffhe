@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:fast_food_health_e/utils/nutrientLabel.dart';
 import 'package:provider/provider.dart';
@@ -332,7 +333,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
                               Animation<double> animation,
                               int index){
                             return new ListTile(
-                              contentPadding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+                              contentPadding: EdgeInsets.only(top: 4.h, bottom: 4.h, left: 4.w, right: 4.w),
 
                               leading: GestureDetector(
                                 onTap: (){
@@ -349,11 +350,11 @@ class _TodaysMealsState extends State<TodaysMeals> {
 
                                 child: ConstrainedBox(
                                     constraints:
-                                    BoxConstraints(minWidth: 100, minHeight: 100),
+                                    BoxConstraints(minWidth: 100.w, minHeight: 100.h),
                                     child: Image.network(
                                       joe.getRestaurantIcon(snapshot.value['Restaurant'].toString()),
-                                      width: 100,
-                                      height: 100,
+                                      width: 100.h,
+                                      height: 100.w,
                                       errorBuilder: (context, error, StackTrace){
                                         return Image.network(
 
@@ -395,12 +396,12 @@ class _TodaysMealsState extends State<TodaysMeals> {
                             ),
                             Container(
 
-                            margin: EdgeInsets.only(top: 10, right: 10, left: 10, bottom: 15),
+                            margin: EdgeInsets.only(top: 10.h, right: 10.w, left: 10.w, bottom: 15.h),
                             child: Center(child: RichText(
 
                               text: TextSpan(
 
-                                style: TextStyle(color: Colors.black, fontSize: 36),
+                                style: TextStyle(color: Colors.black, fontSize: 36.sp),
                                 children: <TextSpan>[
                                   TextSpan(text: 'No meals available! ', style: TextStyle(color: Colors.blue)),
 
@@ -411,10 +412,10 @@ class _TodaysMealsState extends State<TodaysMeals> {
                             ),
                           ),
                             Container(
-                              margin: EdgeInsets.only(top: 2, right: 20, left: 20, bottom: 200),
+                              margin: EdgeInsets.only(top: 2.h, right: 20.w, left: 20.w, bottom: 200.h),
                               child: Center(child: RichText(
                                 text: TextSpan(
-                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  style: TextStyle(color: Colors.black, fontSize: 16.sp),
                                   children: <TextSpan>[
                                     TextSpan(text: 'There were no meal items entered on this date.', style: TextStyle(color: Colors.black)),
 

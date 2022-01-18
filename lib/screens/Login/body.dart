@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants.dart';
 import 'already_have_an_account_acheck.dart';
 import 'background.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fast_food_health_e/screens/resetpw_screen.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,6 +28,7 @@ class _BodyState extends State<Body> {
   bool sharedPrefValue = false;
   String _email, _password;
   List<String> credentialsFromShared = <String>[];
+  bool _isHidden = true;
 
   _BodyState(){
     _getRememberPref().then((value) =>setState(() {
@@ -39,6 +39,8 @@ class _BodyState extends State<Body> {
 
 
     }));
+
+
 
 
    _getRememberMe().then((value) => setState(() {

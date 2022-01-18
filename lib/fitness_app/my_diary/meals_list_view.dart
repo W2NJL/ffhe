@@ -2,6 +2,7 @@ import 'package:fast_food_health_e/fitness_app/fintness_app_theme.dart';
 import 'package:fast_food_health_e/fitness_app/models/meals_list_data.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../main.dart';
 
@@ -51,11 +52,11 @@ class _MealsListViewState extends State<MealsListView>
             transform: Matrix4.translationValues(
                 0.0, 30 * (1.0 - widget.mainScreenAnimation.value), 0.0),
             child: Container(
-              height: 216,
+              height: 216.h,
               width: double.infinity,
               child: ListView.builder(
-                padding: const EdgeInsets.only(
-                    top: 0, bottom: 0, right: 16, left: 16),
+                padding: EdgeInsets.only(
+                    top: 0, bottom: 0, right: 16.w, left: 16.w),
                 itemCount: mealsListData.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
@@ -104,12 +105,12 @@ class MealsView extends StatelessWidget {
             transform: Matrix4.translationValues(
                 100 * (1.0 - animation.value), 0.0, 0.0),
             child: SizedBox(
-              width: 130,
+              width: 130.w,
               child: Stack(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(
-                        top: 32, left: 8, right: 8, bottom: 16),
+                    padding: EdgeInsets.only(
+                        top: 32.h, left: 8.w, right: 8.w, bottom: 16.h),
                     child: Container(
                       decoration: BoxDecoration(
                         boxShadow: <BoxShadow>[
@@ -135,8 +136,8 @@ class MealsView extends StatelessWidget {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 54, left: 16, right: 16, bottom: 8),
+                        padding: EdgeInsets.only(
+                            top: 54.h, left: 16.w, right: 16.w, bottom: 8.h),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,

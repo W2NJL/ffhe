@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fast_food_health_e/screens/verify_email.dart';
 import 'package:fast_food_health_e/state/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/widgets/shared_widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -58,13 +58,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
               "SIGN UP",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: size.height * 0.03),
+            SizedBox(height: 5.h),
             Image.asset("images\/" + "FastFoodHealthELogo_Slogan.png",
 
 
 
             ),
-            SizedBox(height: size.height * 0.03),
+            SizedBox(height: 5.h),
             RoundedInputField(
               hintText: "Your Email",
               onChanged: (value) {
@@ -134,7 +134,7 @@ else {
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.grey,
         textColor: Colors.white,
-        fontSize: 16.0,);
+        fontSize: 16.0.sp);
     }
   }
 

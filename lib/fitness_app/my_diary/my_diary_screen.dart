@@ -15,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -184,7 +185,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
             children:[
               Padding(
-                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+                padding: EdgeInsets.only(top: 4.h, bottom: 4.h, left: 4.w, right: 4.w),
               ),
               Text(
                 "Diet plan:",
@@ -192,13 +193,13 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                 style: TextStyle(
                   fontFamily: FitnessAppTheme.fontName,
                   fontWeight: FontWeight.normal,
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   letterSpacing: -0.2,
                   color: FitnessAppTheme.darkerText,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
+                padding: EdgeInsets.only(top: 4.h, bottom: 4.h, left: 4.w, right: 4.w),
               ),
             Text(
                       joe.getDietPlanHeader(user),
@@ -206,7 +207,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                       style: TextStyle(
                         fontFamily: FitnessAppTheme.fontName,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         letterSpacing: -0.2,
                         color: FitnessAppTheme.darkerText,
                       ),
@@ -310,14 +311,14 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
     listViews.add(
       Padding(
-        padding: const EdgeInsets.only(top: 4, bottom: 10, left: 4, right: 4),
+        padding: EdgeInsets.only(top: 4.h, bottom: 10.h, left: 4.w, right: 4.w),
         child: Text(
           "Nutrition Tip Of The Day",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: FitnessAppTheme.fontName,
             fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontSize: 18.sp,
             letterSpacing: -0.2,
             color: Colors.black,
           ),
@@ -328,7 +329,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     listViews.add(
       Card(
 color: Colors.deepOrange,
-        margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+        margin: EdgeInsets.only(bottom: 20.h, left: 20.w, right: 20.w),
         child: FutureBuilder(
             future: _getNutritionTip(),
             initialData: "Loading text..",
@@ -339,7 +340,7 @@ color: Colors.deepOrange,
                 style: TextStyle(
                   fontFamily: FitnessAppTheme.fontName,
                   fontWeight: FontWeight.normal,
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   color: Colors.black,
                 ),
               );}
@@ -515,10 +516,10 @@ return FutureBuilder<bool>(
             return ListView.builder(
               controller: scrollController,
               padding: EdgeInsets.only(
-                top: 5,
-                bottom: 62 + MediaQuery.of(context).padding.bottom,
-                left: 10,
-                right: 10,
+                top: 5.h,
+                bottom: 62.h + MediaQuery.of(context).padding.bottom,
+                left: 10.w,
+                right: 10.w,
               ),
               itemCount: listViews.length,
               scrollDirection: Axis.vertical,

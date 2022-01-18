@@ -4,32 +4,63 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 
 
-class RoundedPasswordField extends StatelessWidget {
+class RoundedPasswordField extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final String initialValue;
-  const RoundedPasswordField({
-    Key key,
-    this.onChanged,
-    this.initialValue,
-  }) : super(key: key);
+
+
+  RoundedPasswordField ({this.onChanged, this.initialValue});
+
+
+  @override
+  State<StatefulWidget> createState() => new RoundedPasswordFieldState(onChanged, initialValue);
+}
+
+
+
+class RoundedPasswordFieldState extends State<RoundedPasswordField>  {
+final ValueChanged<String> changed;
+final String firstValue;
+bool obscure = true;
+
+  RoundedPasswordFieldState(this.changed, this.firstValue);
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
+
+
+    _toggleObscure(){
+      setState(() {
+        obscure = !obscure;
+      });
+    }
+
     return TextFieldContainer(
       child: TextFormField(
-                obscureText: true,
-        onChanged: onChanged,
+
+                obscureText: obscure,
+        onChanged: changed,
         cursorColor: kPrimaryColor,
-        initialValue: initialValue,
+        initialValue: firstValue,
         decoration: InputDecoration(
           hintText: "Password",
           icon: Icon(
             Icons.lock,
             color: kPrimaryColor,
           ),
-          suffixIcon: Icon(
-            Icons.visibility,
-            color: kPrimaryColor,
+          suffixIcon: IconButton(
+            icon: Icon(
+
+              Icons.visibility,
+              color: kPrimaryColor,
+            ),
+            onPressed:  _toggleObscure(),
           ),
           border: InputBorder.none,
         ),

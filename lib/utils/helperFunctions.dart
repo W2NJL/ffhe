@@ -43,7 +43,7 @@ class HelperFunctions{
 
 
 
-    return city + ", " + USStates.getAbbreviation(state);
+    return city + ", " + state;
   }
 
   String fixName(String name) {
