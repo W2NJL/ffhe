@@ -31,6 +31,7 @@ import 'package:fast_food_health_e/state/vote.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
 
@@ -38,17 +39,30 @@ import 'screens/nationwide_restaurant_screen.dart';
 SharedPreferences preferences;
 
 
-void main() async {
+
+
+
+  Future<void> main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    MobileAds.instance.initialize();
+    preferences = await SharedPreferences.getInstance();
+    await Firebase.initializeApp();
+    await SentryFlutter.init(
+          (options) {
+        options.dsn = 'https://f2de1dfa43c947ddac1a5eb4362ef5a3@o1049920.ingest.sentry.io/6158018';
+        // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+        // We recommend adjusting this value in production.
+        options.tracesSampleRate = 1.0;
+      },
+
+
+        appRunner: () => runApp(FastFoodHealthEApp())
+    );
 
 
 
 
-  WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
-  preferences = await SharedPreferences.getInstance();
 
-  await Firebase.initializeApp();
-  runApp(FastFoodHealthEApp());
 }
 class FastFoodHealthEApp extends StatelessWidget {
 //final FirebaseServices firebaseServices = FirebaseServices();

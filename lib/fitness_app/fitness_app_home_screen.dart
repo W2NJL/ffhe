@@ -69,7 +69,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
 
 
-      }).catchError((e) {
+      }).catchError((e) async {
 
 
 
@@ -107,7 +107,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
 
 
-    }).catchError((e) {
+    }).catchError((e) async {
 
 
 

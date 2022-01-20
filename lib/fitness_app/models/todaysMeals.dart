@@ -444,6 +444,7 @@ class _TodaysMealsState extends State<TodaysMeals> {
 
 
   void initNutrients(DataSnapshot snapshot) {
+
    NutrientList.nf_calories = snapshot.value['calories'];
    NutrientList.nf_sodium = snapshot.value['sodium'];
    NutrientList.nf_total_fat = snapshot.value['fat'];
