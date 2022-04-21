@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -33,6 +34,36 @@ class HelperFunctions{
     coordinates.add(preferences.getDouble("longitude"));
     return coordinates;
   }
+
+
+  Future<String> getCoordinatesFromLocation(String location, List<double> myCoords) async {
+
+
+    String geocodeURI = 'https://app.geocodeapi.io/api/v1/search?text=' +
+        location + '&apikey=a7abd6d0-4bb1-11ec-95f9-b1fb413adb6c';
+    try {
+      Dio _dio = new Dio();
+
+      Response<dynamic> response = await _dio.get(
+          geocodeURI);
+      final geoLocatorResponse = new Map<String, dynamic>.from(response.data);
+      final theResponse = geoLocatorResponse['features'][0]['geometry']['coordinates'];
+
+
+
+      var distance = Geolocator.distanceBetween(myCoords.elementAt(0), myCoords.elementAt(1), theResponse[1], theResponse[0]);
+
+
+
+      return (distance*0.000621).toStringAsPrecision(2);
+    }
+    catch (exception) {
+
+
+      throw Exception(exception);
+    }
+  }
+
 
   Future<String> getLocationFromCoordinates(List<double> coords) async {
 

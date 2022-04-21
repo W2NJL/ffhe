@@ -46,14 +46,23 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
 
 
-   var convertDataToJson  = response2.data['results'] as List;
+
+
+ Dio dio = new Dio();
+ dio.options.headers['Content-Type'] = 'application/json';
+ dio.options.headers['x-app-id'] = 'ac70f0ef';
+ dio.options.headers['x-app-key'] = 'cef8812f8909504292eacbd1a11acf5e';
+ 
+ Response<dynamic> response3 = await dio.get('https://trackapi.nutritionix.com/v2/locations?ll='+coordinates.elementAt(0).toString()+','+coordinates.elementAt(1).toString()+'&distance=50000m&limit=50');
 
 
 
-
+    var convertDataToJson  = response3.data['locations'] as List;
 
 
     var names = response.data as List;
+
+
 
     List tList = new List();
 
@@ -61,11 +70,9 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
     for(int i=0; i<convertDataToJson.length; i++){
 
-      if(names.any((e) => e['name'] == convertDataToJson[i]['poi']['name'].toString()
-          ))
-      {
+      convertDataToJson[i]['distance'] = await helperFunctions.getCoordinatesFromLocation(convertDataToJson[i]['address'] + " " + convertDataToJson[i]['city'], coordinates);
         tList.add(convertDataToJson[i]);
-      }
+
 
 
     }
@@ -96,8 +103,8 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
   void initState() {
 
 
-    _getCurrentLocation();
 
+_getCurrentLocation();
 
 
     super.initState();
@@ -359,21 +366,27 @@ else {
 class Choice {
   final String name;
   final String address;
+  final String city;
+  final String state;
   final String distance;
   final String latitude;
   final String longitude;
 
 
 
-  const Choice({this.name, this.address, this.distance, this.latitude, this.longitude});
+
+  const Choice({this.name, this.city, this.state, this.address, this.distance, this.latitude, this.longitude});
 
   factory Choice.fromJson(Map<String, dynamic> json) {
 
     return new Choice(
 
-      name: json['poi']['name'],
-      address: json['address']['freeformAddress'],
-        distance: double.parse((json['dist']/1609.344).toStringAsFixed(1)).toString()
+      name: json['name'],
+      address: json['address'],
+        city: json['city'],
+        state: json['state'],
+        distance:  json['distance'],
+
 
 
 
@@ -452,14 +465,20 @@ class ChoiceCard extends StatelessWidget {
                     children: [
                       Text(choice.name, style: Theme.of(context).textTheme.headline4),
                       Text(choice.distance + ' mi.', style: Theme.of(context).textTheme.headline5),
-                      Text(choice.address, style: Theme.of(context).textTheme.bodyText2),
+                      Row(children: [Expanded(child: Text(choice.address, style: Theme.of(context).textTheme.bodyText2,
+                        maxLines: 2, // you can change it accordingly
+                        overflow: TextOverflow.ellipsis,),
+                        )]),
+                        Text(choice.city + ", " + choice.state, style: Theme.of(context).textTheme.bodyText2),
+                       ],),
+
                       // Text(choice.date,
                       //     style: TextStyle(color: Colors.black.withOpacity(0.5))),
                       // Text(choice.description),
-                    ],
+
                   ),
-                )
-              ],
+
+              ]
 
             )),
       ),

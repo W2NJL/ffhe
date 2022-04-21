@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/widgets/shared_widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +60,7 @@ class _BMIScreenState extends State<BMIScreen> {
   final dropdownDatePicker = DropdownDatePicker(
     firstDate: ValidDate(year: now.year - 100, month: 1, day: 1),
     lastDate: ValidDate(year: now.year, month: now.month, day: now.day),
-    textStyle: TextStyle(fontWeight: FontWeight.bold),
+    textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp),
     dropdownColor: Colors.blue[200],
     dateHint: DateHint(year: 'year', month: 'month', day: 'day'),
     ascending: false,
@@ -88,18 +89,18 @@ class _BMIScreenState extends State<BMIScreen> {
               "SIGN UP",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: size.height * 0.03),
+            SizedBox(height: 3.h),
             Image.asset("images\/" + "FastFoodHealthELogo_Slogan.png",
 
 
 
             ),
-            SizedBox(height: size.height * 0.03),
+            SizedBox(height: 3.h),
 
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[ Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0.r),
                   child: Text(
 
                     "Select your date of birth: ",
@@ -124,7 +125,7 @@ class _BMIScreenState extends State<BMIScreen> {
     timeInSecForIosWeb: 1,
     backgroundColor: Colors.grey,
     textColor: Colors.white,
-    fontSize: 16.0,);
+    fontSize: 16.0.sp);
     }
 
                   else {

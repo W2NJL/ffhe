@@ -11,11 +11,13 @@ import 'package:fast_food_health_e/models/fastFoodHealthE.dart';
 import 'package:fast_food_health_e/services/firebase_services.dart';
 import 'package:fast_food_health_e/state/FastFoodHealthEState.dart';
 import 'package:fast_food_health_e/utils/firebaseFunctions.dart';
+import 'package:fast_food_health_e/utils/helperFunctions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,7 +46,9 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   bool done = false;
   InterstitialAd _interstitialAd;
 
-
+  Position _currentPosition;
+  bool locationServicesTimeOut = true;
+  HelperFunctions helperFunctions = new HelperFunctions();
 
 
   @override
@@ -219,6 +223,39 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
     );
 
+      _getCurrentLocation() async {
+        LocationPermission permission;
+        permission = await Geolocator.checkPermission();
+        if (permission == LocationPermission.denied) {
+          permission = await Geolocator.requestPermission();
+          if (permission == LocationPermission.deniedForever) {
+            return Future.error('Location Not Available');
+          }
+        }
+        if (permission == LocationPermission.always ||
+            permission == LocationPermission.whileInUse) {
+          await Geolocator
+              .getCurrentPosition(desiredAccuracy: LocationAccuracy.best,
+              forceAndroidLocationManager: true,
+              timeLimit: Duration(seconds: 30))
+              .then((Position position) {
+            setState(() {
+              if (position != null) {
+                _currentPosition = position;
+              }
+
+              helperFunctions.storeCoordinatesInSharedPrefs(position);
+              locationServicesTimeOut = false;
+            });
+          });
+        } else {
+          throw Exception('Error');
+        }
+      }
+
+
+
+
 
 
     listViews.add(
@@ -234,8 +271,8 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             GestureDetector(
               onTap: (){
 
-                _interstitialAd.show();
-                Navigator.pushNamed(context, 'RestaurantScreen').then((value) => setState(() {}));;
+
+               sendToRestaurantScreen(_getCurrentLocation);
 
 
 
@@ -469,6 +506,12 @@ color: Colors.deepOrange,
     // );
 
 
+  }
+
+  Future<void> sendToRestaurantScreen(_getCurrentLocation()) async {
+     await _getCurrentLocation();
+     _interstitialAd.show();
+     Navigator.pushNamed(context, 'RestaurantScreen');
   }
 
   Future<bool> getData() async {

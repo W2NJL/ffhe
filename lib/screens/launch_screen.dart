@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/widgets/shared_widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 
@@ -58,14 +59,14 @@ class _LaunchScreenState extends State<LaunchScreen> {
        image: DecorationImage(
            image: AssetImage("images\/" + image_name), fit: BoxFit.cover)),
    child: Container(
-        width: 400,
-        margin: EdgeInsets.all(20.0),
+        width: 400.w,
+        margin: EdgeInsets.all(20.0.r),
 
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
         Container(
-        margin: EdgeInsets.only(top: 100),
+        margin: EdgeInsets.only(top: 100.h),
         child:  Image.asset("images\/" + "FastFoodHealthELogo_Slogan.png",
 
 
@@ -73,7 +74,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
         ),
       ),
       SizedBox(
-      height: 100.0,
+      height: 50.0.h,
       ),
 
        Container(
@@ -87,7 +88,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
       Navigator.pushReplacementNamed(context, 'LoginScreen')
       ),
       SizedBox(
-      height: 10,
+      height: 10.h,
       ),
       LoginButton(
       label: 'Sign Up',

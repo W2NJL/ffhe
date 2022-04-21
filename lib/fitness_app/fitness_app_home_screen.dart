@@ -37,7 +37,6 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
   String currDate;
-  Position _currentPosition;
   bool locationServicesTimeOut = true;
   HelperFunctions helperFunctions = new HelperFunctions();
 
@@ -45,76 +44,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     color: FitnessAppTheme.background,
   );
 
-  _getCurrentLocation() async {
 
-
-
-      await Geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true, timeLimit: Duration(seconds: 5))
-          .then((Position position) {
-
-
-
-        setState(() {
-
-
-          _currentPosition = position;
-          helperFunctions.storeCoordinatesInSharedPrefs(position);
-          locationServicesTimeOut = false;
-
-        });
-
-
-
-
-
-
-      }).catchError((e) async {
-
-
-
-
-        if (e.toString().contains("TimeoutException")){
-          setState(() {
-            locationServicesTimeOut = true;
-          });
-
-          //TODO:  HANDLE OTHER EXCEPETIONS HERE
-        }
-
-
-
-      });
-
-      if (locationServicesTimeOut){
-        await _getLastKnownLocation();
-      }}
-
-  Future<void> _getLastKnownLocation() async {
-    await Geolocator
-        .getLastKnownPosition()
-        .then((Position position) {
-
-
-
-      setState(() {
-
-        _currentPosition = position;
-        helperFunctions.storeCoordinatesInSharedPrefs(position);
-
-        //_storeCoordinatesInSharedPrefs(position);
-      });
-
-
-
-    }).catchError((e) async {
-
-
-
-
-
-
-    });}
 
   void _getDeviceLocationPermissions() {
     // flutter defined function
@@ -156,7 +86,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
   @override
   void initState() {
 
-    _getCurrentLocation();
+
 
     tabIconsList.forEach((TabIconData tab) {
       tab.isSelected = false;
