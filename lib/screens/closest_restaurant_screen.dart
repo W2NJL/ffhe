@@ -70,7 +70,7 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
     for(int i=0; i<convertDataToJson.length; i++){
 
-      convertDataToJson[i]['distance'] = await helperFunctions.getCoordinatesFromLocation(convertDataToJson[i]['address'] + " " + convertDataToJson[i]['city'], coordinates);
+      convertDataToJson[i]['distance'] = "20";
         tList.add(convertDataToJson[i]);
 
 

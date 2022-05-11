@@ -228,12 +228,6 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
         permission = await Geolocator.checkPermission();
         if (permission == LocationPermission.denied) {
           permission = await Geolocator.requestPermission();
-          if (permission == LocationPermission.deniedForever) {
-            return Future.error('Location Not Available');
-          }
-        }
-        if (permission == LocationPermission.always ||
-            permission == LocationPermission.whileInUse) {
           await Geolocator
               .getCurrentPosition(desiredAccuracy: LocationAccuracy.best,
               forceAndroidLocationManager: true,
@@ -248,6 +242,32 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
               locationServicesTimeOut = false;
             });
           });
+
+          if (permission == LocationPermission.deniedForever) {
+            return Future.error('Location Not Available');
+          }
+        }
+        if (permission == LocationPermission.always ||
+            permission == LocationPermission.whileInUse) {
+
+
+
+          if (_currentPosition == null) {
+            await Geolocator
+                .getCurrentPosition(desiredAccuracy: LocationAccuracy.best,
+                forceAndroidLocationManager: true,
+                timeLimit: Duration(seconds: 30))
+                .then((Position position) {
+              setState(() {
+                if (position != null) {
+                  _currentPosition = position;
+                }
+
+                helperFunctions.storeCoordinatesInSharedPrefs(position);
+                locationServicesTimeOut = false;
+              });
+            });
+          }
         } else {
           throw Exception('Error');
         }
@@ -285,7 +305,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
             ),
             GestureDetector(onTap: () {
 
-              _interstitialAd.show();
+
               Navigator.pushNamed(context, 'NationwideRestaurantScreen');
 
 
@@ -510,7 +530,7 @@ color: Colors.deepOrange,
 
   Future<void> sendToRestaurantScreen(_getCurrentLocation()) async {
      await _getCurrentLocation();
-     _interstitialAd.show();
+
      Navigator.pushNamed(context, 'RestaurantScreen');
   }
 
