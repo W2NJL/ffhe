@@ -21,11 +21,10 @@ class RoundedPasswordField extends StatefulWidget {
 class RoundedPasswordFieldState extends State<RoundedPasswordField>  {
 final ValueChanged<String> changed;
 final String firstValue;
-bool obscure = true;
+
 
   RoundedPasswordFieldState(this.changed, this.firstValue);
-
-
+bool obscure = true;
 
 
 
@@ -35,11 +34,7 @@ bool obscure = true;
   Widget build(BuildContext context) {
 
 
-    _toggleObscure(){
-      setState(() {
-        obscure = !obscure;
-      });
-    }
+
 
     return TextFieldContainer(
       child: TextFormField(
@@ -60,11 +55,17 @@ bool obscure = true;
               Icons.visibility,
               color: kPrimaryColor,
             ),
-            onPressed:  _toggleObscure(),
+            onPressed: (){ setState(() {
+              print("medic 50");
+              obscure = !obscure;
+            });}
           ),
           border: InputBorder.none,
         ),
       ),
     );
   }
+
+
+
 }

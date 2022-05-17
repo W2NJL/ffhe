@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:fast_food_health_e/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +20,18 @@ class HelperFunctions{
     ),
     backgroundColor: Colors.blue,
   );
+
+  Future<bool> showToast(String message) {
+    return Fluttertoast.showToast(
+        msg:
+        message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 4,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0.sp);
+  }
 
   void storeCoordinatesInSharedPrefs(Position position) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();

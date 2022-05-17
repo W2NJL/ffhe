@@ -17,6 +17,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
@@ -233,6 +234,9 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
               forceAndroidLocationManager: true,
               timeLimit: Duration(seconds: 30))
               .then((Position position) {
+            helperFunctions.showToast("Obtaining your location. Please wait.");
+
+
             setState(() {
               if (position != null) {
                 _currentPosition = position;
@@ -258,6 +262,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
                 forceAndroidLocationManager: true,
                 timeLimit: Duration(seconds: 30))
                 .then((Position position) {
+              helperFunctions.showToast("Obtaining your location. Please wait.");
               setState(() {
                 if (position != null) {
                   _currentPosition = position;
@@ -527,6 +532,8 @@ color: Colors.deepOrange,
 
 
   }
+
+
 
   Future<void> sendToRestaurantScreen(_getCurrentLocation()) async {
      await _getCurrentLocation();
