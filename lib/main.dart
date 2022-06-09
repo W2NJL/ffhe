@@ -84,11 +84,8 @@ class FastFoodHealthEApp extends StatelessWidget {
     ChangeNotifierProvider(create: (_) => FastFoodHealthEState()),
       ],
 
-      child: ScreenUtilInit(
-    designSize: Size(390, 844),
-    minTextAdapt: true,
-    splitScreenMode: true,
-    builder: () =>MaterialApp(
+      child:
+        MaterialApp(
 
           initialRoute: '/',
           routes: {
@@ -168,7 +165,7 @@ class FastFoodHealthEApp extends StatelessWidget {
           },
 
         builder: (context, widget) {
-          ScreenUtil.setContext(context);
+          ScreenUtil.init(context);
           return MediaQuery(
             //Setting font does not change with system font size
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
@@ -176,9 +173,8 @@ class FastFoodHealthEApp extends StatelessWidget {
 
           );
         }
-        ),
-      ),
-    );
+        ));
+
   }}
 
 
