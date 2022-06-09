@@ -62,6 +62,8 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
     var names = response.data as List;
 
+    print(convertDataToJson);
+
 
 
     List tList = new List();
@@ -70,7 +72,7 @@ class _LocalRestaurantScreenState extends State<LocalRestaurantScreen>  {
 
     for(int i=0; i<convertDataToJson.length; i++){
 
-      convertDataToJson[i]['distance'] = "20";
+      print(convertDataToJson[i]);
         tList.add(convertDataToJson[i]);
 
 
@@ -385,7 +387,7 @@ class Choice {
       address: json['address'],
         city: json['city'],
         state: json['state'],
-        distance:  json['distance'],
+        distance:  (json['distance_km']/1.609).toStringAsFixed(1),
 
 
 
@@ -464,7 +466,7 @@ class ChoiceCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(choice.name, style: Theme.of(context).textTheme.headline4),
-                      Text(choice.distance + ' mi.', style: Theme.of(context).textTheme.headline5),
+                      Text(choice.distance.toString() + ' mi.', style: Theme.of(context).textTheme.headline5),
                       Row(children: [Expanded(child: Text(choice.address, style: Theme.of(context).textTheme.bodyText2,
                         maxLines: 2, // you can change it accordingly
                         overflow: TextOverflow.ellipsis,),
