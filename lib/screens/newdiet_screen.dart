@@ -12,6 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/screens/detail_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
@@ -219,10 +220,12 @@ class _DietPageState extends State<DietPage> {
 
     final ref = referenceDatabase.reference().child(userID);
 
+
+
+
     ListTile makeListTile(DietPlan lesson) => ListTile(
-      contentPadding:
-      EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-      leading: Container(
+    leading: CircleAvatar(backgroundImage: lesson.image),
+      trailing: Container(
         padding: EdgeInsets.only(right: 12.0),
         decoration: new BoxDecoration(
             border: new Border(
@@ -260,8 +263,7 @@ class _DietPageState extends State<DietPage> {
       //     // )
       //   ],
       // ),
-      trailing:
-      Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
+
       onTap: () {
 
         ref.child('DietPlan').set(lesson.title);
@@ -275,13 +277,52 @@ class _DietPageState extends State<DietPage> {
       },
     );
 
+
+
+
+
+
     Card makeCard(DietPlan lesson) => Card(
       elevation: 8.0,
-      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+
       child: Container(
         decoration: BoxDecoration(color: selectedPlan == lesson.title ?  Color.fromRGBO(233, 2, 16, .9) :  Color.fromRGBO(1, 22, 96, .9) ),
         child: makeListTile(lesson),
       ),
+    );
+
+
+
+    final robBody = ListView(
+      padding: const EdgeInsets.all(8),
+      children: <Widget>[
+        Card(child:ListTile(
+            title: Text("Dietary Restriction 1"),
+            subtitle: Text("Range of calories from Y to Z."),
+            leading: CircleAvatar(backgroundImage: NetworkImage("https://images.unsplash.com/photo-1547721064-da6cfb341d50")),
+            trailing: Icon(Icons.star))),
+        Card(child:ListTile( title: Text("Dietary Restriction 2"),subtitle: Text("Range of carbs from Y to Z."), leading: CircleAvatar(backgroundImage: NetworkImage("https://miro.medium.com/fit/c/64/64/1*WSdkXxKtD8m54-1xp75cqQ.jpeg")), trailing:
+        FloatingActionButton(
+          // When the user presses the button, show an alert dialog containing
+          // the text that the user has entered into the text field.
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  // Retrieve the text the that user has entered by using the
+                  // TextEditingController.
+                  content: Text("This is an explanation of dietary restriction 1."),
+                );
+              },
+            );
+          },
+          tooltip: 'Show me the value!',
+          child: const Icon(Icons.text_fields),
+        ),)),
+        Card(child:ListTile( title: Text("Dietary Restriction 3"),subtitle: Text("Range of fat from Y to Z."), leading:  CircleAvatar(backgroundImage: NetworkImage("https://miro.medium.com/fit/c/64/64/1*WSdkXxKtD8m54-1xp75cqQ.jpeg")), trailing: Icon(Icons.star))),
+        Card(child:ListTile( title: Text("Dietary Restriction 4"),subtitle: Text("Range of sodium from Y to Z."), leading:  CircleAvatar(backgroundImage: NetworkImage("https://miro.medium.com/fit/c/64/64/1*WSdkXxKtD8m54-1xp75cqQ.jpeg")), trailing: Icon(Icons.star)))
+      ],
     );
 
     final makeBody = Container(
@@ -325,6 +366,7 @@ else {
               ),
           ),
           ListView.builder(
+            padding: EdgeInsets.all(8.sp),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: dietPlans.length,
@@ -382,6 +424,7 @@ List getDietPlans() {
   return [
     DietPlan(
         title: Constants.LOW_CALORIE_1,
+        image: NetworkImage("https://www.budgetbytes.com/wp-content/uploads/2013/07/Creamy-Spinach-Tomato-Pasta-bowl.jpg"),
         number: 2000,
         level: "Light",
         indicatorValue: 0.33,
@@ -393,6 +436,7 @@ List getDietPlans() {
     ),
     DietPlan(
         title: Constants.LOW_CALORIE_2,
+        image: NetworkImage("https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Salad_platter.jpg/1200px-Salad_platter.jpg"),
         number: 1500,
         level: "Intermediate",
         indicatorValue: 0.66,
@@ -404,6 +448,7 @@ List getDietPlans() {
 
     DietPlan(
         title: Constants.LOW_CALORIE_3,
+        image: NetworkImage("https://www.livewellbakeoften.com/wp-content/uploads/2020/03/Fruit-Salad-5.jpg"),
         number: 1200,
         level: "Advanced",
         indicatorValue: 0.99,

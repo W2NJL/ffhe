@@ -31,43 +31,36 @@ class _MyDietPageState extends State<MyDietPage> {
         )      ),
 
     ),
-    body: Center(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Container(
-          padding: EdgeInsets.only(left: 16, right:16),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey, width: 1),
-            borderRadius: BorderRadius.circular(15)
-          ),
-          child: DropdownButton(
-            hint: Text("Choose your diet plan"),
-            dropdownColor: Colors.blueGrey,
-            icon: Icon(Icons.arrow_drop_down),
-            iconSize: 36,
-            isExpanded: true,
-            underline: SizedBox(),
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 22
-            ),
-            value: valueChoose,
-            onChanged: (newValue){
-              setState((){
-                valueChoose = newValue;
-                storeDietPlan(valueChoose);
-              });
-            },
-            items: listItem.map((valueItem){
-              return DropdownMenuItem(
-                  value: valueItem,
-                  child: Text(valueItem),
-              );
-            }).toList(),
-          ),
-        ),
-      ),
-
+    body:  ListView(
+      padding: const EdgeInsets.all(8),
+      children: <Widget>[
+        Card(child:ListTile(
+            title: Text("Dietary Restriction 1"),
+            subtitle: Text("Range of calories from Y to Z."),
+            leading: CircleAvatar(backgroundImage: NetworkImage("https://images.unsplash.com/photo-1547721064-da6cfb341d50")),
+            trailing: Icon(Icons.star))),
+        Card(child:ListTile( title: Text("Dietary Restriction 2"),subtitle: Text("Range of carbs from Y to Z."), leading: CircleAvatar(backgroundImage: NetworkImage("https://miro.medium.com/fit/c/64/64/1*WSdkXxKtD8m54-1xp75cqQ.jpeg")), trailing:
+        FloatingActionButton(
+          // When the user presses the button, show an alert dialog containing
+          // the text that the user has entered into the text field.
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  // Retrieve the text the that user has entered by using the
+                  // TextEditingController.
+                  content: Text("This is an explanation of dietary restriction 1."),
+                );
+              },
+            );
+          },
+          tooltip: 'Show me the value!',
+          child: const Icon(Icons.text_fields),
+        ),)),
+        Card(child:ListTile( title: Text("Dietary Restriction 3"),subtitle: Text("Range of fat from Y to Z."), leading:  CircleAvatar(backgroundImage: NetworkImage("https://miro.medium.com/fit/c/64/64/1*WSdkXxKtD8m54-1xp75cqQ.jpeg")), trailing: Icon(Icons.star))),
+        Card(child:ListTile( title: Text("Dietary Restriction 4"),subtitle: Text("Range of sodium from Y to Z."), leading:  CircleAvatar(backgroundImage: NetworkImage("https://miro.medium.com/fit/c/64/64/1*WSdkXxKtD8m54-1xp75cqQ.jpeg")), trailing: Icon(Icons.star)))
+      ],
     ),
   );
   }
