@@ -218,9 +218,8 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
     final ref = referenceDatabase.reference().child(userID);
 
     ListTile makeListTile(DietPlan lesson) => ListTile(
-      contentPadding:
-      EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-      leading: Container(
+      leading: CircleAvatar(backgroundImage: lesson.image),
+      trailing: Container(
         padding: EdgeInsets.only(right: 12.0),
         decoration: new BoxDecoration(
             border: new Border(
@@ -258,8 +257,7 @@ class _ThirdDietPageState extends State<ThirdDietPage> {
       //     // )
       //   ],
       // ),
-      trailing:
-      Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
+
       onTap: () {
 
         ref.child('MealPref').set(lesson.title);
