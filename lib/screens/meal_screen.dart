@@ -2,6 +2,7 @@ import 'package:fast_food_health_e/widgets/appbar.dart';
 import 'package:fast_food_health_e/widgets/new_nutritionixList.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/widgets/nutritionixList.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MealScreen extends StatelessWidget {
 
@@ -19,7 +20,7 @@ class MealScreen extends StatelessWidget {
       const Choice(
           title: 'Entrees',
           imglink:
-          'randy-fath-SQ20tWzxXO0-unsplash.jpg'),
+          'meatballs.jpg'),
       const Choice(
           title: 'Sides',
 
@@ -111,7 +112,7 @@ class ChoiceCard extends StatelessWidget {
             children: [
               new Container(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.asset("images\/" + choice.imglink)),
+                  child: Image.asset("images\/" + choice.imglink), width: 300.w, height: 200.h,),
               new Container(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
