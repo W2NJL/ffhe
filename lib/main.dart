@@ -17,6 +17,7 @@ import 'package:fast_food_health_e/utils/authenticate.dart';
 import 'package:fast_food_health_e/widgets/aboutTheTeam.dart';
 import 'package:fast_food_health_e/widgets/favoritesList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fast_food_health_e/constants.dart';
 import 'package:fast_food_health_e/screens/home_screen.dart';
@@ -29,7 +30,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:fast_food_health_e/state/vote.dart';
 
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:fast_food_health_e/fitness_app/fitness_app_home_screen.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -86,7 +87,7 @@ class FastFoodHealthEApp extends StatelessWidget {
 
       child:
         MaterialApp(
-
+            debugShowCheckedModeBanner: false,
           initialRoute: '/',
           routes: {
             '/': (context) =>

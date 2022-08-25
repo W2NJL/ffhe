@@ -23,11 +23,13 @@ import 'appbar.dart';
 class NewNutritionixList extends StatefulWidget {
   final String restaurant;
   final String mealCategory;
+  final String mealOfChoice; 
 
-  NewNutritionixList({this.restaurant, this.mealCategory});
+  NewNutritionixList({this.restaurant, this.mealCategory, this.mealOfChoice = ""});
 
   @override
-  State<StatefulWidget> createState() => new NewNutritionixListState(restaurant: restaurant, category: mealCategory);
+  State<StatefulWidget> createState() => new NewNutritionixListState(restaurant: restaurant, category: mealCategory,
+  mealOfChoice: mealOfChoice);
 }
 
 class NewNutritionixListState extends State<NewNutritionixList> {
@@ -84,6 +86,8 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   String userID;
   FirebaseFunctions firebaseFunctions = new FirebaseFunctions();
 
+  var mealOfChoice;
+
   @override
   void didChangeDependencies() {
 
@@ -97,7 +101,7 @@ class NewNutritionixListState extends State<NewNutritionixList> {
   }
 
 
-  NewNutritionixListState({this.restaurant, this.category}){
+  NewNutritionixListState({this.restaurant, this.category, this.mealOfChoice}){
     // _getTotalCalories().then((value) => setState(() {
     //
     //   totalCalories = value;
@@ -1172,6 +1176,8 @@ if(fastFoodHealthEUser != null) {
 
 
       try {
+        print("The meal of chocie is: " + mealOfChoice);
+        print("The restaurant of chocie is: " + restaurant);
         params = generateParams(params, restaurant);
         Response<dynamic> response = await responseCall(url, params);
 
@@ -1241,11 +1247,13 @@ if(fastFoodHealthEUser != null) {
   generateParams(params, String restaurant) {
 
 
-    params = listingLimit? {
-      "appId": "816cee15",
-      "appKey": "aab0a0a4c4224eca770bf5a2a0f4c984",
+    params = mealOfChoice != ""? listingLimit? {
+      "appId": "5d2a9d38",
+      "appKey": "9cdaa15fc38a10ce483ad31467512193",
       "queries": {
+        "item_name": mealOfChoice,
         "brand_name": restaurant,
+
       },
       "fields": [
         "item_name",
@@ -1301,8 +1309,98 @@ if(fastFoodHealthEUser != null) {
 
       }
     }:{
-      "appId": "816cee15",
-      "appKey": "aab0a0a4c4224eca770bf5a2a0f4c984",
+      "appId": "5d2a9d38",
+      "appKey": "9cdaa15fc38a10ce483ad31467512193",
+    "queries": {
+      "item_name": mealOfChoice,
+    "brand_name": restaurant,
+
+    },
+    "fields": [
+    "item_name",
+    "brand_name",
+    "nf_calories",
+    "nf_sodium",
+    "nf_total_fat",
+    "item_type",
+    "nf_cholesterol",
+    "nf_total_carbohydrate",
+    "nf_saturated_fat",
+    "nf_trans_fatty_acid",
+    "nf_serving_size_qty",
+    "nf_serving_size_unit",
+    "nf_servings_per_container",
+    "nf_serving_weight_grams",
+    "images_front_full_url"
+    ],
+    "offset": page,
+    "limit": 50,
+    "sort": {
+    "field": "nf_calories",
+    "order": "desc"
+    }}:listingLimit?{
+      "appId": "5d2a9d38",
+      "appKey": "9cdaa15fc38a10ce483ad31467512193",
+      "queries": {
+        "brand_name": restaurant,
+
+      },
+      "fields": [
+        "item_name",
+        "brand_name",
+        "nf_calories",
+        "nf_sodium",
+        "nf_total_fat",
+        "item_type",
+        "nf_cholesterol",
+        "nf_total_carbohydrate",
+        "nf_saturated_fat",
+        "nf_trans_fatty_acid",
+        "nf_serving_size_qty",
+        "nf_serving_size_unit",
+        "nf_servings_per_container",
+        "nf_serving_weight_grams",
+        "images_front_full_url"
+
+      ],
+      "offset": page,
+      "limit": 50,
+      "sort": {
+        "field": "nf_calories",
+        "order": "desc"
+      },
+      "filters": {
+
+        "nf_calories": {
+          "from": 0,
+          "to": calorieSum
+        },
+        "nf_sodium": {
+          "from": 0,
+          "to": sodiumSum
+        },
+        "nf_total_carbohydrate": {
+          "from": 0,
+          "to": carbSum
+        },
+        "nf_total_fat": {
+          "from": 0,
+          "to": fatSum
+        },
+        "nf_cholesterol": {
+          "from": 0,
+          "to": cholesterolSum
+        },
+        "nf_saturated_fat": {
+          "from": 0,
+          "to": satFatSum
+        },
+
+
+      }
+    }:{
+      "appId": "5d2a9d38",
+      "appKey": "9cdaa15fc38a10ce483ad31467512193",
       "queries": {
         "brand_name": restaurant,
       },
@@ -1328,9 +1426,9 @@ if(fastFoodHealthEUser != null) {
       "sort": {
         "field": "nf_calories",
         "order": "desc"
-      },
+      }};
 
-    };
+    print(params);
 
     return params;
   }
@@ -1342,6 +1440,8 @@ if(fastFoodHealthEUser != null) {
       }),
       data: params,
     );
+
+     print(response);
     return response;
   }
 

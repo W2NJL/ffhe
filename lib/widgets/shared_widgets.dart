@@ -15,7 +15,7 @@ class LoginButton extends StatelessWidget{
     return Container(
       width: size,
       child: MaterialButton(
-        height: 60.0.h,
+        height: 40.0.h,
         padding: EdgeInsets.all(15.0.r),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),

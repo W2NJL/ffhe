@@ -14,6 +14,7 @@ class MealScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var meal;
     final title = "Choose a " + restaurant + " meal";
 
     List choices = const [
@@ -47,17 +48,64 @@ class MealScreen extends StatelessWidget {
           context: context,
         ),
 
-        body: new ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(20.0),
-            children: List.generate(choices.length, (index) {
-              return Center(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                onChanged: (value) {
+                  meal = value;
+                },
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(15.0),
+                  hintText: "Type in a meal",
 
-                child: ChoiceCard(
-                        choice: choices[index], restaurant: restaurant,item: choices[index]),
-                  );
+                ),
 
-                })));
+
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: RawMaterialButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => NewNutritionixList(restaurant: restaurant, mealOfChoice: meal)
+                          )
+                      );
+                    },
+                    fillColor: Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(
+                        'Search',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              new ListView(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(20.0),
+                  children: List.generate(choices.length, (index) {
+                    return Center(
+
+                      child: ChoiceCard(
+                              choice: choices[index], restaurant: restaurant,item: choices[index]),
+                        );
+
+                      })),
+            ],
+          ),
+        ));
   }
 }
 

@@ -68,13 +68,13 @@ class _LaunchScreenState extends State<LaunchScreen> {
         Container(
         margin: EdgeInsets.only(top: 100.h),
         child:  Image.asset("images\/" + "FastFoodHealthELogo_Slogan.png",
-
+height: 250.h,
 
 
         ),
       ),
       SizedBox(
-      height: 50.0.h,
+      height: 20.0.h,
       ),
 
        Container(
